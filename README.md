@@ -4,26 +4,56 @@ This repository contains the Lambda functions for the oneXerp application. Each 
 
 ## Directory Structure
 
-Each Lambda function should have its own directory in the `functions` folder. The directory must contain:
+Each Lambda function should have its own directory in the root level of this repository. The directory must contain:
 
 - `index.js` The entry point of the Lambda function
 - `metadata.json`: A JSON file containing metadata that describes the function's purpose and how it should be integrated into the oneXerp API
+
+Example of the repository structure:
+
+```md
+.
+├── getAllUsers/
+│   ├── metadata.json
+|   └── index.ts
+├── getPoLineItemComments/
+│   ├── metadata.json
+|   └── index.ts
+```
 
 ## metadata.json
 
 The `metadata.json` file is a crucial component for each Lambda function. It provides necessary information for the automatic integration of the function into the oneXerp API. The file should contain the following fields:
 
-- `name`: A unique name for the Lambda function (must match the name of the directory containing the function)
-- `apiPath`: The API path that the Lambda function should be associated with (e.g., "requests" or "users")
-- `httpMethod`: The HTTP method that the Lambda function should respond to (e.g., "GET", "POST", "PUT", "DELETE")
-- `allowedRoles`: List of roles that can utilize this API endpoint (available roles in oneXerp: "BASIC_USER", "LOGISTICS", "DRIVER", "PROJECT_MANAGER", "ADMIN")
+- `apiPath`: *Required.* String: This is used to create all the necessary nested resources in API Gateway. If a path doesn't exist, it will be created.
+- `httpMethod`: *Required.* String: The method associated with the api endpoint.
+- `name`: *Required.* String: Must match the folder name.
+- `allowedGroups`: *Defaults to ["admin", "basic_user", "logistics", "project_manager", "driver"] (all roles)* Array of strings: Will be used to restrict the API endpoint to various roles within oneXerp's ecosystem.
 
-Example `metadata.json`:
+Example `metadata.json` files:
 
 ```json
 {
-  "name": "getPosts",
-  "apiPath": "posts",
-  "httpMethod": "GET",
-  "allowedRoles": ["BASIC_USER"]
+    "apiPath"    :  "users",
+    "httpMethod" :  "GET",
+    "name"       :  "getUsers",
+    "allowedGroups": ["logistics", "project_manager", "admin"]
 }
+```
+
+```json
+{
+  "apiPath": "purchase-orders/{purchaseOrderId}/line-items/{lineItemId}/comments",
+  "httpMethod": "GET",
+  "name": "getPoLineItemComments",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
+
+```json
+{
+  "apiPath": "user",
+  "httpMethod": "PUT",
+  "name": "putUser",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
+```
