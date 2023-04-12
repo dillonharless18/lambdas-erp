@@ -9,7 +9,7 @@ Each Lambda function should have its own directory in the root level of this rep
 - `index.js` The entry point of the Lambda function
 - `metadata.json`: A JSON file containing metadata that describes the function's purpose and how it should be integrated into the oneXerp API
 
-Example of the repository structure:
+Example of the repository structure after adding some lambdas:
 
 ```md
 .
