@@ -2,6 +2,10 @@
 
 This repository contains the Lambda functions for the oneXerp application. Each Lambda function is responsible for a specific API endpoint or background task. The functions are automatically discovered and integrated into the oneXerp API by the `oneXerp-infrastructure` repository.
 
+## Tracked Branches
+
+The development and main branches are tracked by pipelines. Anything you merge to these branches will trigger the pipeline. Always create your own branch and submit a PR to the development branch.
+
 ## Directory Structure
 
 Each Lambda function should have its own directory in the root level of this repository. The directory must contain:
