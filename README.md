@@ -48,6 +48,7 @@ Example `metadata.json` files:
   "name": "getPoLineItemComments",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }
+```
 
 ```json
 {
