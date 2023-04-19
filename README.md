@@ -8,7 +8,7 @@ The development and main branches are tracked by pipelines. Anything you merge t
 
 ## Directory Structure
 
-Each Lambda function should have its own directory in the root level of this repository. The directory must contain:
+Each Lambda function should have its own directory inside the `endpoints` folder of this repository. The directory must contain:
 
 - `index.js` The entry point of the Lambda function
 - `metadata.json`: A JSON file containing metadata that describes the function's purpose and how it should be integrated into the oneXerp API
@@ -17,12 +17,16 @@ Example of the repository structure after adding some lambdas:
 
 ```md
 .
-├── getAllUsers/
-│   ├── metadata.json
-|   └── index.ts
-├── getPoLineItemComments/
-│   ├── metadata.json
-|   └── index.ts
+├── endpoints/
+│   ├── getAllUsers/
+│   │   ├── metadata.json
+│   │   └── index.ts
+│   └── getPoLineItemComments/
+│       ├── metadata.json
+│       └── index.ts
+├── someOtherFolder/
+│   └── someFile.ts
+└── anotherFile.ts
 ```
 
 ## metadata.json
@@ -50,7 +54,7 @@ Example `metadata.json` files:
   "apiPath": "purchase-orders/{purchaseOrderId}/line-items/{lineItemId}/comments",
   "httpMethod": "GET",
   "name": "getPoLineItemComments",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": ["basic_user","logistics", "project_manager", "admin"]
 }
 ```
 
@@ -59,6 +63,6 @@ Example `metadata.json` files:
   "apiPath": "user",
   "httpMethod": "PUT",
   "name": "putUser",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": ["admin"]
 }
 ```
