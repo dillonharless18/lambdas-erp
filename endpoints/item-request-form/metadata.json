@@ -1,0 +1,6 @@
+{
+    "apiPath": "item-request-form/helloworld",
+    "httpMethod": "GET",
+    "name": "helloWorld",
+    "allowedGroups": ["basic_user", "driver", "logistics", "project_manager", "admin"]
+  }
