@@ -1,5 +1,5 @@
 {
-  "name": "item-request-form",
+  "name": "get-all-projects",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -21,13 +21,10 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
-    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
-    "@nestjs/platform-express": "^9.0.0",
-    "@nestjs/swagger": "^6.3.0",
-    "knex": "^2.4.2",
-    "nest-knexjs": "^0.0.15",
-    "pg": "^8.10.0",
+    "@nestjs/platform-express": "^9.4.0",
+    "aws-lambda": "^1.0.7",
+    "aws-serverless-express": "^3.4.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
