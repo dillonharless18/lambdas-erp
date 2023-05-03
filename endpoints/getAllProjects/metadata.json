@@ -1,6 +1,6 @@
 {
     "apiPath": "item-request/getAllProjects",
     "httpMethod": "GET",
-    "name": "Get All Projects",
+    "name": "getAllProjects",
     "allowedGroups": ["logistics", "project_manager", "admin"]
   }
