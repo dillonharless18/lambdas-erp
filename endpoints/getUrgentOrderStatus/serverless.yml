@@ -1,4 +1,4 @@
-service: get-all-projects
+service: get-urgent-order-status
 
 provider:
   name: aws
