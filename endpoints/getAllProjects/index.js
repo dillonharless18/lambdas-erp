@@ -20,7 +20,7 @@ app.get('/', async (req, res) => {
     res.json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Server Error' });
   }
 });
 
