@@ -4,7 +4,7 @@ const app = express();
 
 const db = require('./db');
 
-app.get('/projects', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const projects = await db('onexerp').select('*').from('project');
     res.json(projects);
