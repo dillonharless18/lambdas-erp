@@ -2,14 +2,15 @@ const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
 
-const db = require('./db');
+const initializeDb = require('./db');
 
-app.get('/urgentOrderStatus', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
-    const urgetOrderStatus = await db('onexerp').select('*').from('urgent_order_status');
-    res.json(urgetOrderStatus);
+    const db = await initializeDb;
+    const projects = await db('project').select('*');
+    res.json(projects);
   } catch (error) {
-    console.error('Error fetching urgetOrderStatus:', error);
+    console.error('Error fetching projects:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

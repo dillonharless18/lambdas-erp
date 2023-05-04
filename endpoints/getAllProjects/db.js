@@ -1,4 +1,9 @@
+const knex = require('knex');
 const knexConfig = require('./knexfile');
-const knex = require('knex')(knexConfig);
 
-module.exports = knex;
+const initializeKnex = async () => {
+  const config = await knexConfig();
+  return knex(config);
+};
+
+module.exports = initializeKnex();
