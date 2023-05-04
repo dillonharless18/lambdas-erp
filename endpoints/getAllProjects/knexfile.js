@@ -21,6 +21,16 @@ const getSecrets = async () => {
         port: secrets.port,
       },
     };
+    // return {
+    //   client: 'pg',
+    //   connection: {
+    //     host: 'localhost',
+    //     user: 'postgres',
+    //     password: 'postgres',
+    //     database: 'onexerp',
+    //     port: 5433,
+    //   },
+    // };
   } catch (error) {
     console.error('Error fetching secrets:', error);
     throw error;

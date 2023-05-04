@@ -12,7 +12,8 @@ const initializeDb = async () => {
   }
 };
 
-app.get('/project', async (req, res) => {
+app.get('/', async (req, res) => {
+  console.log('lambda starter')
   try {
     await initializeDb();
     const projects = await knexInstance('onexerp').select('*').from('project');
