@@ -6,4 +6,6 @@ const initializeKnex = async () => {
   return knex(config);
 };
 
-module.exports = initializeKnex();
+// ...
+module.exports = initializeKnex;
+

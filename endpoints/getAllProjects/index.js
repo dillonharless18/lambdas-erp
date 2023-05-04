@@ -2,11 +2,20 @@ const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
 
-const db = require('./db');
+const initializeKnex = require('./db');
 
-app.get('/', async (req, res) => {
+let knexInstance;
+
+const initializeDb = async () => {
+  if (!knexInstance) {
+    knexInstance = await initializeKnex();
+  }
+};
+
+app.get('/project', async (req, res) => {
   try {
-    const projects = await db('onexerp').select('*').from('project');
+    await initializeDb();
+    const projects = await knexInstance('onexerp').select('*').from('project');
     res.json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);

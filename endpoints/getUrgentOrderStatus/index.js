@@ -4,7 +4,7 @@ const app = express();
 
 const initializeDb = require('./db');
 
-app.get('/', async (req, res) => {
+app.get('/project', async (req, res) => {
   try {
     const db = await initializeDb;
     const projects = await db('project').select('*');
