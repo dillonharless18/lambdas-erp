@@ -1,17 +1,31 @@
-const serverless = require('serverless-http');
-const express = require('express');
+const serverless = require("serverless-http");
+const express = require("express");
 const app = express();
 
-const initializeDb = require('./db');
+const initializeKnex = require("./db");
 
-app.get('/project', async (req, res) => {
+let knexInstance;
+
+const initializeDb = async () => {
   try {
-    const db = await initializeDb;
-    const projects = await db('project').select('*');
-    res.json(projects);
+    if (!knexInstance) {
+      knexInstance = await initializeKnex();
+    }
   } catch (error) {
-    console.error('Error fetching projects:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: `Server Error, ${error}` });
+  }
+};
+
+app.get("/", async (req, res) => {
+  try {
+    await initializeDb();
+    const urgentOrderStatus = await knexInstance("onexerp")
+      .select("*")
+      .from("urgent_order_status");
+    res.json(urgentOrderStatus);
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    res.status(500).json({ error: `Server Error, ${error}` });
   }
 });
 
