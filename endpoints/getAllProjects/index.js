@@ -17,6 +17,7 @@ const initializeDb = async () => {
 };
 
 app.get('item-request/getAllProjects', async (req, res) => {
+
   
   try {
     await initializeDb();

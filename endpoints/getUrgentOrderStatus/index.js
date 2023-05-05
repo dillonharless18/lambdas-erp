@@ -17,6 +17,8 @@ const initializeDb = async () => {
 };
 
 app.get("item-request/getUrgentOrderStatus", async (req, res) => {
+
+
   try {
     await initializeDb();
     const urgentOrderStatus = await knexInstance("onexerp")
