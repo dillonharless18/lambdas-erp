@@ -16,7 +16,8 @@ const initializeDb = async () => {
   }
 };
 
-app.get('/', async (req, res) => {
+app.get('/projects', async (req, res) => {
+  
   try {
     await initializeDb();
     const projects = await knexInstance('onexerp').select('*').from('project');
