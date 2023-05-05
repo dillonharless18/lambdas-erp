@@ -17,7 +17,6 @@ const initializeDb = async () => {
 };
 
 app.get('/', async (req, res) => {
-  
   try {
     await initializeDb();
     const projects = await knexInstance('onexerp').select('*').from('project');
@@ -25,6 +24,7 @@ app.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error fetching projects:', error);
     res.status(500).json({ error: `Server Error, ${error}` });
+
   }
 });
 
