@@ -2,10 +2,10 @@ const AWS = require('aws-sdk');
 
 const getSecrets = async () => {
   const secretsManager = new AWS.SecretsManager({
-    region: 'us-east-1', // Replace 'your-region' with your AWS region
+    region: 'us-east-1',
   });
 
-  const secretId = 'arn:aws:secretsmanager:us-east-1:136559125535:secret:database-credentials-GeMfwW'; // Replace 'your-secret-id' with your AWS Secret Manager secret ID
+  const secretId = 'arn:aws:secretsmanager:us-east-1:136559125535:secret:database-credentials-GeMfwW';
 
   try {
     const response = await secretsManager.getSecretValue({ SecretId: secretId }).promise();
@@ -21,10 +21,23 @@ const getSecrets = async () => {
         port: secrets.port,
       },
     };
+    // return {
+    //   client: 'pg',
+    //   connection: {
+    //     host: 'localhost',
+    //     user: 'postgres',
+    //     password: 'postgres',
+    //     database: 'onexerp',
+    //     port: 5433,
+    //   },
+    // };
   } catch (error) {
     console.error('Error fetching secrets:', error);
     throw error;
   }
 };
 
-module.exports = getSecrets();
+module.exports = async () => {
+  const config = await getSecrets();
+  return config;
+};

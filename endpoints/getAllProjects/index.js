@@ -7,20 +7,24 @@ const initializeKnex = require('./db');
 let knexInstance;
 
 const initializeDb = async () => {
-  if (!knexInstance) {
-    knexInstance = await initializeKnex();
+  try {
+    if (!knexInstance) {
+      knexInstance = await initializeKnex();
+    }
+  } catch (error) {
+    res.status(500).json({ error: `Server Error, ${error}` });
   }
 };
 
 app.get('/', async (req, res) => {
-  console.log('lambda starter')
+  
   try {
     await initializeDb();
     const projects = await knexInstance('onexerp').select('*').from('project');
     res.json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({ error: `Server Error, ${error}` });
   }
 });
 
