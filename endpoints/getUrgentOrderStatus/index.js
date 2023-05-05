@@ -12,11 +12,11 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    res.status(500).json({ error: `Server Error, ${error}` });
+    throw error;
   }
 };
 
-app.get("item-request/getUrgentOrderStatus", async (req, res) => {
+app.get("/item-request/getUrgentOrderStatus", async (req, res) => {
 
 
   try {
