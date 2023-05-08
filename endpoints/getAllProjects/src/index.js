@@ -2,7 +2,13 @@
 
 exports.handler = async () => {
   try {
-    return "working fine"
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: "working fine" }),
+    };
     // return await getAllProjects();
   } catch (error) {
     console.error("Error in handler:", error);
