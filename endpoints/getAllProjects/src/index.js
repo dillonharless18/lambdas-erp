@@ -1,8 +1,9 @@
-const { getAllProjects } = require("./getAllProjects");
+// const { getAllProjects } = require("./getAllProjects");
 
 exports.handler = async () => {
   try {
-    return await getAllProjects();
+    return "working fine"
+    // return await getAllProjects();
   } catch (error) {
     console.error("Error in handler:", error);
     return {

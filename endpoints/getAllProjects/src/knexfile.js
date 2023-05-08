@@ -14,26 +14,26 @@ const getSecrets = async () => {
       .promise();
     const secrets = JSON.parse(response.SecretString);
 
-    return {
-      client: "pg",
-      connection: {
-        host: secrets.host,
-        user: secrets.username,
-        password: secrets.password,
-        database: secrets.dbname,
-        port: secrets.port,
-      },
-    };
     // return {
     //   client: "pg",
     //   connection: {
-    //     host: "localhost",
-    //     user: "postgres",
-    //     password: "postgres",
-    //     database: "onexerp",
-    //     port: 5433,
+    //     host: secrets.host,
+    //     user: secrets.username,
+    //     password: secrets.password,
+    //     database: secrets.dbname,
+    //     port: secrets.port,
     //   },
     // };
+    return {
+      client: "pg",
+      connection: {
+        host: "localhost",
+        user: "postgres",
+        password: "postgres",
+        database: "onexerp",
+        port: 5433,
+      },
+    };
   } catch (error) {
     console.error("Error fetching secrets:", error);
     throw error;
