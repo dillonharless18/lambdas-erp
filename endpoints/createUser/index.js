@@ -10,7 +10,7 @@ const initializeDb = async () => {
   }
 };
 
-export async function handler(event) {
+exports.handler = async function (event, context) {
   try {
     await initializeDb();
     return {
@@ -24,4 +24,4 @@ export async function handler(event) {
       body: JSON.stringify({ message: "Internal server error" }),
     };
   }
-}
+};
