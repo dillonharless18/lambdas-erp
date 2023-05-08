@@ -1,5 +1,6 @@
 const initializeKnex = require("./db");
 
+let knexInstance;
 const initializeDb = async () => {
   try {
     if (!knexInstance) {
