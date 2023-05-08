@@ -13,16 +13,16 @@ const initializeDb = async () => {
   }
 };
 
-module.exports.getAllProjects = async () => {
+module.exports.getUrgentOrderStatus = async () => {
   await initializeDb();
   try {
-    const projects = await knexInstance.select("*").from("project");
+    const urgentOrderStatus = await knexInstance.select("*").from("urgent_order_status");
     return {
       statusCode: 200,
-      body: JSON.stringify(projects),
+      body: JSON.stringify(urgentOrderStatus),
     };
   } catch (error) {
-    console.error("Error fetching projects:", error);
+    console.error("Error fetching urgentOrderStatus:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
