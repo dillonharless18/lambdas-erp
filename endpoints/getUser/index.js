@@ -11,6 +11,17 @@ const initializeDb = async () => {
   }
 };
 
+const validatePathParameters = (pathParameters) => {
+  if (
+    !pathParameters ||
+    !pathParameters.hasOwnProperty("user_id") ||
+    pathParameters.user_id.trim() === ""
+  ) {
+    return false;
+  }
+  return true;
+};
+
 /**
  * GETS a user from the PostgreSQL database.
  *
@@ -28,6 +39,16 @@ const initializeDb = async () => {
 exports.handler = async function (event, context) {
   try {
     await initializeDb();
+
+    if (!validatePathParameters(event.pathParameters)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Invalid request: Missing or invalid user_id",
+        }),
+      };
+    }
+
     const userId = event.pathParameters.user_id;
     const user = await knexInstance("user")
       .select("*")
