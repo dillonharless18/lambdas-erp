@@ -1,0 +1,6 @@
+{
+    "apiPath": "users/{user_id}",
+    "httpMethod": "GET",
+    "name": "getUser",
+    "allowedGroups": ["admin"]
+  }
