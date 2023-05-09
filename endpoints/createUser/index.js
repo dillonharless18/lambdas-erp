@@ -21,6 +21,26 @@ const formatUserData = (userDataFromLambdaEvent) => {
   };
 };
 
+// TODO - Navaid should create classes for each entity.  We can also refactor this method into a helper method folder
+const validateRequestBody = (body) => {
+  const requiredFields = [
+    "is_active",
+    "first_name",
+    "last_name",
+    "phone_number",
+    "ocr_tool_id",
+    "user_role",
+    "user_email",
+  ];
+
+  for (const field of requiredFields) {
+    if (!body.hasOwnProperty(field) || body[field] === null) {
+      return false;
+    }
+  }
+  return true;
+};
+
 /**
 /**
  * Creates a new user in the PostgreSQL database.
@@ -46,6 +66,16 @@ exports.handler = async function (event, context) {
   try {
     await initializeDb();
     const userData = JSON.parse(event.body);
+
+    if (!validateRequestBody(userData)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Invalid request: Missing or null required parameters",
+        }),
+      };
+    }
+
     const newUser = formatUserData(userData);
     await knexInstance("user").insert(newUser);
 
