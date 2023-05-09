@@ -14,7 +14,7 @@ const initializeDb = async () => {
 
 const formatUserData = (userDataFromLambdaEvent) => {
   return {
-    user_id: uuid.v4(),
+    user_id: uuid.v4().substring(0, 32),
     ...userDataFromLambdaEvent,
     created_at: new Date().toISOString(),
     last_updated_at: new Date().toISOString(),
