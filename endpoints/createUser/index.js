@@ -47,7 +47,7 @@ exports.handler = async function (event, context) {
     await initializeDb();
     const userData = JSON.parse(event.body);
     const newUser = formatUserData(userData);
-    const userTable = await knexInstance("user").insert(newUser);
+    await knexInstance("user").insert(newUser);
 
     return {
       statusCode: 201,
