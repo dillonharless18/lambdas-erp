@@ -1,5 +1,5 @@
 const initializeKnex = require("./db");
-const uuid = require("uuid");
+// const uuid = require("uuid");
 
 let knexInstance;
 const initializeDb = async () => {
@@ -14,7 +14,7 @@ const initializeDb = async () => {
 
 const formatUserData = (userDataFromLambdaEvent) => {
   return {
-    user_id: uuid.v4().substring(0, 32),
+    user_id: "111111111111111111111111111111111111",
     ...userDataFromLambdaEvent,
     created_at: new Date().toISOString(),
     last_updated_at: new Date().toISOString(),
@@ -65,7 +65,8 @@ const validateRequestBody = (body) => {
 exports.handler = async function (event, context) {
   try {
     await initializeDb();
-    const userData = JSON.parse(event.body);
+    
+    const userData = event.body;
 
     if (!validateRequestBody(userData)) {
       return {
