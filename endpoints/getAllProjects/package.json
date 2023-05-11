@@ -9,12 +9,11 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "dependencies": {
+    "dependencies": {},
+    "devDependencies": {
         "aws-sdk": "^2.1372.0",
         "knex": "^2.4.2",
-        "pg": "^8.10.0"
-    },
-    "devDependencies": {
+        "pg": "^8.10.0",
         "serverless": "^3.30.1",
         "serverless-offline": "^12.0.4"
     }
