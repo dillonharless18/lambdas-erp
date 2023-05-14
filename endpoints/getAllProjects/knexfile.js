@@ -1,13 +1,9 @@
 const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
-const { fromIni } = require("@aws-sdk/credential-provider-ini");
 
 const getSecrets = async () => {
-  const secretsManager = new SecretsManagerClient({
-    region: "us-east-1",
-    credentials: fromIni(),
-  });
+  const secretsManager = new SecretsManagerClient({ region: "us-east-1" });
 
-  const secretId = "arn:aws:secretsmanager:us-east-1:136559125535:secret:database-credentials-GeMfwW";
+  const secretId = "arn:aws:secretsmanager:us-east-1:136559125535:secret:database-credentials-YTyK5c";
 
   try {
     const command = new GetSecretValueCommand({ SecretId: secretId });
