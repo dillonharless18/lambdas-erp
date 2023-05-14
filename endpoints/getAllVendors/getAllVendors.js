@@ -1,0 +1,31 @@
+const initializeKnex = require("./db");
+
+let knexInstance;
+
+const initializeDb = async () => {
+  try {
+    if (!knexInstance) {
+      knexInstance = await initializeKnex();
+    }
+  } catch (error) {
+    console.error("Error initializing database:", error);
+    throw error;
+  }
+};
+
+module.exports.getAllVendors = async () => {
+  await initializeDb();
+  try {
+    const projects = await knexInstance.select("*").from("vendor");
+    return {
+      statusCode: 200,
+      body: JSON.stringify(projects),
+    };
+  } catch (error) {
+    console.error("Error fetching vendors:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: `Server Error, ${error}` }),
+    };
+  }
+};

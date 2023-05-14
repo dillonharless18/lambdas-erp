@@ -1,0 +1,6 @@
+{
+    "apiPath": "item-request/getAllVendors",
+    "httpMethod": "GET",
+    "name": "getAllVendors",
+    "allowedGroups": ["logistics", "project_manager", "admin"]
+  }
