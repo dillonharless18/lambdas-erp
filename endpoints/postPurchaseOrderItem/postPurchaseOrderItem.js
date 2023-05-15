@@ -1,21 +1,27 @@
-// postPurchaseOrderItems.js
-const knexConfig = require('./knex');
-const PurchaseOrderItem = require('./DTO/PurchaseOrderItem');
-const { initializeDb, getKnexInstance } = require('./db');
+const PurchaseOrderItem = require("./DTO/PurchaseOrderItem");
+const { initializeDb, getKnexInstance } = require("./db");
 
-// Initialize DB
-initializeDb();
+const initializeKnex = require("./db");
 
-const postPurchaseOrderItems = async (items) => {
+let knexInstance;
+
+const initializeDb = async () => {
   try {
-    // Get knex instance
-    const knex = getKnexInstance();
+    if (!knexInstance) {
+      knexInstance = await initializeKnex();
+    }
+  } catch (error) {
+    console.error("Error initializing database:", error);
+    throw error;
+  }
+};
 
-    // Map incoming items to DTOs
-    const purchaseOrderItems = items.map(item => new PurchaseOrderItem(item));
+module.exports.postPurchaseOrderItems = async (items) => {
+  await initializeDb();
+  try {
+    const purchaseOrderItems = items.map((item) => new PurchaseOrderItem(item));
 
-    // Prepare data for insertion
-    const dataToInsert = purchaseOrderItems.map(item => ({
+    const dataToInsert = purchaseOrderItems.map((item) => ({
       purchase_order_request_id: item.purchase_order_request_id,
       quantity: item.quantity,
       item_name: item.item_name,
@@ -27,15 +33,17 @@ const postPurchaseOrderItems = async (items) => {
       s3_uri: item.s3_uri,
       user_id: item.user_id,
       created_at: item.created_at,
-      purchase_order_request_item_status_id: item.purchase_order_request_item_status_id,
+      purchase_order_request_item_status_id:
+        item.purchase_order_request_item_status_id,
     }));
 
-    // Insert data into database
-    await knex('purchase_order_items').insert(dataToInsert);
+    await knexInstance("purchase_order_items").insert(dataToInsert);
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Purchase Order Items added successfully!" }),
+      body: JSON.stringify({
+        message: "Purchase Order Items added successfully!",
+      }),
     };
   } catch (error) {
     console.error("Error in postPurchaseOrderItems:", error);
@@ -45,5 +53,3 @@ const postPurchaseOrderItems = async (items) => {
     };
   }
 };
-
-module.exports = postPurchaseOrderItems;

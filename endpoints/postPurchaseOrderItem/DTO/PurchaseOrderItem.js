@@ -1,4 +1,4 @@
-// DTO/PurchaseOrderItem.js
+
 class PurchaseOrderItem {
     constructor(item) {
       this.purchase_order_request_id = item.purchase_order_request_id;
