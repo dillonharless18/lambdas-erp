@@ -1,6 +1,6 @@
 const { getUrgentOrderStatus } = require("./getUrgentOrderStatus");
 
-exports.handler = async () => {
+const handler = async () => {
   try {
     return await getUrgentOrderStatus();
   } catch (error) {
@@ -11,3 +11,5 @@ exports.handler = async () => {
     };
   }
 };
+
+export { handler };

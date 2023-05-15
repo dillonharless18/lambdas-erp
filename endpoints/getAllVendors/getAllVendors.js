@@ -1,4 +1,4 @@
-const initializeKnex = require("./db");
+import initializeKnex from "/opt/nodejs/db/index.js";
 
 let knexInstance;
 
@@ -13,7 +13,7 @@ const initializeDb = async () => {
   }
 };
 
-module.exports.getAllVendors = async () => {
+const getAllVendors = async () => {
   await initializeDb();
   try {
     const projects = await knexInstance.select("*").from("vendor");
@@ -29,3 +29,5 @@ module.exports.getAllVendors = async () => {
     };
   }
 };
+
+export default getAllVendors;

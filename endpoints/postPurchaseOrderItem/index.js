@@ -1,6 +1,6 @@
 const { postPurchaseOrderItems } = require("./postPurchaseOrderItem");
 
-exports.handler = async (event) => {
+const handler = async (event) => {
   try {
     return await postPurchaseOrderItems(event);
   } catch (error) {
@@ -11,3 +11,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
+export { handler };

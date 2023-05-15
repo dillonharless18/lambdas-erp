@@ -1,4 +1,4 @@
-const initializeKnex = require("./db");
+import initializeKnex from "/opt/nodejs/db/index.js";
 
 let knexInstance;
 
@@ -13,10 +13,12 @@ const initializeDb = async () => {
   }
 };
 
-module.exports.getUrgentOrderStatus = async () => {
+const getUrgentOrderStatus = async () => {
   await initializeDb();
   try {
-    const urgentOrderStatus = await knexInstance.select("*").from("urgent_order_status");
+    const urgentOrderStatus = await knexInstance
+      .select("*")
+      .from("urgent_order_status");
     return {
       statusCode: 200,
       body: JSON.stringify(urgentOrderStatus),
@@ -29,3 +31,5 @@ module.exports.getUrgentOrderStatus = async () => {
     };
   }
 };
+
+export default getUrgentOrderStatus;

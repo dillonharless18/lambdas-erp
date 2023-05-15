@@ -1,5 +1,5 @@
 const PurchaseOrderItem = require("./DTO/PurchaseOrderItem");
-const { initializeDb, getKnexInstance } = require("./db");
+import initializeKnex from "/opt/nodejs/db/index.js";
 
 const initializeKnex = require("./db");
 

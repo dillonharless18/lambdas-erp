@@ -1,6 +1,6 @@
-const { getAllVendors } = require("./getAllVendors");
+import getAllVendors from "./getAllVendors.js";
 
-exports.handler = async () => {
+const handler = async () => {
   try {
     return await getAllVendors();
   } catch (error) {
@@ -11,3 +11,5 @@ exports.handler = async () => {
     };
   }
 };
+
+export { handler }
