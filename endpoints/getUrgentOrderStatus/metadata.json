@@ -1,5 +1,5 @@
 {
-    "apiPath": "item-request/getUrgentOrderStatus",
+    "apiPath": "getUrgentOrderStatus",
     "httpMethod": "GET",
     "name": "getUrgentOrderStatus",
     "allowedGroups": ["logistics", "project_manager", "admin"]
