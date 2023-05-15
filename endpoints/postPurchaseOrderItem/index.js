@@ -1,4 +1,4 @@
-const { postPurchaseOrderItems } = require("./postPurchaseOrderItems");
+const { postPurchaseOrderItems } = require("./postPurchaseOrderItem");
 
 exports.handler = async (event) => {
   try {
