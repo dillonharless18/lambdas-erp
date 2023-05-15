@@ -1,4 +1,4 @@
-const initializeKnex = require("./db");
+const initializeKnex = require("/opt/nodejs/db/index.js");
 
 let knexInstance;
 
