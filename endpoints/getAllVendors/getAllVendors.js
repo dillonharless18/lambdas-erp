@@ -1,4 +1,4 @@
-const initializeKnex = require("./db");
+import initializeKnex from "/opt/nodejs/db/index.js";
 
 let knexInstance;
 
@@ -13,13 +13,13 @@ const initializeDb = async () => {
   }
 };
 
-module.exports.getAllVendors = async () => {
+const getAllVendors = async () => {
   await initializeDb();
   try {
-    const projects = await knexInstance.select("*").from("vendor");
+    const AllVendors = await knexInstance.select("*").from("vendor");
     return {
       statusCode: 200,
-      body: JSON.stringify(projects),
+      body: JSON.stringify(AllVendors),
     };
   } catch (error) {
     console.error("Error fetching vendors:", error);
@@ -29,3 +29,5 @@ module.exports.getAllVendors = async () => {
     };
   }
 };
+
+export default getAllVendors;
