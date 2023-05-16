@@ -61,7 +61,7 @@ const validateRequestBody = (body) => {
  * @returns {string}  response.body - A JSON-formatted string containing the created user information
  * @throws  {Error}   If an error occurs while interacting with the database
  */
-exports.handler = async function (event, context) {
+export const handler = async function (event, context) {
   try {
     await initializeDb();
     
