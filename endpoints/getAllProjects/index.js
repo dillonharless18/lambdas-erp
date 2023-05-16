@@ -1,6 +1,6 @@
 import getAllProjects from "./getAllProjects.js";
 
-const handler = async () => {
+const handler = async (event, context) => {
   try {
     return await getAllProjects();
   } catch (error) {
