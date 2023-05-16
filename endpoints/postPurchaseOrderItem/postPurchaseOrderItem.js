@@ -1,4 +1,4 @@
-const PurchaseOrderItem = require("./DTO/PurchaseOrderItem");
+import PurchaseOrderItem from "./PurchaseOrderItem.js";
 import initializeKnex from "/opt/nodejs/db/index.js";
 
 let knexInstance;
@@ -14,7 +14,7 @@ const initializeDb = async () => {
   }
 };
 
-module.exports.postPurchaseOrderItems = async (items) => {
+const postPurchaseOrderItems = async (items) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
@@ -56,3 +56,5 @@ module.exports.postPurchaseOrderItems = async (items) => {
     };
   }
 };
+
+export default postPurchaseOrderItems;

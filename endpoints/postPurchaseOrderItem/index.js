@@ -1,4 +1,4 @@
-const { postPurchaseOrderItems } = require("./postPurchaseOrderItem");
+import { postPurchaseOrderItems } from "./postPurchaseOrderItem.js";
 
 const handler = async (event) => {
   try {
