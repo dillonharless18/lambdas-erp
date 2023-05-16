@@ -2,7 +2,9 @@ const { postPurchaseOrderItems } = require("./postPurchaseOrderItem");
 
 const handler = async (event) => {
   try {
-    return await postPurchaseOrderItems(event);
+    const body = JSON.parse(event.body);
+
+    return await postPurchaseOrderItems(body);
   } catch (error) {
     console.error("Error in handler:", error);
     return {
