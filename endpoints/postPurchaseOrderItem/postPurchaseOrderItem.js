@@ -1,8 +1,6 @@
 const PurchaseOrderItem = require("./DTO/PurchaseOrderItem");
 import initializeKnex from "/opt/nodejs/db/index.js";
 
-const initializeKnex = require("./db");
-
 let knexInstance;
 
 const initializeDb = async () => {
