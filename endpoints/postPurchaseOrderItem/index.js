@@ -1,4 +1,4 @@
-import { postPurchaseOrderItems } from "./postPurchaseOrderItem.js";
+import postPurchaseOrderItems from "./postPurchaseOrderItem.js";
 
 const handler = async (event) => {
   try {
