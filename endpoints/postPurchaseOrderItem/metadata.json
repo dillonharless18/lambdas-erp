@@ -1,5 +1,5 @@
 {
-  "apiPath": "requestWorkspace/postPurchaseOrderItem",
+  "apiPath": "itemRequest/postPurchaseOrderItem",
   "httpMethod": "POST",
   "name": "postPurchaseOrderItem",
   "allowedGroups": ["logistics", "project_manager", "admin"]
