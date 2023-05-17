@@ -1,8 +1,8 @@
-import { getPurchaseOrderRequestItem } from "./getPurchaseOrderRequestItem";
+import { getPurchaseOrderRequestItems } from "./getPurchaseOrderRequestItems";
 
 const handler = async (event, context) => {
   try {
-    return await getPurchaseOrderRequestItem();
+    return await getPurchaseOrderRequestItems();
   } catch (error) {
     console.error("Error in handler:", error);
     return {

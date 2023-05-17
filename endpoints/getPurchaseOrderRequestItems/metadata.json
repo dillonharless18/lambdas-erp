@@ -1,0 +1,6 @@
+{
+  "apiPath": "request-workspace/purchase-order-request-items",
+  "httpMethod": "GET",
+  "name": "getPurchaseOrderRequestItems",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}

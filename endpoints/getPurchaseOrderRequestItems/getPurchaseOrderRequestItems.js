@@ -13,10 +13,10 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItem = async () => {
+const getPurchaseOrderRequestItems = async () => {
   await initializeDb();
   try {
-    const getAllPurchaseOrderRequestItem = await knexInstance(
+    const getAllPurchaseOrderRequestItems = await knexInstance(
       "purchase_order_request_item"
     )
       .select(
@@ -81,10 +81,10 @@ const getPurchaseOrderRequestItem = async () => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify(getAllPurchaseOrderRequestItem),
+      body: JSON.stringify(getAllPurchaseOrderRequestItems),
     };
   } catch (error) {
-    console.error("Error fetching projects:", error);
+    console.error("Error fetching PurchaseOrderRequestItems:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
@@ -92,4 +92,4 @@ const getPurchaseOrderRequestItem = async () => {
   }
 };
 
-export default getPurchaseOrderRequestItem;
+export default getPurchaseOrderRequestItems;

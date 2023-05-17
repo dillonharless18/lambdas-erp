@@ -1,0 +1,6 @@
+{
+  "apiPath": "request-workspace/purchase-order-request-items/{purchase_order_request_item_id}/comments",
+  "httpMethod": "GET",
+  "name": "getPurchaseOrderRequestItemComments",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}

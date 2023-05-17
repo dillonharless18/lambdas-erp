@@ -13,16 +13,19 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItems = async (purchaseOrderRequestItemId) => {
+const getPurchaseOrderRequestItemsComments = async (purchaseOrderRequestItemId) => {
   await initializeDb();
   try {
-    const getAllPurchaseOrderRequestItems = await knexInstance.select("*").from("purchase_order_request_item_comment").where('purchase_order_request_item_id', purchaseOrderRequestItemId);
+    const getAllPurchaseOrderRequestItemComments = await knexInstance
+      .select("*")
+      .from("purchase_order_request_item_comment")
+      .where("purchase_order_request_item_id", purchaseOrderRequestItemId);
     return {
       statusCode: 200,
-      body: JSON.stringify(getAllPurchaseOrderRequestItems),
+      body: JSON.stringify(getAllPurchaseOrderRequestItemComments),
     };
   } catch (error) {
-    console.error("Error fetching projects:", error);
+    console.error("Error fetching Purchase Order Request Item Comments:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
@@ -30,4 +33,4 @@ const getPurchaseOrderRequestItems = async (purchaseOrderRequestItemId) => {
   }
 };
 
-export default getPurchaseOrderRequestItems;
+export default getPurchaseOrderRequestItemsComments;

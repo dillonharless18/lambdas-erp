@@ -1,4 +1,4 @@
-import getPurchaseOrderRequestItems from "./getPurchaseOrderRequestItemComments";
+import getPurchaseOrderRequestItemsComments from "./getPurchaseOrderRequestItemComments";
 
 const handler = async (event, context) => {
   try {
@@ -9,7 +9,7 @@ const handler = async (event, context) => {
         body: JSON.stringify({ error: 'Missing purchase_order_request_item_id path parameter' }),
       };
     }
-    return await getPurchaseOrderRequestItems(purchaseOrderRequestItemId);
+    return await getPurchaseOrderRequestItemsComments(purchaseOrderRequestItemId);
   } catch (error) {
     console.error("Error in handler:", error);
     return {
