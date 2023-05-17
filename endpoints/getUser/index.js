@@ -1,4 +1,4 @@
-const initializeKnex = require("./db");
+import initializeKnex from "/opt/nodejs/db/index.js";
 
 let knexInstance;
 const initializeDb = async () => {

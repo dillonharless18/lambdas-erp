@@ -1,4 +1,4 @@
-const { getUrgentOrderStatus } = require("./getUrgentOrderStatus");
+import { getUrgentOrderStatus } from "./getUrgentOrderStatus.js";
 
 const handler = async () => {
   try {

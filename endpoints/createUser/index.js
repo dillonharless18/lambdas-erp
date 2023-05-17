@@ -20,7 +20,6 @@ const formatUserData = (userDataFromLambdaEvent) => {
   };
 };
 
-// TODO - Navaid should create classes for each entity.  We can also refactor this method into a helper method folder
 const validateRequestBody = (body) => {
   const requiredFields = [
     "is_active",
@@ -64,7 +63,7 @@ const validateRequestBody = (body) => {
 export const handler = async function (event, context) {
   try {
     await initializeDb();
-    
+
     const userData = event.body;
 
     if (!validateRequestBody(userData)) {
