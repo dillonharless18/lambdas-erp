@@ -1,4 +1,4 @@
-import { getPurchaseOrderRequestItems } from "./getPurchaseOrderRequestItems";
+import getPurchaseOrderRequestItems from "./getPurchaseOrderRequestItems.js";
 
 const handler = async (event, context) => {
   try {

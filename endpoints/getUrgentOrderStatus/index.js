@@ -1,4 +1,4 @@
-import { getUrgentOrderStatus } from "./getUrgentOrderStatus.js";
+import getUrgentOrderStatus from "./getUrgentOrderStatus.js";
 
 const handler = async () => {
   try {
