@@ -2,7 +2,7 @@ import postPurchaseOrderItems from "./postPurchaseOrderItem.js";
 
 const handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
+    const body = JSON.parse(event.body).requestItems;
 
     return await postPurchaseOrderItems(body);
   } catch (error) {
