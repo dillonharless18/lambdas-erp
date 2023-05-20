@@ -1,5 +1,5 @@
 {
-  "apiPath": "itemRequest/postPurchaseOrderItem",
+  "apiPath": "item-request/purchase-order-request-items",
   "httpMethod": "POST",
   "name": "postPurchaseOrderItem",
   "allowedGroups": ["logistics", "project_manager", "admin"]
