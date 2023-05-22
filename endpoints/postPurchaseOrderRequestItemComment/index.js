@@ -1,4 +1,4 @@
-import postPurchaseOrderRequestItemComment from "./postPurchaseOrderRequestItemComment";
+import postPurchaseOrderRequestItemComment from "./postPurchaseOrderRequestItemComment.js";
 
 const handler = async (event) => {
   try {
