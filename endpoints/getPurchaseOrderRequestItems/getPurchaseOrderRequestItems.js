@@ -27,7 +27,7 @@ const getPurchaseOrderRequestItems = async () => {
         "purchase_order_request_item.suggested_vendor",
         "purchase_order_request_item.description",
         "purchase_order_request_item.s3_uri",
-        "purchase_order_request_item.created_at",
+        "purchase_order_request_item.created_at as requestDate",
         knexInstance.raw(`json_agg(
     json_build_object(
       'urgent_order_status_id', urgent_order_status.urgent_order_status_id,
@@ -51,7 +51,14 @@ const getPurchaseOrderRequestItems = async () => {
       'purchase_order_request_item_status_id', purchase_order_request_item_status.purchase_order_request_item_status_id,
       'purchase_order_request_item_status_name', purchase_order_request_item_status.purchase_order_request_item_status_name
     )
-  ) AS purchase_order_request_item_status`)
+  ) AS purchase_order_request_item_status`),
+        knexInstance.raw(`json_agg(
+    json_build_object(
+      'requester', user.user_id,
+      'requesterFirstName', user.first_name,
+      'requesterLastName, user.last_name
+    )
+  ) AS requester`)
       )
       .leftJoin(
         "project",
@@ -76,6 +83,11 @@ const getPurchaseOrderRequestItems = async () => {
         "purchase_order_request_item.purchase_order_request_item_status_id",
         "=",
         "purchase_order_request_item_status.purchase_order_request_item_status_id"
+      ).leftJoin(
+        "requester",
+        "purchase_order_request_item.created_by",
+        "=",
+        "user.user_id"
       )
       .groupBy("purchase_order_request_item.purchase_order_request_item_id");
 
