@@ -13,7 +13,9 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItems = async () => {
+const getPurchaseOrderRequestItems = async (
+  purchase_order_request_item_status_id
+) => {
   await initializeDb();
   try {
     const getAllPurchaseOrderRequestItems = await knexInstance(
@@ -48,12 +50,6 @@ const getPurchaseOrderRequestItems = async () => {
   ) AS vendor`),
         knexInstance.raw(`json_agg(
     json_build_object(
-      'purchase_order_request_item_status_id', purchase_order_request_item_status.purchase_order_request_item_status_id,
-      'purchase_order_request_item_status_name', purchase_order_request_item_status.purchase_order_request_item_status_name
-    )
-  ) AS purchase_order_request_item_status`),
-        knexInstance.raw(`json_agg(
-    json_build_object(
       'requester', user.user_id,
       'requesterFirstName', user.first_name,
       'requesterLastName, user.last_name
@@ -79,17 +75,16 @@ const getPurchaseOrderRequestItems = async () => {
         "vendor.vendor_id"
       )
       .leftJoin(
-        "purchase_order_request_item_status",
-        "purchase_order_request_item.purchase_order_request_item_status_id",
-        "=",
-        "purchase_order_request_item_status.purchase_order_request_item_status_id"
-      ).leftJoin(
         "requester",
         "purchase_order_request_item.created_by",
         "=",
         "user.user_id"
       )
-      .groupBy("purchase_order_request_item.purchase_order_request_item_id");
+      .groupBy("purchase_order_request_item.purchase_order_request_item_id")
+      .where(
+        "purchase_order_request_item_status_id",
+        purchase_order_request_item_status_id
+      );
 
     return {
       statusCode: 200,
