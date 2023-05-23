@@ -2,5 +2,8 @@
   "apiPath": "test-auth",
   "httpMethod": "GET",
   "name": "getTestAuth",
-  "allowedGroups": ["admin", "project_manager"]
+  "allowedGroups": ["admin", "project_manager"],
+  "requestParameters": {
+    "test_param": false
+  }
 }

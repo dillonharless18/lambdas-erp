@@ -45,6 +45,9 @@ export const handler = async function (event, context) {
     return {
       statusCode: 200,
       body: JSON.stringify("Test successful"),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error(error);
