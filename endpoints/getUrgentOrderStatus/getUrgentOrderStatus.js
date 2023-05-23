@@ -22,6 +22,9 @@ const getUrgentOrderStatus = async () => {
     return {
       statusCode: 200,
       body: JSON.stringify(urgentOrderStatus),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error("Error fetching urgentOrderStatus:", error);

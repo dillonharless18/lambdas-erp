@@ -72,6 +72,9 @@ export const handler = async function (event, context) {
         body: JSON.stringify({
           message: "Invalid request: Missing or null required parameters",
         }),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       };
     }
 
@@ -81,6 +84,9 @@ export const handler = async function (event, context) {
     return {
       statusCode: 201,
       body: JSON.stringify(newUser),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error(error);

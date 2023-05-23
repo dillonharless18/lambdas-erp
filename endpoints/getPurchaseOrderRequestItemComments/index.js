@@ -7,6 +7,9 @@ const handler = async (event, context) => {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Missing purchase_order_request_item_id path parameter' }),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       };
     }
     return await getPurchaseOrderRequestItemsComments(purchaseOrderRequestItemId);

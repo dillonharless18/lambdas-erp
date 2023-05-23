@@ -23,6 +23,9 @@ const getPurchaseOrderRequestItemsComments = async (purchaseOrderRequestItemId) 
     return {
       statusCode: 200,
       body: JSON.stringify(getAllPurchaseOrderRequestItemComments),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error("Error fetching Purchase Order Request Item Comments:", error);

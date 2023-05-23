@@ -10,6 +10,9 @@ const handler = async (event, context) => {
         body: JSON.stringify({
           error: "Missing status path parameter",
         }),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       };
     }
     return await getPurchaseOrderRequestItems(status);
