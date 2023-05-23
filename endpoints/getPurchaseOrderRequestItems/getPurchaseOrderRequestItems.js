@@ -13,7 +13,7 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItems = async () => {
+const getPurchaseOrderRequestItems = async (status) => {
   await initializeDb();
   try {
     const getAllPurchaseOrderRequestItems = await knexInstance(
@@ -27,7 +27,7 @@ const getPurchaseOrderRequestItems = async () => {
         "purchase_order_request_item.suggested_vendor",
         "purchase_order_request_item.description",
         "purchase_order_request_item.s3_uri",
-        "purchase_order_request_item.created_at",
+        "purchase_order_request_item.created_at as requestDate",
         knexInstance.raw(`json_agg(
     json_build_object(
       'urgent_order_status_id', urgent_order_status.urgent_order_status_id,
@@ -48,10 +48,11 @@ const getPurchaseOrderRequestItems = async () => {
   ) AS vendor`),
         knexInstance.raw(`json_agg(
     json_build_object(
-      'purchase_order_request_item_status_id', purchase_order_request_item_status.purchase_order_request_item_status_id,
-      'purchase_order_request_item_status_name', purchase_order_request_item_status.purchase_order_request_item_status_name
+      'requester', user.user_id,
+      'requesterFirstName', user.first_name,
+      'requesterLastName, user.last_name
     )
-  ) AS purchase_order_request_item_status`)
+  ) AS requester`)
       )
       .leftJoin(
         "project",
@@ -72,12 +73,22 @@ const getPurchaseOrderRequestItems = async () => {
         "vendor.vendor_id"
       )
       .leftJoin(
+        "requester",
+        "purchase_order_request_item.created_by",
+        "=",
+        "user.user_id"
+      )
+      .leftJoin(
         "purchase_order_request_item_status",
         "purchase_order_request_item.purchase_order_request_item_status_id",
         "=",
         "purchase_order_request_item_status.purchase_order_request_item_status_id"
       )
-      .groupBy("purchase_order_request_item.purchase_order_request_item_id");
+      .groupBy("purchase_order_request_item.purchase_order_request_item_id")
+      .where(
+        "purchase_order_request_item_status.purchase_order_request_item_status_name",
+        status
+      );
 
     return {
       statusCode: 200,

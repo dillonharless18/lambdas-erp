@@ -2,7 +2,17 @@ import getPurchaseOrderRequestItems from "./getPurchaseOrderRequestItems.js";
 
 const handler = async (event, context) => {
   try {
-    return await getPurchaseOrderRequestItems();
+    const queryParams = event.queryStringParameters;
+    const status = queryParams.status;
+    if (!status) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: "Missing status path parameter",
+        }),
+      };
+    }
+    return await getPurchaseOrderRequestItems(status);
   } catch (error) {
     console.error("Error in handler:", error);
     return {
