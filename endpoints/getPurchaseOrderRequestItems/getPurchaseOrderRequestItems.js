@@ -13,9 +13,7 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItems = async (
-  purchase_order_request_item_status_id
-) => {
+const getPurchaseOrderRequestItems = async (status) => {
   await initializeDb();
   try {
     const getAllPurchaseOrderRequestItems = await knexInstance(
@@ -80,10 +78,16 @@ const getPurchaseOrderRequestItems = async (
         "=",
         "user.user_id"
       )
+      .leftJoin(
+        "purchase_order_request_item_status",
+        "purchase_order_request_item.purchase_order_request_item_status_id",
+        "=",
+        "purchase_order_request_item_status.purchase_order_request_item_status_id"
+      )
       .groupBy("purchase_order_request_item.purchase_order_request_item_id")
       .where(
-        "purchase_order_request_item_status_id",
-        purchase_order_request_item_status_id
+        "purchase_order_request_item_status.purchase_order_request_item_status_name",
+        status
       );
 
     return {
