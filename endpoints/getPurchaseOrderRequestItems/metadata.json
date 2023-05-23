@@ -1,9 +1,9 @@
 {
-  "apiPath": "request-workspace/purchase-order-request-items?status={status}",
+  "apiPath": "request-workspace/purchase-order-request-items",
   "httpMethod": "GET",
   "name": "getPurchaseOrderRequestItems",
   "allowedGroups": ["logistics", "project_manager", "admin"],
   "requestParameters": {
-    ["name": "string"]: "False"
+    "status": "false"
   }
 }
