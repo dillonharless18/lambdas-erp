@@ -2,14 +2,22 @@ import getPurchaseOrderRequestItemsComments from "./getPurchaseOrderRequestItemC
 
 const handler = async (event, context) => {
   try {
-    const purchaseOrderRequestItemId = event.pathParameters?.purchase_order_request_item_id;
+    const purchaseOrderRequestItemId =
+      event.pathParameters?.purchase_order_request_item_id;
     if (!purchaseOrderRequestItemId) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Missing purchase_order_request_item_id path parameter' }),
+        body: JSON.stringify({
+          error: "Missing purchase_order_request_item_id path parameter",
+        }),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       };
     }
-    return await getPurchaseOrderRequestItemsComments(purchaseOrderRequestItemId);
+    return await getPurchaseOrderRequestItemsComments(
+      purchaseOrderRequestItemId
+    );
   } catch (error) {
     console.error("Error in handler:", error);
     return {
