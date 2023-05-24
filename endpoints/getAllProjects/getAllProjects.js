@@ -20,6 +20,9 @@ const getAllProjects = async () => {
     return {
       statusCode: 200,
       body: JSON.stringify(projects),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   } catch (error) {
     console.error("Error fetching projects:", error);
