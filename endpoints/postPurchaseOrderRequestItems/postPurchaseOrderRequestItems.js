@@ -42,7 +42,7 @@ const postPurchaseOrderRequestItems = async (items) => {
     project_id: item.project_id,
     vendor_id: item.vendor_id,
     urgent_order_status_id: item.urgent_order_status_id,
-    purchase_order_request_item_status_id: '1',
+    purchase_order_request_item_status_id: "1",
   }));
 
   try {
@@ -59,6 +59,9 @@ const postPurchaseOrderRequestItems = async (items) => {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   }
 };
