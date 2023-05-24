@@ -20,6 +20,9 @@ const getAllVendors = async () => {
     return {
       statusCode: 200,
       body: JSON.stringify(AllVendors),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   } catch (error) {
     console.error("Error fetching vendors:", error);
