@@ -60,7 +60,7 @@ const validateRequestBody = (body) => {
  * @returns {string}  response.body - A JSON-formatted string containing the created user information
  * @throws  {Error}   If an error occurs while interacting with the database
  */
-exports.handler = async function (event, context) {
+export const handler = async function (event, context) {
   try {
     await initializeDb();
 
@@ -72,6 +72,9 @@ exports.handler = async function (event, context) {
         body: JSON.stringify({
           message: "Invalid request: Missing or null required parameters",
         }),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
       };
     }
 
@@ -81,6 +84,9 @@ exports.handler = async function (event, context) {
     return {
       statusCode: 201,
       body: JSON.stringify(newUser),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error(error);

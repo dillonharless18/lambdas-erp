@@ -36,34 +36,15 @@ const validatePathParameters = (pathParameters) => {
  * @returns {string}  response.body - A JSON-formatted string containing the created user information
  * @throws  {Error}   If an error occurs while interacting with the database
  */
-exports.handler = async function (event, context) {
+export const handler = async function (event, context) {
   try {
+    console.log(`Event: ${JSON.stringify(event, null, 2)}`)
+    console.log(`Context: ${JSON.stringify(context, null, 2)}`)
     await initializeDb();
-
-    if (!validatePathParameters(event.pathParameters)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: "Invalid request: Missing or invalid user_id",
-        }),
-      };
-    }
-
-    const userId = event.pathParameters.user_id;
-    const user = await knexInstance("user")
-      .select("*")
-      .where("user_id", userId);
-
-    if (!user) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: "User not found" }),
-      };
-    }
 
     return {
       statusCode: 200,
-      body: JSON.stringify(user),
+      body: JSON.stringify("Test successful"),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
