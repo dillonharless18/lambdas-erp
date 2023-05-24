@@ -13,7 +13,9 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItemsComments = async (purchaseOrderRequestItemId) => {
+const getPurchaseOrderRequestItemsComments = async (
+  purchaseOrderRequestItemId
+) => {
   await initializeDb();
   try {
     const getAllPurchaseOrderRequestItemComments = await knexInstance
@@ -24,14 +26,20 @@ const getPurchaseOrderRequestItemsComments = async (purchaseOrderRequestItemId) 
       statusCode: 200,
       body: JSON.stringify(getAllPurchaseOrderRequestItemComments),
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
     };
   } catch (error) {
-    console.error("Error fetching Purchase Order Request Item Comments:", error);
+    console.error(
+      "Error fetching Purchase Order Request Item Comments:",
+      error
+    );
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   }
 };

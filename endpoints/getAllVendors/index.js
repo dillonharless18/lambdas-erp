@@ -9,10 +9,10 @@ const handler = async (event, context) => {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
     };
   }
 };
 
-export { handler }
+export { handler };

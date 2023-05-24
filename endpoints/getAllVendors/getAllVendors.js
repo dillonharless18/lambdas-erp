@@ -21,7 +21,7 @@ const getAllVendors = async () => {
       statusCode: 200,
       body: JSON.stringify(AllVendors),
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
     };
   } catch (error) {
@@ -29,6 +29,9 @@ const getAllVendors = async () => {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   }
 };
