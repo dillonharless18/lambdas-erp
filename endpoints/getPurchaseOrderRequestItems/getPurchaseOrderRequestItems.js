@@ -88,6 +88,9 @@ const getPurchaseOrderRequestItems = async (status) => {
     return {
       statusCode: 200,
       body: JSON.stringify(getAllPurchaseOrderRequestItems),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   } catch (error) {
     console.error("Error fetching PurchaseOrderRequestItems:", error);
