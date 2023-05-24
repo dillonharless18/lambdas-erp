@@ -54,6 +54,9 @@ const postPurchaseOrderRequestItemComment = async (comment) => {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   }
 };

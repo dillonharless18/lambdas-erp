@@ -37,6 +37,9 @@ const getPurchaseOrderRequestItemsComments = async (
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   }
 };

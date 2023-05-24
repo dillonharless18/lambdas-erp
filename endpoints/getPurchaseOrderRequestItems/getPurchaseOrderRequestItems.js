@@ -72,8 +72,8 @@ const getPurchaseOrderRequestItems = async (status) => {
         "purchase_order_request_item.project_id",
         "purchase_order_request_item.purchase_order_request_item_status_id",
         "purchase_order_request_item.urgent_order_status_id",
-        "createdBy.first_name as requester",
-        "updatedBy.first_name as updatedBy",
+        knex.raw('CONCAT(createdBy.first_name, " ", createdBy.last_name) as requester'),
+        knex.raw('CONCAT(updatedBy.first_name, " ", updatedBy.last_name) as updatedBy'),
         "project.project_name",
         "urgent_order_status.urgent_order_status_name as urgent_status",
         "vendor.vendor_name",
@@ -83,7 +83,7 @@ const getPurchaseOrderRequestItems = async (status) => {
         "purchase_order_request_item_status.purchase_order_request_item_status_name",
         "=",
         status
-      );
+      ).andwhere("purchase_order_request_item.is_active", "=", true);
 
     return {
       statusCode: 200,
@@ -99,6 +99,9 @@ const getPurchaseOrderRequestItems = async (status) => {
       body: JSON.stringify({
         error: `Server Error, ${error}`,
       }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      } 
     };
   }
 };
