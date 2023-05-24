@@ -45,6 +45,9 @@ const postPurchaseOrderRequestItemComment = async (comment) => {
       body: JSON.stringify({
         message: "Purchase Order Request Item Comment added successfully!",
       }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     };
   } catch (error) {
     console.error("Error in postPurchaseOrderRequestItemComment:", error);
