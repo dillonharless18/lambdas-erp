@@ -19,9 +19,24 @@ const getPurchaseOrderRequestItemsComments = async (
   await initializeDb();
   try {
     const getAllPurchaseOrderRequestItemComments = await knexInstance
-      .select('*')
+      .select(
+        'purchase_order_request_item_comment.*',
+        knexInstance.raw(
+          '("user".first_name || \' \' || "user".last_name) AS requester'
+        )
+      )
       .from('purchase_order_request_item_comment')
-      .where('purchase_order_request_item_id', purchaseOrderRequestItemId);
+      .join(
+        'user',
+        'purchase_order_request_item_comment.created_by',
+        '=',
+        'user.user_id'
+      )
+      .where(
+        'purchase_order_request_item_comment.purchase_order_request_item_id',
+        purchaseOrderRequestItemId
+      );
+
     return {
       statusCode: 200,
       body: JSON.stringify(getAllPurchaseOrderRequestItemComments),
