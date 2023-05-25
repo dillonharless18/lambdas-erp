@@ -1,4 +1,4 @@
-import initializeKnex from "/opt/nodejs/db/index.js";
+import initializeKnex from '/opt/nodejs/db/index.js';
 
 let knexInstance;
 const initializeDb = async () => {
@@ -14,8 +14,8 @@ const initializeDb = async () => {
 const validatePathParameters = (pathParameters) => {
   if (
     !pathParameters ||
-    !pathParameters.hasOwnProperty("user_id") ||
-    pathParameters.user_id.trim() === ""
+    !pathParameters.hasOwnProperty('user_id') ||
+    pathParameters.user_id.trim() === ''
   ) {
     return false;
   }
@@ -38,13 +38,13 @@ const validatePathParameters = (pathParameters) => {
  */
 export const handler = async function (event, context) {
   try {
-    console.log(`Event: ${JSON.stringify(event, null, 2)}`)
-    console.log(`Context: ${JSON.stringify(context, null, 2)}`)
+    console.log(`Event: ${JSON.stringify(event, null, 2)}`);
+    console.log(`Context: ${JSON.stringify(context, null, 2)}`);
     await initializeDb();
 
     return {
       statusCode: 200,
-      body: JSON.stringify("Test successful"),
+      body: JSON.stringify('Test successful'),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
@@ -53,7 +53,7 @@ export const handler = async function (event, context) {
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal server error" }),
+      body: JSON.stringify({ message: 'Internal server error' }),
     };
   }
 };

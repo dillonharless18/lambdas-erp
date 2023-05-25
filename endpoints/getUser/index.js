@@ -1,4 +1,4 @@
-import initializeKnex from "/opt/nodejs/db/index.js";
+import initializeKnex from '/opt/nodejs/db/index.js';
 
 let knexInstance;
 const initializeDb = async () => {
@@ -14,8 +14,8 @@ const initializeDb = async () => {
 const validatePathParameters = (pathParameters) => {
   if (
     !pathParameters ||
-    !pathParameters.hasOwnProperty("user_id") ||
-    pathParameters.user_id.trim() === ""
+    !pathParameters.hasOwnProperty('user_id') ||
+    pathParameters.user_id.trim() === ''
   ) {
     return false;
   }
@@ -44,20 +44,20 @@ exports.handler = async function (event, context) {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          message: "Invalid request: Missing or invalid user_id",
+          message: 'Invalid request: Missing or invalid user_id',
         }),
       };
     }
 
     const userId = event.pathParameters.user_id;
-    const user = await knexInstance("user")
-      .select("*")
-      .where("user_id", userId);
+    const user = await knexInstance('user')
+      .select('*')
+      .where('user_id', userId);
 
     if (!user) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "User not found" }),
+        body: JSON.stringify({ message: 'User not found' }),
       };
     }
 
@@ -72,7 +72,7 @@ exports.handler = async function (event, context) {
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal server error" }),
+      body: JSON.stringify({ message: 'Internal server error' }),
     };
   }
 };

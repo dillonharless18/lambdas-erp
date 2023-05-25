@@ -1,4 +1,4 @@
-import initializeKnex from "/opt/nodejs/db/index.js";
+import initializeKnex from '/opt/nodejs/db/index.js';
 
 let knexInstance;
 
@@ -8,7 +8,7 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error("Error initializing database:", error);
+    console.error('Error initializing database:', error);
     throw error;
   }
 };
@@ -16,21 +16,21 @@ const initializeDb = async () => {
 const getAllVendors = async () => {
   await initializeDb();
   try {
-    const AllVendors = await knexInstance.select("*").from("vendor");
+    const AllVendors = await knexInstance.select('*').from('vendor');
     return {
       statusCode: 200,
       body: JSON.stringify(AllVendors),
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error("Error fetching vendors:", error);
+    console.error('Error fetching vendors:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Origin': '*',
       },
     };
   }
