@@ -24,7 +24,7 @@ const postPurchaseOrderItems = async (items) => {
 
   const purchaseOrderItems = items.map((item) => new PurchaseOrderItem(item));
 
-  const dataToInsert = purchaseOrderItems.map((item) => ({
+    const dataToInsert = purchaseOrderItems.map((item) => ({
     purchase_order_item_id: uuidv4(),
     purchase_order_id: '702a2302-6b1f-433a-9564-96384d622358',
     created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
@@ -38,11 +38,12 @@ const postPurchaseOrderItems = async (items) => {
     is_damaged: 'False',
     damage_or_return_text: 'Default',
     project_id: item.project_id,
-    purchase_order_item_status_id: item.purchase_order_item_status_id,
+    urgent_order_status_id: item.urgent_order_status_id,
+    purchase_order_item_status_id: '1',
     s3_uri: item.s3_uri,
     item_name: item.item_name,
     suggested_vendor: item.suggested_vendor,
-  }));
+  }));;
 
   try {
     await knexInstance('purchase_order_item').insert(dataToInsert);
