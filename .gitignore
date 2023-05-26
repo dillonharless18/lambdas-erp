@@ -2,7 +2,5 @@
 **/serverless.yml
 **/.serverless
 
-package.json
-package-lock.json
 .eslintrc.json
 .prettierrc
