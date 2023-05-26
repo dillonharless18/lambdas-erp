@@ -1,4 +1,4 @@
-import initializeKnex from "/opt/nodejs/db/index.js";
+import initializeKnex from '/opt/nodejs/db/index.js';
 
 let knexInstance;
 const initializeDb = async () => {
@@ -13,7 +13,7 @@ const initializeDb = async () => {
 
 const formatUserData = (userDataFromLambdaEvent) => {
   return {
-    user_id: "111111111111111111111111111111111111",
+    user_id: '111111111111111111111111111111111111',
     ...userDataFromLambdaEvent,
     created_at: new Date().toISOString(),
     last_updated_at: new Date().toISOString(),
@@ -22,13 +22,13 @@ const formatUserData = (userDataFromLambdaEvent) => {
 
 const validateRequestBody = (body) => {
   const requiredFields = [
-    "is_active",
-    "first_name",
-    "last_name",
-    "phone_number",
-    "ocr_tool_id",
-    "user_role",
-    "user_email",
+    'is_active',
+    'first_name',
+    'last_name',
+    'phone_number',
+    'ocr_tool_id',
+    'user_role',
+    'user_email',
   ];
 
   for (const field of requiredFields) {
@@ -70,7 +70,7 @@ export const handler = async function (event, context) {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          message: "Invalid request: Missing or null required parameters",
+          message: 'Invalid request: Missing or null required parameters',
         }),
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -79,7 +79,7 @@ export const handler = async function (event, context) {
     }
 
     const newUser = formatUserData(userData);
-    await knexInstance("user").insert(newUser);
+    await knexInstance('user').insert(newUser);
 
     return {
       statusCode: 201,
@@ -92,7 +92,7 @@ export const handler = async function (event, context) {
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal server error" }),
+      body: JSON.stringify({ message: 'Internal server error' }),
     };
   }
 };

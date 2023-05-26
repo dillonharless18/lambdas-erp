@@ -18,14 +18,14 @@ Example of the repository structure after adding some lambdas:
 ```md
 .
 ├── endpoints/
-│   ├── getAllUsers/
-│   │   ├── metadata.json
-│   │   └── index.ts
-│   └── getPoLineItemComments/
-│       ├── metadata.json
-│       └── index.ts
+│ ├── getAllUsers/
+│ │ ├── metadata.json
+│ │ └── index.ts
+│ └── getPoLineItemComments/
+│ ├── metadata.json
+│ └── index.ts
 ├── someOtherFolder/
-│   └── someFile.ts
+│ └── someFile.ts
 └── anotherFile.ts
 ```
 
@@ -33,19 +33,19 @@ Example of the repository structure after adding some lambdas:
 
 The `metadata.json` file is a crucial component for each Lambda function. It provides necessary information for the automatic integration of the function into the oneXerp API. The file should contain the following fields:
 
-- `apiPath`: *Required.* String: This is used to create all the necessary nested resources in API Gateway. If a path doesn't exist, it will be created.
-- `httpMethod`: *Required.* String: The method associated with the api endpoint.
-- `name`: *Required.* String: Must match the folder name.
-- `allowedGroups`: *Defaults to ["admin", "basic_user", "logistics", "project_manager", "driver"] (all roles)* Array of strings: Will be used to restrict the API endpoint to various roles within oneXerp's ecosystem.
+- `apiPath`: _Required._ String: This is used to create all the necessary nested resources in API Gateway. If a path doesn't exist, it will be created.
+- `httpMethod`: _Required._ String: The method associated with the api endpoint.
+- `name`: _Required._ String: Must match the folder name.
+- `allowedGroups`: _Defaults to ["admin", "basic_user", "logistics", "project_manager", "driver"] (all roles)_ Array of strings: Will be used to restrict the API endpoint to various roles within oneXerp's ecosystem.
 
 Example `metadata.json` files:
 
 ```json
 {
-    "apiPath"    :  "users",
-    "httpMethod" :  "GET",
-    "name"       :  "getUsers",
-    "allowedGroups": ["logistics", "project_manager", "admin"]
+  "apiPath": "users",
+  "httpMethod": "GET",
+  "name": "getUsers",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
 }
 ```
 
@@ -54,7 +54,7 @@ Example `metadata.json` files:
   "apiPath": "purchase-orders/{purchaseOrderId}/line-items/{lineItemId}/comments",
   "httpMethod": "GET",
   "name": "getPoLineItemComments",
-  "allowedGroups": ["basic_user","logistics", "project_manager", "admin"]
+  "allowedGroups": ["basic_user", "logistics", "project_manager", "admin"]
 }
 ```
 

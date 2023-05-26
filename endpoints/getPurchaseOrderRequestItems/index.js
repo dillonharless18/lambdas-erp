@@ -1,4 +1,4 @@
-import getPurchaseOrderRequestItems from "./getPurchaseOrderRequestItems.js";
+import getPurchaseOrderRequestItems from './getPurchaseOrderRequestItems.js';
 
 const handler = async (event, context) => {
   try {
@@ -8,7 +8,7 @@ const handler = async (event, context) => {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: "Missing status path parameter",
+          error: 'Missing status path parameter',
         }),
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -17,12 +17,12 @@ const handler = async (event, context) => {
     }
     return await getPurchaseOrderRequestItems(status);
   } catch (error) {
-    console.error("Error in handler:", error);
+    console.error('Error in handler:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Origin': '*',
       },
     };
   }

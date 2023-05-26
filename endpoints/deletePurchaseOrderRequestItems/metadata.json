@@ -1,0 +1,6 @@
+{
+  "apiPath": "item-request/purchase-order-request-items",
+  "httpMethod": "DELETE",
+  "name": "deletePurchaseOrderRequestItems",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}

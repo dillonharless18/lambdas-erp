@@ -1,10 +1,10 @@
-import getAllProjects from "./getAllProjects.js";
+import getAllProjects from './getAllProjects.js';
 
 const handler = async (event, context) => {
   try {
     return await getAllProjects();
   } catch (error) {
-    console.error("Error in handler:", error);
+    console.error('Error in handler:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),

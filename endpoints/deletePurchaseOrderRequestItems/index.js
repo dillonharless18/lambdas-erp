@@ -1,8 +1,10 @@
-import getUrgentOrderStatus from './getUrgentOrderStatus.js';
+import deletePurchaseOrderRequestItems from './deletePurchaseOrderRequestItem';
 
-const handler = async () => {
+const handler = async (event) => {
   try {
-    return await getUrgentOrderStatus();
+    const body = JSON.parse(event.body);
+
+    return await deletePurchaseOrderRequestItems(body);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
