@@ -62,7 +62,7 @@ const postItemRequests = async (items) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Request Items updated successfully!',
+        message: 'Item Requests added successfully!',
       }),
     };
   } catch (error) {
