@@ -1,4 +1,4 @@
-class PurchaseOrderItem {
+class ItemRequests {
   constructor(item) {
     this.quantity = item.quantity;
     this.unit_of_measure = item.unit_of_measure;
@@ -11,4 +11,4 @@ class PurchaseOrderItem {
   }
 }
 
-export default PurchaseOrderItem;
+export default ItemRequests;

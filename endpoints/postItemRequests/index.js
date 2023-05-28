@@ -1,10 +1,10 @@
-import postPurchaseOrderItems from './postPurchaseOrderItem.js';
+import postItemRequests from './postItemRequests';
 
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).requestItems;
 
-    return await postPurchaseOrderItems(body);
+    return await postItemRequests(body);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
