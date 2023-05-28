@@ -25,6 +25,7 @@ const postItemRequests = async (items) => {
   const vendor = await knexInstance('vendor')
     .select('vendor_id')
     .where('vendor_name', 'Default')
+    .andWhere('is_active', true)
     .first();
 
   const purchaseOrderRequestItemStatus = await knexInstance(
@@ -32,6 +33,7 @@ const postItemRequests = async (items) => {
   )
     .select('purchase_order_request_item_status_id')
     .where('purchase_order_request_item_status_name', 'Requested')
+    .andWhere('is_active', true)
     .first();
 
   const purchaseOrderItems = items.map((item) => new ItemRequests(item));
