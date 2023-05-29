@@ -1,5 +1,6 @@
 class PurchaseOrderRequestItem {
   constructor(item) {
+    this.purchase_order_request_item_id = item.purchase_order_request_item_id;
     this.item_name = item.item_name;
     this.price = item.price;
     this.quantity = item.quantity;
