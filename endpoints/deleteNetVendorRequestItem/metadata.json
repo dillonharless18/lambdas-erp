@@ -1,6 +1,6 @@
 {
-  "apiPath": "net-vendor-request-item",
+  "apiPath": "net-vendor-request-item/{net_vendor_request_item_id}",
   "httpMethod": "DELETE",
-  "name": "deleteNetVendotRequestItem",
+  "name": "deleteNetVendorRequestItem",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }

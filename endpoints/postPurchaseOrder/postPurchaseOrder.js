@@ -81,12 +81,18 @@ const postPurchaseOrder = async (orders) => {
       body: JSON.stringify({
         message: 'Purchase Order updated successfully!',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error('Error in postPurchaseOrder:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 };

@@ -28,7 +28,7 @@ const purchaseOrderItemStatusAgainstVendor = async (vendorId) => {
 
     return 2; // Purchase
   } catch (error) {
-    console.error('Error fetching vendor net status:', error);
+    console.error('Error fetching net vendor status:', error);
     throw error;
   }
 };

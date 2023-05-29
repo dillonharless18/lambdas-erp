@@ -27,14 +27,14 @@ const deleteNetVendorRequestItem = async (netVendorRequestItemId) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Request Item deleted successfully!',
+        message: 'Net Vendor Request Item deleted successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in postPurchaseOrderRequestItem:', error);
+    console.error('Error in deletePurchaseOrderRequestItem:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error.message}` }),
