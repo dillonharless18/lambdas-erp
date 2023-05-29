@@ -43,6 +43,7 @@ const postPurchaseOrder = async (orders) => {
           created_at: new Date().toISOString(),
           last_updated_at: new Date().toISOString(),
           purchase_order_number: purchase_order_number,
+          quickbooks_purchase_order_id: '1', // setting is to default value, need to discuss it
         });
 
         const purchaseOrderItemPromises = po.purchaseOrderItems.map((item) =>
