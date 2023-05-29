@@ -13,7 +13,7 @@ const initializeDb = async () => {
   }
 };
 
-const deleteNetVendorRequestItemId = async (netVendorRequestItemId) => {
+const deleteNetVendorRequestItem = async (netVendorRequestItemId) => {
   await initializeDb();
 
   try {
@@ -27,14 +27,14 @@ const deleteNetVendorRequestItemId = async (netVendorRequestItemId) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Request Items deleted successfully!',
+        message: 'Purchase Order Request Item deleted successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in postPurchaseOrderRequestItems:', error);
+    console.error('Error in postPurchaseOrderRequestItem:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error.message}` }),
@@ -44,4 +44,4 @@ const deleteNetVendorRequestItemId = async (netVendorRequestItemId) => {
     };
   }
 };
-export default deleteNetVendorRequestItemId;
+export default deleteNetVendorRequestItem;

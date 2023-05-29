@@ -40,8 +40,8 @@ const postPurchaseOrder = async (orders) => {
           vendor_id: po.vendor_id,
           purchase_order_status_id: po.purchase_order_status_id,
           s3_uri: po.s3_uri,
-          created_at: new Date().toISOString(),
-          last_updated_at: new Date().toISOString(),
+          created_at: knexInstance.raw('NOW()'),
+          last_updated_at: knexInstance.raw('NOW()'),
           purchase_order_number: purchase_order_number,
           quickbooks_purchase_order_id: '1', // setting is to default value, need to discuss it
         });
@@ -64,8 +64,8 @@ const postPurchaseOrder = async (orders) => {
             item_name: item.item_name,
             suggested_vendor: item.suggested_vendor,
             urgent_order_status_id: item.urgent_order_status_id,
-            created_at: new Date().toISOString(),
-            last_updated_at: new Date().toISOString(),
+            created_at: knexInstance.raw('NOW()'),
+            last_updated_at: knexInstance.raw('NOW()'),
             is_active: true,
           })
         );

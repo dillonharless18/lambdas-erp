@@ -1,4 +1,4 @@
-import ItemRequests from './DTO/ItemRequests.js';
+import ItemRequest from './DTO/ItemRequests.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -36,7 +36,7 @@ const postItemRequests = async (items) => {
     .andWhere('is_active', true)
     .first();
 
-  const purchaseOrderItems = items.map((item) => new ItemRequests(item));
+  const purchaseOrderItems = items.map((item) => new ItemRequest(item));
 
   const dataToInsert = purchaseOrderItems.map((item) => ({
     purchase_order_request_item_id: uuidv4(),

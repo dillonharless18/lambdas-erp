@@ -1,4 +1,4 @@
-import deleteNetVendorRequestItemId from './deletePurchaseOrderRequestItem';
+import deleteNetVendorRequestItem from './deletePurchaseOrderRequestItem';
 
 const handler = async (event) => {
   try {
@@ -17,7 +17,7 @@ const handler = async (event) => {
         };
       }
 
-    return await deleteNetVendorRequestItemId(netVendorRequestItemId);
+    return await deleteNetVendorRequestItem(netVendorRequestItemId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
