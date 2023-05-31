@@ -23,12 +23,6 @@ const getPurchaseOrders = async (status) => {
                 "=",
                 "purchase_order.created_by"
             )
-            .join(
-                "user as updatedBy",
-                "updatedBy.user_id",
-                "=",
-                "purchase_order.last_updated_by"
-            )
             .join("vendor", "vendor.vendor_id", "=", "purchase_order.vendor_id")
             .join(
                 "purchase_order_status",
@@ -37,12 +31,19 @@ const getPurchaseOrders = async (status) => {
                 "purchase_order.purchase_order_status_id"
             )
             .select(
-                "purchase_order.*",
+                "purchase_order.purchase_order_id",
+                "purchase_order_request_item.last_updated_by",
+                "purchase_order_request_item.created_by",
+                "purchase_order.created_at",
+                "purchase_order.created_by",
+                "purchase_order.total_price",
+                "purchase_order.purchase_order_number",
+                "purchase_order.vendor_id",
+                "purchase_order.purchase_order_status_id",
+                "purchase_order.quickbooks_purchase_order_id",
+                "purchase_order.s3_uri",
                 knexInstance.raw(
                     '("createdBy".first_name || \' \' || "createdBy".last_name) AS requester'
-                ),
-                knexInstance.raw(
-                    '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS last_updated_by_requester'
                 ),
                 "vendor.vendor_name",
                 "purchase_order_status.purchase_order_status_name"
