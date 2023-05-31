@@ -3,19 +3,19 @@ import getPurchaseOrderItems from './getPurchaseOrderItems.js';
 const handler = async (event) => {
   try {
     const queryParams = event.queryStringParameters;
-    const purchase_order_id = queryParams.purchase_order_id;
-    if (!purchase_order_id) {
+    const purchaseOrderId = queryParams.purchase_order_id;
+    if (!purchaseOrderId) {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: 'Missing purchase_order_id path parameter',
+          error: 'Missing purchaseOrderId path parameter',
         }),
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
       };
     }
-    return await getPurchaseOrderItems(purchase_order_id);
+    return await getPurchaseOrderItems(purchaseOrderId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
