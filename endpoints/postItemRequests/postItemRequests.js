@@ -1,4 +1,4 @@
-import PurchaseOrderRequestItem from './DTO/PurchaseOrderRequestItem.js';
+import ItemRequest from './DTO/ItemRequests.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -15,16 +15,28 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderRequestItems = async (items) => {
+const postItemRequests = async (items) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
     throw new Error('The items parameter must be an array');
   }
 
-  const purchaseOrderItems = items.map(
-    (item) => new PurchaseOrderRequestItem(item)
-  );
+  const vendor = await knexInstance('vendor')
+    .select('vendor_id')
+    .where('vendor_name', 'Default')
+    .andWhere('is_active', true)
+    .first();
+
+  const purchaseOrderRequestItemStatus = await knexInstance(
+    'purchase_order_request_item_status'
+  )
+    .select('purchase_order_request_item_status_id')
+    .where('purchase_order_request_item_status_name', 'Requested')
+    .andWhere('is_active', true)
+    .first();
+
+  const purchaseOrderItems = items.map((item) => new ItemRequest(item));
 
   const dataToInsert = purchaseOrderItems.map((item) => ({
     purchase_order_request_item_id: uuidv4(),
@@ -40,9 +52,10 @@ const postPurchaseOrderRequestItems = async (items) => {
     created_at: knexInstance.raw('NOW()'),
     last_updated_at: knexInstance.raw('NOW()'),
     project_id: item.project_id,
-    vendor_id: item.vendor_id,
+    vendor_id: vendor.vendor_id, // set Default vendor
     urgent_order_status_id: item.urgent_order_status_id,
-    purchase_order_request_item_status_id: '1',
+    purchase_order_request_item_status_id:
+      purchaseOrderRequestItemStatus.purchase_order_request_item_status_id, // set status Requested
   }));
 
   try {
@@ -51,7 +64,7 @@ const postPurchaseOrderRequestItems = async (items) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Request Items updated successfully!',
+        message: 'Item Requests added successfully!',
       }),
     };
   } catch (error) {
@@ -66,4 +79,4 @@ const postPurchaseOrderRequestItems = async (items) => {
   }
 };
 
-export default postPurchaseOrderRequestItems;
+export default postItemRequests;

@@ -13,28 +13,12 @@ const initializeDb = async () => {
   }
 };
 
-const deletePurchaseOrderRequestItems = async (requestBody) => {
+const deleteNetVendorRequestItem = async (netVendorRequestItemId) => {
   await initializeDb();
 
-  if (
-    !requestBody ||
-    !requestBody.requestItems ||
-    !Array.isArray(requestBody.requestItems)
-  ) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Invalid request body' }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
-  }
-
   try {
-    const ids = requestBody.requestItems.map((item) => item.id);
-
     await knexInstance('purchase_order_request_item')
-      .whereIn('purchase_order_request_item_id', ids)
+      .where('purchase_order_request_item_id', netVendorRequestItemId)
       .update({
         is_active: false,
         last_updated_at: knexInstance.raw('NOW()'),
@@ -43,14 +27,14 @@ const deletePurchaseOrderRequestItems = async (requestBody) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Request Items deleted successfully!',
+        message: 'Net Vendor Request Item deleted successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in postPurchaseOrderRequestItems:', error);
+    console.error('Error in deletePurchaseOrderRequestItem:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error.message}` }),
@@ -60,4 +44,4 @@ const deletePurchaseOrderRequestItems = async (requestBody) => {
     };
   }
 };
-export default deletePurchaseOrderRequestItems;
+export default deleteNetVendorRequestItem;
