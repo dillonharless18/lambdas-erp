@@ -32,8 +32,8 @@ const getPurchaseOrders = async (status) => {
             )
             .select(
                 "purchase_order.purchase_order_id",
-                "purchase_order_request_item.last_updated_by",
-                "purchase_order_request_item.created_by",
+                "purchase_order.last_updated_by",
+                "purchase_order.created_by",
                 "purchase_order.created_at",
                 "purchase_order.created_by",
                 "purchase_order.total_price",
