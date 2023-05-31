@@ -44,7 +44,6 @@ const getPurchaseOrderItems = async (purchase_order_id) => {
                 "purchase_order_item.purchase_order_item_status_id",
                 "purchase_order_item.s3_uri",
                 "purchase_order_item.item_name",
-                "purchase_order_item.suggested_vendor",
                 "project.project_name",
                 "purchase_order_item_status.purchase_order_item_status_name"
             )
