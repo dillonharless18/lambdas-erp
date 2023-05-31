@@ -21,7 +21,7 @@ const deleteNetVendorRequestItem = async (netVendorRequestItemId) => {
       .where('purchase_order_request_item_id', netVendorRequestItemId)
       .update({
         is_active: false,
-        last_updated_at: knexInstance.fn.now(),
+        last_updated_at: knexInstance.raw('NOW()'),
       });
 
     return {
