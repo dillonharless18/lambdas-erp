@@ -1,6 +1,6 @@
 import getPurchaseOrders from "./getPurchaseOrders.js";
 
-const handler = async (event, context) => {
+const handler = async (event) => {
     try {
         const queryParams = event.queryStringParameters;
         const status = queryParams.status;
