@@ -1,0 +1,9 @@
+{
+  "apiPath": "purchase-order-items",
+  "httpMethod": "GET",
+  "name": "getPurchaseOrderItems",
+  "allowedGroups": ["logistics", "project_manager", "admin"],
+  "requestParameters": {
+    "purchase_order_id": true
+  }
+}
