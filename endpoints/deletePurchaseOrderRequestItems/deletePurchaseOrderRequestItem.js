@@ -37,7 +37,7 @@ const deletePurchaseOrderRequestItems = async (requestBody) => {
       .whereIn('purchase_order_request_item_id', ids)
       .update({
         is_active: false,
-        last_updated_at: knexInstance.fn.now(),
+        last_updated_at: knexInstance.raw('NOW()'),
       });
 
     return {

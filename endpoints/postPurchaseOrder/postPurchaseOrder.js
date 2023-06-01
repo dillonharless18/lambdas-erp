@@ -15,38 +15,42 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrder = async (orders) => {
+const postPurchaseOrder = async (order) => {
   await initializeDb();
 
-  if (!Array.isArray(orders)) {
-    throw new Error('The orders parameter must be an array');
+  if (typeof order !== 'object' || order === null) {
+    console.error('Error: The order parameter must be an object');
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error: 'Invalid input format: The order parameter must be an object',
+      }),
+    };
   }
 
-  const purchaseOrders = orders.map((order) => new PurchaseOrderDTO(order));
+  const purchaseOrder = new PurchaseOrderDTO(order);
 
   try {
     await knexInstance.transaction(async (trx) => {
-      const purchaseOrderPromises = purchaseOrders.map(async (po) => {
-        const purchase_order_id = uuidv4();
-        // Generate a random purchase order number
-        const purchase_order_number = Math.floor(
-          Math.random() * 1e12
-        ).toString();
-        await trx('purchase_order').insert({
-          purchase_order_id: purchase_order_id,
-          created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-          last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-          total_price: po.total_price,
-          vendor_id: po.vendor_id,
-          purchase_order_status_id: po.purchase_order_status_id,
-          s3_uri: po.s3_uri,
-          created_at: knexInstance.raw('NOW()'),
-          last_updated_at: knexInstance.raw('NOW()'),
-          purchase_order_number: purchase_order_number,
-          quickbooks_purchase_order_id: '1', // setting is to default value, need to discuss it
-        });
+      const purchase_order_id = uuidv4();
+      const purchase_order_number = Math.floor(Math.random() * 1e12).toString();
 
-        const purchaseOrderItemPromises = po.purchaseOrderItems.map((item) =>
+      await trx('purchase_order').insert({
+        purchase_order_id,
+        created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+        last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+        total_price: purchaseOrder.total_price,
+        vendor_id: purchaseOrder.vendor_id,
+        purchase_order_status_id: purchaseOrder.purchase_order_status_id,
+        s3_uri: purchaseOrder.s3_uri,
+        created_at: knexInstance.raw('NOW()'),
+        last_updated_at: knexInstance.raw('NOW()'),
+        purchase_order_number: purchase_order_number,
+        quickbooks_purchase_order_id: '1',
+      });
+
+      const purchaseOrderItemPromises = purchaseOrder.purchaseOrderItems.map(
+        (item) =>
           trx('purchase_order_item').insert({
             purchase_order_item_id: uuidv4(),
             purchase_order_id: purchase_order_id,
@@ -68,31 +72,22 @@ const postPurchaseOrder = async (orders) => {
             last_updated_at: knexInstance.raw('NOW()'),
             is_active: true,
           })
-        );
+      );
 
-        await Promise.all(purchaseOrderItemPromises);
-      });
-
-      await Promise.all(purchaseOrderPromises);
+      await Promise.all(purchaseOrderItemPromises);
     });
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order updated successfully!',
+        message: 'Purchase Order created successfully!',
       }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
     };
   } catch (error) {
     console.error('Error in postPurchaseOrder:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+      body: JSON.stringify({ error: `Server Error, ${error.message}` }),
     };
   }
 };
