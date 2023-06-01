@@ -55,7 +55,7 @@ const getPurchaseOrders = async (status) => {
                     '\'suggested_vendor\', purchase_order_item.suggested_vendor,' +
                     '\'urgent_order_status_id\', purchase_order_item.urgent_order_status_id,' +
                     '\'is_active\', purchase_order_item.is_active,' +
-                    '\'purchase_order_item_status_name\', purchase_order_item_status.purchase_order_item_status_name' +
+                    '\'purchase_order_item_status_name\', purchase_order_item_status.purchase_order_item_status_name,' +
                     '\'project_name\', project.project_name' +
                     ')' +
                     ') AS purchase_order_items'
