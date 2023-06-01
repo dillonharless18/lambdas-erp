@@ -56,6 +56,7 @@ const getPurchaseOrders = async (status) => {
                     '\'urgent_order_status_id\', purchase_order_item.urgent_order_status_id,' +
                     '\'is_active\', purchase_order_item.is_active,' +
                     '\'purchase_order_item_status_name\', purchase_order_item_status.purchase_order_item_status_name' +
+                    '\'project_name\', project.project_name' +
                     ')' +
                     ') AS purchase_order_items'
                 )
@@ -75,6 +76,12 @@ const getPurchaseOrders = async (status) => {
             )
             .join('purchase_order_item', 'purchase_order.purchase_order_id', 'purchase_order_item.purchase_order_id')
             .join('purchase_order_item_status', 'purchase_order_item_status.purchase_order_item_status_id', 'purchase_order_item.purchase_order_item_status_id')
+            .join(
+                "project",
+                "project.project_id",
+                "=",
+                "purchase_order_item.project_id"
+            )
             .where(
                 "purchase_order_status.purchase_order_status_name",
                 "=",
