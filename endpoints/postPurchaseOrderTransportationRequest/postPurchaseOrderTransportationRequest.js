@@ -19,7 +19,7 @@ const postPurchaseOrderTransportationRequest = async (body) => {
   await initializeDb();
 
   if (!body) {
-    throw new Error('The comment parameter must not be null');
+    throw new Error('No data provided');
   }
 
   const transportationRequestData = new PurchaseOrderTransportationRequest(
