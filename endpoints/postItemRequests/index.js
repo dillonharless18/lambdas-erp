@@ -1,4 +1,4 @@
-import postItemRequests from './postItemRequests';
+import postItemRequests from './postItemRequests.js';
 
 const handler = async (event) => {
   try {
