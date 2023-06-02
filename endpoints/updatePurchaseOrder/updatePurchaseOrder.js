@@ -21,7 +21,10 @@ const updatePurchaseOrder = async (item) => {
     throw new Error('Missing purchase_order_id');
   }
 
-  const purchaseOrder = new PurchaseOrder(item)
+  const purchaseOrder = new PurchaseOrder({
+    ...item, last_updated_at: knexInstance.raw('NOW()'),
+    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+  })
 
   await knexInstance('purchase_order')
     .where(
