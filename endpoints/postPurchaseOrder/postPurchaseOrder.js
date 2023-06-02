@@ -50,28 +50,49 @@ const postPurchaseOrder = async (order) => {
       });
 
       const purchaseOrderItemPromises = purchaseOrder.purchaseOrderItems.map(
-        (item) =>
-          trx('purchase_order_item').insert({
-            purchase_order_item_id: uuidv4(),
-            purchase_order_id: purchase_order_id,
-            created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-            last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-            price: item.price,
-            quantity: item.quantity,
-            unit_of_measure: item.unit_of_measure,
-            description: item.description,
-            is_damaged: item.is_damaged,
-            damage_or_return_text: item.damage_or_return_text,
-            project_id: item.project_id,
-            purchase_order_item_status_id: '2', // Needs Receiving
-            s3_uri: item.s3_uri,
-            item_name: item.item_name,
-            suggested_vendor: item.suggested_vendor,
-            urgent_order_status_id: item.urgent_order_status_id,
-            created_at: knexInstance.raw('NOW()'),
-            last_updated_at: knexInstance.raw('NOW()'),
-            is_active: true,
-          })
+        async (item) => {
+          const purchaseOrderItemId = await trx('purchase_order_item')
+            .insert({
+              purchase_order_item_id: uuidv4(),
+              purchase_order_id: purchase_order_id,
+              created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+              last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+              price: item.price,
+              quantity: item.quantity,
+              unit_of_measure: item.unit_of_measure,
+              description: item.description,
+              is_damaged: item.is_damaged,
+              damage_or_return_text: item.damage_or_return_text,
+              project_id: item.project_id,
+              purchase_order_item_status_id: '2', // Needs Receiving
+              s3_uri: item.s3_uri,
+              item_name: item.item_name,
+              suggested_vendor: item.suggested_vendor,
+              urgent_order_status_id: item.urgent_order_status_id,
+              created_at: knexInstance.raw('NOW()'),
+              last_updated_at: knexInstance.raw('NOW()'),
+              is_active: true,
+            })
+            .returning('purchase_order_item_id');
+
+          await trx(
+            'purchase_order_request_item_by_purchase_order_item'
+          ).insert({
+            purchase_order_item_id:
+              purchaseOrderItemId[0].purchase_order_item_id,
+            purchase_order_request_item_id: item.purchase_order_request_item_id,
+          });
+
+          await knexInstance('purchase_order_request_item')
+            .where(
+              'purchase_order_request_item_id',
+              item.purchase_order_request_item_id
+            )
+            .update({
+              is_active: false,
+              last_updated_at: knexInstance.raw('NOW()'),
+            });
+        }
       );
 
       await Promise.all(purchaseOrderItemPromises);
@@ -82,12 +103,18 @@ const postPurchaseOrder = async (order) => {
       body: JSON.stringify({
         message: 'Purchase Order created successfully!',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error('Error in postPurchaseOrder:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error.message}` }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 };

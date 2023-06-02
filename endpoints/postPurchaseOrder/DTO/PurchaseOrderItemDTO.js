@@ -1,5 +1,6 @@
 class PurchaseOrderItemDTO {
   constructor(item) {
+    this.purchase_order_request_item_id = item.purchase_order_request_item_id;
     this.price = item.price;
     this.quantity = item.quantity;
     this.unit_of_measure = item.unit_of_measure;
