@@ -5,7 +5,7 @@ class PurchaseOrderItemDTO {
     this.unit_of_measure = item.unit_of_measure;
     this.description = item.description;
     this.is_damaged = item.is_damaged;
-    this.damaged_or_return_text = item.damaged_or_return_text;
+    this.damage_or_return_text = item.damage_or_return_text;
     this.project_id = item.project_id;
     this.purchase_order_item_status_id = item.purchase_order_item_status_id;
     this.s3_uri = item.s3_uri;

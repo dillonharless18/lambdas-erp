@@ -8,7 +8,7 @@ class PurchaseOrder {
     this.vendor_id = item.vendor_id;
     this.purchase_order_status_id = item.purchase_order_status_id;
     this.last_updated_at = Date.now();
-    this.last_updated_by = item.last_updated_by
+    this.last_updated_by = item.last_updated_by;
   }
 }
 

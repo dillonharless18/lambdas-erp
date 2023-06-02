@@ -1,3 +1,5 @@
+import PurchaseOrderItemDTO from './PurchaseOrderItemDTO.js';
+
 class PurchaseOrderDTO {
   constructor(purchaseOrder) {
     this.total_price = purchaseOrder.total_price;
