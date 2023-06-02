@@ -1,9 +1,9 @@
 {
-  "apiPath": "purchase-order",
-  "httpMethod": "GET",
-  "name": "getPurchaseOrders",
-  "allowedGroups": ["logistics", "project_manager", "admin"],
-  "requestParameters": {
-    "status": true
-  }
+    "apiPath": "purchase-order",
+    "httpMethod": "GET",
+    "name": "getPurchaseOrders",
+    "allowedGroups": ["logistics", "project_manager", "admin"],
+    "requestParameters": {
+        "status": true
+    }
 }
