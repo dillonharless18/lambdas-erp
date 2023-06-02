@@ -1,0 +1,6 @@
+{
+  "apiPath": "purchase-order/comments",
+  "httpMethod": "POST",
+  "name": "postPurchaseOrderComment",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
