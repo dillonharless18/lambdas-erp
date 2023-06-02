@@ -74,6 +74,6 @@ To add a new API endpoint, follow these steps:
    - `requestParameters`: The queryStringParameters that an endpoints should support. An object with keys representing queryStringParams and `boolean` values representing if they are required to execute the endpoint.
 3. Create the Lambda function's code file (e.g., `index.js`) inside the new directory
    _NOTE_: Dependencies are handled by Lambda Layers in the infrastructure repository. Please keep all large dependencies in `devDependencies` in `package.json` to avoid large bundles. See the Infrastructure Repository for the list of Lambda Layers available.
-   _NOTE_: The Lambdas are created in NODE_JS_18 Execution Environment. Please ensure you account for this and use the AWS SDK V3. The imports have changed from V2 and it is the only version of the AWS SDK available by default for NODE_JS_18.
-   _NOTE_: CORS Headers _must_ be added to the response of each Lambda function since the lambdas are a proxy integration in the API gateway and handling of the request is forwarded to them.
+   _NOTE_: The Lambdas are created in NODE*JS_18 Execution Environment. Please ensure you account for this and use the AWS SDK V3. The imports have changed from V2 and it is the only version of the AWS SDK available by default for NODE_JS_18.
+   \_NOTE*: CORS Headers _must_ be added to the response of each Lambda function since the lambdas are a proxy integration in the API gateway and handling of the request is forwarded to them.
 4. The `ApiStack` will automatically create the Lambda function, integration, and API Gateway resource based on the `metadata.json` file. It will associate it with the proper Cognito User Pools according to the allowedGroups property in the metadata.json file.

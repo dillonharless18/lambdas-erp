@@ -41,7 +41,7 @@ const postPurchaseOrder = async (order) => {
         last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
         total_price: purchaseOrder.total_price,
         vendor_id: purchaseOrder.vendor_id,
-        purchase_order_status_id: purchaseOrder.purchase_order_status_id,
+        purchase_order_status_id: '2', // Needs Receiving
         s3_uri: purchaseOrder.s3_uri,
         created_at: knexInstance.raw('NOW()'),
         last_updated_at: knexInstance.raw('NOW()'),
@@ -63,7 +63,7 @@ const postPurchaseOrder = async (order) => {
             is_damaged: item.is_damaged,
             damage_or_return_text: item.damage_or_return_text,
             project_id: item.project_id,
-            purchase_order_item_status_id: item.purchase_order_item_status_id,
+            purchase_order_item_status_id: '2', // Needs Receiving
             s3_uri: item.s3_uri,
             item_name: item.item_name,
             suggested_vendor: item.suggested_vendor,
