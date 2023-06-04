@@ -1,0 +1,6 @@
+{
+  "apiPath": "purchase-order/{purchase_order_id}/comments",
+  "httpMethod": "GET",
+  "name": "getPurchaseOrderComments",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
