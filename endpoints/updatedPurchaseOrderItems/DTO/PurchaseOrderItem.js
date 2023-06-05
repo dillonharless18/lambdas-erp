@@ -1,5 +1,6 @@
 class PurchaseOrderItem {
   constructor(item) {
+    this.purchase_order_item_id = item.purchase_order_item_id;
     this.purchase_order_id = item.purchase_order_id;
     this.item_name = item.item_name;
     this.damage_or_return_text = item.damage_or_return_text;
