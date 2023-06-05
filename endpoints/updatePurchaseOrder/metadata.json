@@ -1,0 +1,6 @@
+{
+  "apiPath": "purchase-order",
+  "httpMethod": "PATCH",
+  "name": "updatePurchaseOrder",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}

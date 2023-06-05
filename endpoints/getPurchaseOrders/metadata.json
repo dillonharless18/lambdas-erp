@@ -1,5 +1,5 @@
 {
-    "apiPath": "purchase-orders",
+    "apiPath": "purchase-order",
     "httpMethod": "GET",
     "name": "getPurchaseOrders",
     "allowedGroups": ["logistics", "project_manager", "admin"],
