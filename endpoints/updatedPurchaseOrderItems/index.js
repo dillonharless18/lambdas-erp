@@ -1,4 +1,4 @@
-import updatePurchaseOrderItems from './updatedPurchaseOrderItems';
+import updatePurchaseOrderItems from './updatePurchaseOrderItems';
 
 const handler = async (event) => {
   try {

@@ -35,7 +35,7 @@ const updatePurchaseOrderItems = async (items) => {
         ...item
       };
 
-      updatedItem = Object.fromEntries(Object.entries(updatedItem).filter(([_, val]) => val))
+      updatedItem = Object.fromEntries(Object.entries(updatedItem).filter(([_, val]) => val)) // remove null or empty values
 
       await knexInstance('purchase_order_item')
         .where(
