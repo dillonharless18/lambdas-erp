@@ -15,42 +15,40 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderComments = async (comments, purchaseOrderId) => {
+const postPurchaseOrderComment = async (comment, purchaseOrderId) => {
   await initializeDb();
 
   if (!purchaseOrderId) {
     throw new Error('The purchase_order_id field must not be null');
-  } else if (!Array.isArray(comments) && comments.length > 0) {
-    throw new Error('The comments parameter must be an array of comments');
+  } else if (!comment || typeof comment !== 'object' || Object.keys(comment).length === 0) {
+    throw new Error('The comment parameter must not be empty');
   }
-  const purchaseOrderComments = comments.map(
-    (comment) => new PurchaseOrderComment({
-      purchase_order_comment_id: uuidv4(),
-      purchase_order_id: purchaseOrderId,
-      created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-      created_at: knexInstance.raw('NOW()'),
-      last_updated_at: knexInstance.raw('NOW()'),
-      last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-      ...comment
-    })
-  );
+  const purchaseOrderComment = new PurchaseOrderComment({
+    purchase_order_comment_id: uuidv4(),
+    purchase_order_id: purchaseOrderId,
+    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    created_at: knexInstance.raw('NOW()'),
+    last_updated_at: knexInstance.raw('NOW()'),
+    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    ...comment
+  })
 
   try {
     await knexInstance('purchase_order_comment').insert(
-      purchaseOrderComments
+      purchaseOrderComment
     );
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Comments added successfully!',
+        message: 'Purchase Order Comment added successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in postPurchaseOrderComments:', error);
+    console.error('Error in postPurchaseOrderComment:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
@@ -61,4 +59,4 @@ const postPurchaseOrderComments = async (comments, purchaseOrderId) => {
   }
 };
 
-export default postPurchaseOrderComments;
+export default postPurchaseOrderComment;
