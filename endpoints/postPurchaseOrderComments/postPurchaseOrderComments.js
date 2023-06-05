@@ -15,45 +15,42 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderComment = async (comment) => {
+const postPurchaseOrderComments = async (comments, purchaseOrderId) => {
   await initializeDb();
 
-  if (!comment) {
-    throw new Error('No data provided');
-  } else if (!comment.purchase_order_id) {
+  if (!purchaseOrderId) {
     throw new Error('The purchase_order_id field must not be null');
-  } else if (!comment.comment_text) {
-    throw new Error('The comment_text field must not be null');
+  } else if (!Array.isArray(comments) && comments.length > 0) {
+    throw new Error('The comments parameter must be an array of comments');
   }
-
-  const purchaseOrderComment = new PurchaseOrderComment(
-    comment
+  const purchaseOrderComments = comments.map(
+    (comment) => new PurchaseOrderComment({
+      purchase_order_comment_id: uuidv4(),
+      purchase_order_id: purchaseOrderId,
+      created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+      created_at: knexInstance.raw('NOW()'),
+      last_updated_at: knexInstance.raw('NOW()'),
+      last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+      ...comment
+    })
   );
-
-  const dataToInsert = {
-    purchase_order_comment_id: uuidv4(),
-    purchase_order_id: purchaseOrderComment.purchase_order_id,
-    comment_text: purchaseOrderComment.comment_text,
-    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-    created_at: knexInstance.raw('NOW()'),
-  };
 
   try {
     await knexInstance('purchase_order_comment').insert(
-      dataToInsert
+      purchaseOrderComments
     );
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Comment added successfully!',
+        message: 'Purchase Order Comments added successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in postPurchaseOrderComment:', error);
+    console.error('Error in postPurchaseOrderComments:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
@@ -64,4 +61,4 @@ const postPurchaseOrderComment = async (comment) => {
   }
 };
 
-export default postPurchaseOrderComment;
+export default postPurchaseOrderComments;

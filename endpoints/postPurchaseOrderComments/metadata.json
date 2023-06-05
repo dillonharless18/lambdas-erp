@@ -1,6 +1,6 @@
 {
-  "apiPath": "purchase-order/comment",
+  "apiPath": "purchase-order/{purchase_order_id}/comments",
   "httpMethod": "POST",
-  "name": "postPurchaseOrderComment",
+  "name": "postPurchaseOrderComments",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }

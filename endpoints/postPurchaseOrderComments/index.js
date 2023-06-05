@@ -1,9 +1,11 @@
-import postPurchaseOrderComment from './postPurchaseOrderComment.js';
+import postPurchaseOrderComments from './postPurchaseOrderComments.js';
 
 const handler = async (event) => {
   try {
-    const comment = JSON.parse(event.body).comment
-    return await postPurchaseOrderComment(comment)
+    const comments = JSON.parse(event.body).comments
+    const purchaseOrderId =
+      event.pathParameters?.purchase_order_id;
+    return await postPurchaseOrderComments(comments, purchaseOrderId)
   } catch (error) {
     console.error('Error in handler:', error);
     return {
