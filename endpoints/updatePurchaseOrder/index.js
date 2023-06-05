@@ -2,7 +2,7 @@ import updatePurchaseOrder from './updatePurchaseOrder.js';
 
 const handler = async (event) => {
   try {
-    const body = JSON.parse(event.body).requestItems;
+    const body = JSON.parse(event.body).purchaseOrder;
 
     return await updatePurchaseOrder(body);
   } catch (error) {

@@ -1,7 +1,7 @@
 class PurchaseOrder {
   constructor(item) {
     this.purchase_order_id = item.purchase_order_id;
-    this.purcahse_order_number = item.purcahse_order_number;
+    this.purchase_order_number = item.purchase_order_number;
     this.total_price = item.total_price;
     this.quickbooks_purchase_order_id = item.quantity;
     this.s3_uri = item.s3_uri;
