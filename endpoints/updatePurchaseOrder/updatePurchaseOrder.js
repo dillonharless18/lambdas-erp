@@ -14,10 +14,10 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrder = async (item) => {
+const updatePurchaseOrder = async (purchaseOrder) => {
   await initializeDb();
 
-  if (!item.purchase_order_id) {
+  if (!purchaseOrder.purchase_order_id) {
     throw new Error('Missing purchase_order_id');
   }
 

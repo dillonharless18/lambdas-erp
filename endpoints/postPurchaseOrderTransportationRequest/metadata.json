@@ -1,0 +1,6 @@
+{
+  "apiPath": "purchase-order-transportation-request",
+  "httpMethod": "POST",
+  "name": "postPurchaseOrderTransportationRequest",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}

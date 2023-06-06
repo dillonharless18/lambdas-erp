@@ -1,10 +1,10 @@
-import updatePurchaseOrder from './updatePurchaseOrder.js';
+import updatePurchaseOrderItems from './updatePurchaseOrderItems';
 
 const handler = async (event) => {
   try {
-    const body = JSON.parse(event.body).purchaseOrder;
+    const body = JSON.parse(event.body).purchaseOrderItems;
 
-    return await updatePurchaseOrder(body);
+    return await updatePurchaseOrderItems(body);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
