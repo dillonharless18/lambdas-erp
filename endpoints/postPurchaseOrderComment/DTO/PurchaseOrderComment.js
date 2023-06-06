@@ -5,8 +5,6 @@ class PurchaseOrderComment {
     this.comment_text = comment.comment_text;
     this.created_by = comment.created_by;
     this.created_at = comment.created_at;
-    this.last_updated_at = comment.last_updated_at;
-    this.last_updated_by = comment.last_updated_by
   }
 }
 
