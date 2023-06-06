@@ -43,7 +43,7 @@ const postItemRequests = async (items) => {
     created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
     last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
     item_name: item.item_name,
-    price: item.price,
+    price: '0',
     quantity: item.quantity,
     unit_of_measure: item.unit_of_measure,
     suggested_vendor: item.suggested_vendor,

@@ -21,17 +21,11 @@ const updatePurchaseOrder = async (purchaseOrder) => {
     throw new Error('Missing purchase_order_id');
   }
 
-  const purchaseOrderData = new PurchaseOrder({
-    ...purchaseOrder, last_updated_at: knexInstance.raw('NOW()'),
-    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-  })
+  const purchaseOrder = new PurchaseOrder(item);
 
   await knexInstance('purchase_order')
-    .where(
-      'purchase_order_id',
-      purchaseOrderData.purchase_order_id
-    )
-    .update(purchaseOrderData);
+    .where('purchase_order_id', purchaseOrder.purchase_order_id)
+    .update(purchaseOrder);
 
   return {
     statusCode: 200,
