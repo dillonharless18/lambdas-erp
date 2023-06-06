@@ -26,7 +26,7 @@ const getPurchaseOrderComments = async (
         "purchase_order_comment.created_at",
         "purchase_order_comment.comment_text",
         knexInstance.raw(
-          '("user".first_name || \' \' || "user".last_name) AS user_name'
+          '("user".first_name || \' \' || "user".last_name) AS requester'
         )
       )
       .from('purchase_order_comment')
