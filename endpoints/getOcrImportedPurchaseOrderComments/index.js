@@ -4,7 +4,7 @@ const handler = async (event, context) => {
   try {
     const ocrImportedOrderId =
       event.pathParameters?.ocr_imported_purchase_order_draft_id;
-    if (!purchaseOrderRequestItemId) {
+    if (!ocrImportedOrderId) {
       return {
         statusCode: 400,
         body: JSON.stringify({
