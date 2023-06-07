@@ -1,6 +1,5 @@
 import deleteNetVendorRequestItem from './deleteNetVendorRequestItem.js';
 
-
 const handler = async (event) => {
   try {
     const netVendorRequestItemId =

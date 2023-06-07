@@ -14,7 +14,6 @@ const initializeDb = async () => {
   }
 };
 
-
 const updatePurchaseOrderItems = async (items) => {
   await initializeDb();
 
@@ -22,26 +21,22 @@ const updatePurchaseOrderItems = async (items) => {
     throw new Error('The items parameter must be an array');
   }
 
-  const purchaseOrderItems = items.map(
-    (item) => new PurchaseOrderItem(item)
-  );
+  const purchaseOrderItems = items.map((item) => new PurchaseOrderItem(item));
 
   await Promise.all(
     purchaseOrderItems.map(async (item) => {
-
       let updatedItem = {
         last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
         last_updated_at: knexInstance.raw('NOW()'),
-        ...item
+        ...item,
       };
 
-      updatedItem = Object.fromEntries(Object.entries(updatedItem).filter(([_, val]) => val)) // remove null or empty values
+      updatedItem = Object.fromEntries(
+        Object.entries(updatedItem).filter(([_, val]) => val)
+      ); // remove null or empty values
 
       await knexInstance('purchase_order_item')
-        .where(
-          'purchase_order_item_id',
-          updatedItem.purchase_order_item_id
-        )
+        .where('purchase_order_item_id', updatedItem.purchase_order_item_id)
         .update(updatedItem);
     })
   );

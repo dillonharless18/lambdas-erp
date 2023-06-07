@@ -28,8 +28,7 @@ const postPurchaseOrderTransportationRequest = async (body) => {
 
   const dataToInsert = {
     purchase_order_transportation_request_id: uuidv4(),
-    purchase_order_id:
-      transportationRequestData.purchase_order_id,
+    purchase_order_id: transportationRequestData.purchase_order_id,
     transportation_request_type_id: 1, // means its purchase order transportation request (PO)
     from_location: transportationRequestData.from_location,
     to_location: transportationRequestData.to_location,
@@ -67,6 +66,5 @@ const postPurchaseOrderTransportationRequest = async (body) => {
     };
   }
 };
-
 
 export default postPurchaseOrderTransportationRequest;
