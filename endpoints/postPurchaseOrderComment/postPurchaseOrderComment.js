@@ -20,7 +20,11 @@ const postPurchaseOrderComment = async (comment, purchaseOrderId) => {
 
   if (!purchaseOrderId) {
     throw new Error('The purchase_order_id field must not be null');
-  } else if (!comment || typeof comment !== 'object' || Object.keys(comment).length === 0) {
+  } else if (
+    !comment ||
+    typeof comment !== 'object' ||
+    Object.keys(comment).length === 0
+  ) {
     throw new Error('The comment parameter must not be empty');
   }
   const purchaseOrderComment = new PurchaseOrderComment({
@@ -28,13 +32,11 @@ const postPurchaseOrderComment = async (comment, purchaseOrderId) => {
     purchase_order_id: purchaseOrderId,
     created_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
     created_at: knexInstance.raw('NOW()'),
-    ...comment
-  })
+    ...comment,
+  });
 
   try {
-    await knexInstance('purchase_order_comment').insert(
-      purchaseOrderComment
-    );
+    await knexInstance('purchase_order_comment').insert(purchaseOrderComment);
 
     return {
       statusCode: 200,

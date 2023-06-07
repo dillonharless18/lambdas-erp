@@ -2,8 +2,7 @@ import getPurchaseOrderComments from './getPurchaseOrderComments.js';
 
 const handler = async (event, context) => {
   try {
-    const purchaseOrderId =
-      event.pathParameters?.purchase_order_id;
+    const purchaseOrderId = event.pathParameters?.purchase_order_id;
     if (!purchaseOrderId) {
       return {
         statusCode: 400,
@@ -15,9 +14,7 @@ const handler = async (event, context) => {
         },
       };
     }
-    return await getPurchaseOrderComments(
-      purchaseOrderId
-    );
+    return await getPurchaseOrderComments(purchaseOrderId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {

@@ -66,6 +66,9 @@ const postItemRequests = async (items) => {
       body: JSON.stringify({
         message: 'Item Requests added successfully!',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   } catch (error) {
     console.error('Error in postPurchaseOrderRequestItems:', error);

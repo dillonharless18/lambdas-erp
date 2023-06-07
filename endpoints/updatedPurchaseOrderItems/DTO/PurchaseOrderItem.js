@@ -14,7 +14,7 @@ class PurchaseOrderItem {
     this.is_damaged = item.is_damaged;
     this.urgent_order_status_id = item.urgent_order_status_id;
     this.purchase_order_item_status_id = item.purchase_order_item_status_id;
-    this.is_active = item.is_active
+    this.is_active = item.is_active;
     this.last_updated_at = item.last_updated_at;
     this.last_updated_by = item.last_updated_by;
   }

@@ -61,8 +61,6 @@ const postPurchaseOrder = async (order) => {
               quantity: item.quantity,
               unit_of_measure: item.unit_of_measure,
               description: item.description,
-              is_damaged: item.is_damaged,
-              damage_or_return_text: item.damage_or_return_text,
               project_id: item.project_id,
               purchase_order_item_status_id: '2', // Needs Receiving
               s3_uri: item.s3_uri,
