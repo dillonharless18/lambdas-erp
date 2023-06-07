@@ -3,7 +3,7 @@ import postOcrImportedPurchaseOrderComment from './postOcrImportedPurchaseOrderC
 const handler = async (event) => {
   try {
     const comment = JSON.parse(event.body).comment;
-    return await postOcrImportedPurchaseOrderCommentf(comment);
+    return await postOcrImportedPurchaseOrderComment(comment);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
