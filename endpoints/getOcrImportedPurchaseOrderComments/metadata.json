@@ -1,0 +1,6 @@
+{
+  "apiPath": "ocr-imported-purchase-order/{ocr_imported_purchase_order_draft_id}/comments",
+  "httpMethod": "GET",
+  "name": "getOcrImportedPurchaseOrderComments",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
