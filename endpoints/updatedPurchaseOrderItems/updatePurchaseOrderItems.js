@@ -35,9 +35,9 @@ const updatePurchaseOrderItems = async (items) => {
   await Promise.all(
     purchaseOrderItems.map(async (item) => {
       let updatedItem = {
-        last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-        last_updated_at: knexInstance.raw('NOW()'),
         ...item,
+        last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+        last_updated_at: knexInstance.raw('NOW()'),
       };
 
       updatedItem = Object.fromEntries(
