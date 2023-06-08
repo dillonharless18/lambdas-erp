@@ -21,7 +21,11 @@ const updatePurchaseOrder = async (purchaseOrder) => {
     throw new Error('Missing purchase_order_id');
   }
 
-  const purchaseOrder = new PurchaseOrder(item);
+  let purchaseOrder = new PurchaseOrder(item);
+
+  purchaseOrder = Object.fromEntries(
+    Object.entries(purchaseOrder).filter(([_, val]) => val)
+  ); // remove null or empty values
 
   await knexInstance('purchase_order')
     .where('purchase_order_id', purchaseOrder.purchase_order_id)
