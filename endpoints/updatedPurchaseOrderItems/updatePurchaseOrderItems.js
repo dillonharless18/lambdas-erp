@@ -21,7 +21,16 @@ const updatePurchaseOrderItems = async (items) => {
     throw new Error('The items parameter must be an array');
   }
 
-  const purchaseOrderItems = items.map((item) => new PurchaseOrderItem(item));
+  const purchaseOrderItems = items.map((item) => {
+    item = Object.fromEntries(
+      Object.entries(item).filter(([_, val]) => val)
+    );
+    return new PurchaseOrderItem({
+      item,
+      last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+      last_updated_at: knexInstance.raw('NOW()'),
+    })
+  });
 
   await Promise.all(
     purchaseOrderItems.map(async (item) => {
