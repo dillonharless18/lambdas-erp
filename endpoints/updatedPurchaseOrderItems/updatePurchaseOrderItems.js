@@ -1,4 +1,4 @@
-import PurchaseOrderItem from './DTO/PurchaseOrderItem';
+import PurchaseOrderItem from './DTO/PurchaseOrderItem.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 
 let knexInstance;
