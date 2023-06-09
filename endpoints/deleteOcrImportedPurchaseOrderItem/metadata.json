@@ -1,0 +1,6 @@
+{
+  "apiPath": "ocr-imported-purchase-order-item",
+  "httpMethod": "DELETE",
+  "name": "deleteOcrImportedPurchaseOrderItem",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
