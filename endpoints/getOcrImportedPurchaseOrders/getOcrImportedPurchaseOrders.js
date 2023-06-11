@@ -16,7 +16,9 @@ const initializeDb = async () => {
 const getOcrImportedPurhaseOrders = async () => {
   await initializeDb();
   try {
-    const octImportedPurchaseOrders = await db('ocr_imported_purchase_order_draft as pod')
+    const octImportedPurchaseOrders = await db(
+      'ocr_imported_purchase_order_draft as pod'
+    )
       .leftJoin(
         'ocr_imported_purchase_order_draft_item as podi',
         'pod.ocr_imported_purchase_order_draft_id',

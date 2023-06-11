@@ -15,9 +15,7 @@ const handler = async (event, context) => {
         },
       };
     }
-    return await getOcrImportedPurchaseOrderComments(
-      ocrImportedOrderId
-    );
+    return await getOcrImportedPurchaseOrderComments(ocrImportedOrderId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
