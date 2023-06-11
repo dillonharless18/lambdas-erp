@@ -1,4 +1,4 @@
-import deleteNetVendorRequestItem from './deleteOcrImportedPurchaseOrderItem.js';
+import deleteOcrImportedPurchaseOrderItemfrom from './deleteOcrImportedPurchaseOrderItem.js';
 
 const handler = async (event) => {
   try {
@@ -17,7 +17,7 @@ const handler = async (event) => {
       };
     }
 
-    return await deleteNetVendorRequestItem(ocrImportedPurchaseOrderItemId);
+    return await deleteOcrImportedPurchaseOrderItemfrom(ocrImportedPurchaseOrderItemId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
