@@ -1,4 +1,4 @@
-import PurchaseOrderItem from './DTO/PurchaseOrderItem';
+import PurchaseOrderItem from './DTO/PurchaseOrderItem.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 
 let knexInstance;
@@ -21,23 +21,21 @@ const updatePurchaseOrderItems = async (items) => {
     throw new Error('The items parameter must be an array');
   }
 
-  const purchaseOrderItems = items.map((item) => new PurchaseOrderItem(item));
-
   await Promise.all(
-    purchaseOrderItems.map(async (item) => {
-      let updatedItem = {
-        last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-        last_updated_at: knexInstance.raw('NOW()'),
+    items.map(async (item) => {
+      let itemData = new PurchaseOrderItem({
         ...item,
-      };
+        last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+        last_updated_at: knexInstance.raw('NOW()'),
+      })
 
-      updatedItem = Object.fromEntries(
-        Object.entries(updatedItem).filter(([_, val]) => val)
+      itemData = Object.fromEntries(
+        Object.entries(itemData).filter(([_, val]) => val !== null && val !== undefined && val !== "")
       ); // remove null or empty values
 
       await knexInstance('purchase_order_item')
-        .where('purchase_order_item_id', updatedItem.purchase_order_item_id)
-        .update(updatedItem);
+        .where('purchase_order_item_id', itemData.purchase_order_item_id)
+        .update(itemData);
     })
   );
 
