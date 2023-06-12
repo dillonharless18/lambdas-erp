@@ -1,4 +1,4 @@
-import deletePurchaseOrderRequestItems from './deletePurchaseOrderRequestItem';
+import deletePurchaseOrderRequestItems from './deletePurchaseOrderRequestItem.js';
 
 const handler = async (event) => {
   try {
