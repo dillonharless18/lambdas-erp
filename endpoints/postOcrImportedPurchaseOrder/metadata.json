@@ -1,5 +1,5 @@
 {
-  "apiPath": "ocr-imported-purchase-order",
+  "apiPath": "ocr-imported-purchase-order/{ocrImportedPurchaseOrderId}",
   "httpMethod": "POST",
   "name": "postOcrImportedPurchaseOrder",
   "allowedGroups": ["logistics", "project_manager", "admin"]

@@ -18,12 +18,12 @@ const initializeDb = async () => {
 const postOcrImportedPurchaseOrder = async (ocrImportedPurchaseOrder) => {
   await initializeDb();
 
-  if (typeof order !== 'object' || order === null) {
-    console.error('Error: The order parameter must be an object');
+  if (typeof ocrImportedPurchaseOrder !== 'object' || ocrImportedPurchaseOrder === null) {
+    console.error('Error: The ocrImportedPurchaseOrder parameter must be an object');
     return {
       statusCode: 400,
       body: JSON.stringify({
-        error: 'Invalid input format: The order parameter must be an object',
+        error: 'Invalid input format: The ocrImportedPurchaseOrder parameter must be an object',
       }),
     };
   }
@@ -56,13 +56,13 @@ const postOcrImportedPurchaseOrder = async (ocrImportedPurchaseOrder) => {
       await trx('ocr_purchase_order_draft_by_created_purchase_order').insert({
         purchase_order_id: purchaseOrderId[0].purchase_order_id,
         ocr_imported_purchase_order_draft_id:
-          item.ocr_imported_purchase_order_draft_id,
+        purchaseOrder.ocr_imported_purchase_order_draft_id,
       });
 
       await trx('ocr_imported_purchase_order_draft')
         .where(
           'ocr_imported_purchase_order_draft_id',
-          item.ocr_imported_purchase_order_draft_id
+          purchaseOrder.ocr_imported_purchase_order_draft_id
         )
         .update({
           is_active: false,
