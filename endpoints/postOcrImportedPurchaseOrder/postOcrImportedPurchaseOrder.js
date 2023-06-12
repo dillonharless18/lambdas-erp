@@ -83,7 +83,6 @@ const postOcrImportedPurchaseOrder = async (ocrImportedPurchaseOrder) => {
               description: item.description,
               project_id: item.project_id,
               purchase_order_item_status_id: '2', // Needs Receiving
-              s3_uri: purchaseOrder.s3_uri, // Passing Purchase Order s3 attachment, need to discuss it, we don't have any s3 column for ocrPOItem
               item_name: item.item_name,
               suggested_vendor: item.suggested_vendor,
               urgent_order_status_id: item.urgent_order_status_id,
