@@ -50,7 +50,7 @@ const postPurchaseOrderTransportationRequest = async (body) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Purchase Order Transportation Request added successfully!',
-        data: dataToInsert
+        data: dataToInsert.purchase_order_transportation_request_id
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
