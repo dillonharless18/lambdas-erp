@@ -1,10 +1,10 @@
-import deletePurchaseOrderRequestItems from './deletePurchaseOrderRequestItem.js';
+import postOcrImportedPurchaseOrder from './postOcrImportedPurchaseOrder.js';
 
 const handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
+    const body = JSON.parse(event.body).ocrImportedPurchaseOrder;
 
-    return await deletePurchaseOrderRequestItems(body);
+    return await postOcrImportedPurchaseOrder(body);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
