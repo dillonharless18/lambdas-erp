@@ -1,0 +1,6 @@
+{
+  "apiPath": "getAllCreditCards",
+  "httpMethod": "GET",
+  "name": "getAllCreditCards",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
