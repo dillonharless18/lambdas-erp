@@ -33,7 +33,7 @@ const postPurchaseOrderTransportationRequest = async (body) => {
     from_location: transportationRequestData.from_location,
     to_location: transportationRequestData.to_location,
     additional_details: transportationRequestData.additional_details,
-    urgent_order_status_id: transportationRequestData.urgent_order_status_id,
+    urgent_order_status_id: transportationRequestData.urgent_order_status_id ? parseInt(transportationRequestData.urgent_order_status_id) : null,
     transportation_request_status_id: 1, // means status is Open
     created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
     created_at: knexInstance.raw('NOW()'),
