@@ -5,6 +5,9 @@ class PurchaseOrderRequestItem {
     this.quantity = item.quantity;
     this.unit_of_measure = item.unit_of_measure;
     this.description = item.description;
+    this.project_id = item.project_id;
+    this.vendor_id = item.vendor_id;
+    this.urgent_order_status_id = item.urgent_order_status_id;
   }
 }
 

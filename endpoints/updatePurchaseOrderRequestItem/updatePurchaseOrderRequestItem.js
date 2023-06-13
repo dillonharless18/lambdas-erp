@@ -42,6 +42,13 @@ const updatePurchaseOrderRequestItem = async (item) => {
     updatedItem.unit_of_measure = purchaseOrderRequestItem.unit_of_measure;
   if (purchaseOrderRequestItem.description)
     updatedItem.description = purchaseOrderRequestItem.description;
+  if (purchaseOrderRequestItem.project_id)
+    updatedItem.project_id = purchaseOrderRequestItem.project_id;
+  if (purchaseOrderRequestItem.vendor_id)
+    updatedItem.vendor_id = purchaseOrderRequestItem.vendor_id;
+  if (purchaseOrderRequestItem.urgent_order_status_id)
+    updatedItem.urgent_order_status_id =
+      purchaseOrderRequestItem.urgent_order_status_id;
 
   await knexInstance('purchase_order_request_item')
     .where(
