@@ -100,7 +100,9 @@ const getOcrImportedPurhaseOrders = async () => {
         'credit_card.credit_card_id',
         'vendor_draft.vendor_id',
         'vendor_draft.vendor_name'
-      );
+      )
+      .where('pod.is_active', '=', true)
+      .andWhere('podi.is_active', '=', true);
 
     return {
       statusCode: 200,
