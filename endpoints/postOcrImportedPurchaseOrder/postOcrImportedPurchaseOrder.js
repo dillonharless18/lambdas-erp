@@ -93,7 +93,7 @@ const postOcrImportedPurchaseOrder = async (
               purchase_order_item_status_id: '2', // Needs Receiving
               item_name: item.item_name,
               suggested_vendor: item.suggested_vendor,
-              urgent_order_status_id: item.urgent_order_status_id,
+              urgent_order_status_id: 5,
               created_at: knexInstance.raw('NOW()'),
               last_updated_at: knexInstance.raw('NOW()'),
               is_active: true,
