@@ -7,9 +7,10 @@ class OcrImportedPurchaseOrderDTO {
     this.total_price = purchaseOrder.total_price;
     this.vendor_id = purchaseOrder.vendor_id;
     this.s3_uri = purchaseOrder.s3_uri;
-    this.purchaseOrderItems = purchaseOrder.purchaseOrderItems.map(
-      (item) => new OcrImportedPurchaseOrderItemDTO(item)
-    );
+    this.purchaseOrderItems =
+      purchaseOrder.ocr_imported_purchase_order_items.map(
+        (item) => new OcrImportedPurchaseOrderItemDTO(item)
+      );
   }
 }
 

@@ -1,4 +1,4 @@
-import OcrImportedPurchaseOrderDTO from './DTO/OcrImportedPurchaseOrderDTO';
+import OcrImportedPurchaseOrderDTO from './DTO/OcrImportedPurchaseOrderDTO.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 

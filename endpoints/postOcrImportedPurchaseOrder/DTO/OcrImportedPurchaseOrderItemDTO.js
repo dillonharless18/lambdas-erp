@@ -13,4 +13,4 @@ class OcrImportedPurchaseOrderItemDTO {
   }
 }
 
-export default PurchaseOrderItemDTO;
+export default OcrImportedPurchaseOrderItemDTO;
