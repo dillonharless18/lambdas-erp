@@ -1,0 +1,6 @@
+{
+  "apiPath": "vehicle-type",
+  "httpMethod": "GET",
+  "name": "getAllVehicleType",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
