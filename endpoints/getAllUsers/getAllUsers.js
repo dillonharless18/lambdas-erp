@@ -16,11 +16,12 @@ const initializeDb = async () => {
 const getAllUsers = async (userRole) => {
   await initializeDb();
   try {
-    const users = await knexInstance
-      .select('*')
-      .from('user')
-      .where('user_role', userRole)
-      .andWhere('is_active', true);
+    let query = knexInstance.select('*').from('user').where('is_active', true);
+    if (userRole) {
+      query = query.andWhere('user_role', userRole);
+    }
+    const users = await query;
+
     return {
       statusCode: 200,
       body: JSON.stringify(users),

@@ -4,6 +4,6 @@
   "name": "getAllUsers",
   "allowedGroups": ["logistics", "project_manager", "admin"],
   "requestParameters": {
-    "role": true
+    "role": false
   }
 }
