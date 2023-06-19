@@ -1,5 +1,5 @@
 {
-  "apiPath": "ocr-imported-purchase-order/{ocrImportedPurchaseOrderId}",
+  "apiPath": "ocr-imported-purchase-order/{ocr_imported_purchase_order_draft_id}",
   "httpMethod": "PATCH",
   "name": "updateOcrImportedPurchaseOrder",
   "allowedGroups": ["logistics", "project_manager", "admin"]
