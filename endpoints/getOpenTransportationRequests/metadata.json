@@ -1,0 +1,6 @@
+{
+  "apiPath": "open-transportation-requests",
+  "httpMethod": "GET",
+  "name": "getOpenTransportationRequests",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
