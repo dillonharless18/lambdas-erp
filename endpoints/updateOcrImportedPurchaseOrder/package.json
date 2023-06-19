@@ -1,5 +1,5 @@
 {
-  "name": "deletepurchaseorderrequestitems",
+  "name": "updateocrimportedpurchaseorder",
   "version": "1.0.0",
   "type": "module",
   "description": "",
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.338.0",
+    "@aws-sdk/client-secrets-manager": "^3.335.0",
     "knex": "^2.4.2",
     "pg": "^8.11.0",
     "serverless": "^3.31.0",
