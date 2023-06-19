@@ -29,25 +29,27 @@ const postPurchaseOrder = async (order) => {
   }
 
   const purchaseOrder = new PurchaseOrderDTO(order);
-
+  let purchaseOrderNumber;
   try {
     await knexInstance.transaction(async (trx) => {
       const purchase_order_id = uuidv4();
       const purchase_order_number = Math.floor(Math.random() * 1e12).toString();
 
-      await trx('purchase_order').insert({
-        purchase_order_id,
-        created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-        last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-        total_price: purchaseOrder.total_price,
-        vendor_id: purchaseOrder.vendor_id,
-        purchase_order_status_id: '2', // Needs Receiving
-        s3_uri: purchaseOrder.s3_uri,
-        created_at: knexInstance.raw('NOW()'),
-        last_updated_at: knexInstance.raw('NOW()'),
-        purchase_order_number: purchase_order_number,
-        quickbooks_purchase_order_id: '1',
-      });
+      purchaseOrderNumber = await trx('purchase_order')
+        .insert({
+          purchase_order_id,
+          created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+          last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+          total_price: purchaseOrder.total_price,
+          vendor_id: purchaseOrder.vendor_id,
+          purchase_order_status_id: '2', // Needs Receiving
+          s3_uri: purchaseOrder.s3_uri,
+          created_at: knexInstance.raw('NOW()'),
+          last_updated_at: knexInstance.raw('NOW()'),
+          purchase_order_number: purchase_order_number,
+          quickbooks_purchase_order_id: '1',
+        })
+        .returning('purchase_order_number');
 
       const purchaseOrderItemPromises = purchaseOrder.purchaseOrderItems.map(
         async (item) => {
@@ -100,6 +102,7 @@ const postPurchaseOrder = async (order) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Purchase Order created successfully!',
+        purchaseOrderNumber: purchaseOrderNumber,
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
