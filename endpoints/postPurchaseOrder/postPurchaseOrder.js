@@ -29,13 +29,13 @@ const postPurchaseOrder = async (order) => {
   }
 
   const purchaseOrder = new PurchaseOrderDTO(order);
-  let purchaseOrderNumber;
+  let purchaseOrderDetails;
   try {
     await knexInstance.transaction(async (trx) => {
       const purchase_order_id = uuidv4();
       const purchase_order_number = Math.floor(Math.random() * 1e12).toString();
 
-      purchaseOrderNumber = await trx('purchase_order')
+      purchaseOrderDetails = await trx('purchase_order')
         .insert({
           purchase_order_id,
           created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
@@ -49,7 +49,7 @@ const postPurchaseOrder = async (order) => {
           purchase_order_number: purchase_order_number,
           quickbooks_purchase_order_id: '1',
         })
-        .returning('purchase_order_number');
+        .returning(['purchase_order_number', 'purchase_order_id']);
 
       const purchaseOrderItemPromises = purchaseOrder.purchaseOrderItems.map(
         async (item) => {
@@ -102,7 +102,7 @@ const postPurchaseOrder = async (order) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Purchase Order created successfully!',
-        purchaseOrderNumber: purchaseOrderNumber,
+        purchaseOrderDetails: purchaseOrderDetails,
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
