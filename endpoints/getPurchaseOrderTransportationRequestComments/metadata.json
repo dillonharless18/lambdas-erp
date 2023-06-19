@@ -1,0 +1,6 @@
+{
+  "apiPath": "open-transportation-requests/{purchase_order_transportation_request_id}/comments",
+  "httpMethod": "GET",
+  "name": "getPurchaseOrderTransportationRequestComments",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
