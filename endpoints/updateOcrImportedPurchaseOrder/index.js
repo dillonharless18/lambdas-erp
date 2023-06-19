@@ -2,11 +2,11 @@ import updateOcrImportedPurchaseOrder from './updatePurchaseOrderRequestItem.js'
 
 const handler = async (event) => {
   try {
-    const ocrImportedPurchaseOrderId =
-      event.pathParameters?.ocrImportedPurchaseOrderId;
+    const ocrImportedPurchaseOrderDraftId =
+      event.pathParameters?.ocr_imported_purchase_order_draft_id;
     const body = JSON.parse(event.body).ocrImportedPurchaseOrder;
 
-    if (!ocrImportedPurchaseOrderId) {
+    if (!ocrImportedPurchaseOrderDraftId) {
       return {
         statusCode: 400,
         body: JSON.stringify({
@@ -19,7 +19,7 @@ const handler = async (event) => {
     }
 
     return await updateOcrImportedPurchaseOrder(
-      ocrImportedPurchaseOrderId,
+      ocrImportedPurchaseOrderDraftId,
       body
     );
   } catch (error) {
