@@ -1,16 +1,15 @@
-import updateOcrImportedPurchaseOrder from './updateOcrImportedPurchaseOrder.js';
+import deletepurchaseOrderTransportationRequest from './/deletePurchaseOrderTransportationRequest.js';
 
 const handler = async (event) => {
   try {
-    const ocrImportedPurchaseOrderDraftId =
-      event.pathParameters?.ocr_imported_purchase_order_draft_id;
-    const body = JSON.parse(event.body).ocrImportedPurchaseOrder;
-
-    if (!ocrImportedPurchaseOrderDraftId) {
+    const purchaseOrderTransportationRequestId =
+      event.pathParameters?.purchase_order_transportation_request_id;
+    if (!purchaseOrderTransportationRequestId) {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: 'Missing ocrImportedPurchaseOrderId path parameter',
+          error:
+            'Missing purchase_order_transportation_request_id path parameter',
         }),
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -18,9 +17,8 @@ const handler = async (event) => {
       };
     }
 
-    return await updateOcrImportedPurchaseOrder(
-      ocrImportedPurchaseOrderDraftId,
-      body
+    return await deletepurchaseOrderTransportationRequest(
+      purchaseOrderTransportationRequestId
     );
   } catch (error) {
     console.error('Error in handler:', error);

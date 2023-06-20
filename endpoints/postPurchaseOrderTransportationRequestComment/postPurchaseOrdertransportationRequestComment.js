@@ -30,7 +30,7 @@ const postPurchaseOrderTransportationRequestComment = async (
   }
 
   const purchaseOrderTransportationRequestComment =
-    new PurchaseOrderRequestItemComment(comment);
+    new PurchaseOrderTransportationRequestComment(comment);
 
   const dataToInsert = {
     purchase_order_transportation_request_comment_id: uuidv4(),
