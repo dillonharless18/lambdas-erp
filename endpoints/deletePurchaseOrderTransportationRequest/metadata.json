@@ -1,0 +1,6 @@
+{
+  "apiPath": "open-transportation-requests/{purchase_order_transportation_request_id}",
+  "httpMethod": "DELETE",
+  "name": "deletePurchaseOrderTransportationRequest",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
