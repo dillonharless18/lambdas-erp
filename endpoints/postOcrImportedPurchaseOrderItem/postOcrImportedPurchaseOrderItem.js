@@ -38,7 +38,7 @@ const postOcrImportedPurchaseOrderItem = async (ocrImportedPurchaseOrderItem) =>
     const ocrImportedPOItem = new OcrImportedPurchaseOrderItem(
       ocrImportedPurchaseOrderItem
     );
-    await knexInstance('ocr_imported_purchase_order_item_id').insert({
+    await knexInstance('ocr_imported_purchase_order_draft_item').insert({
       ocr_imported_purchase_order_draft_item_id: uuidv4(),
       ocr_imported_purchase_order_draft_id: ocrImportedPOItem.ocr_imported_purchase_order_draft_id,
       created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
