@@ -3,8 +3,9 @@ import updatePurchaseOrderRequestItem from './updatePurchaseOrderRequestItem.js'
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).requestItem;
+    const purchaseOrderRequestItemId = event.pathParameters?.purchase_order_request_item_id;
 
-    return await updatePurchaseOrderRequestItem(body);
+    return await updatePurchaseOrderRequestItem(body, purchaseOrderRequestItemId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
