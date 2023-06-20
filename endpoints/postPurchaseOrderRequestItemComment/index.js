@@ -3,7 +3,9 @@ import postPurchaseOrderRequestItemComment from './postPurchaseOrderRequestItemC
 const handler = async (event) => {
   try {
     const comment = JSON.parse(event.body).comment;
-    return await postPurchaseOrderRequestItemComment(comment);
+    const purchaseOrderRequestItemId = event.pathParameters?.purchase_order_request_item_id;
+
+    return await postPurchaseOrderRequestItemComment(comment, purchaseOrderRequestItemId);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
