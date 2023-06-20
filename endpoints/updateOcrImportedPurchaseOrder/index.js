@@ -1,4 +1,4 @@
-import updateOcrImportedPurchaseOrder from './updatePurchaseOrderRequestItem.js';
+import updateOcrImportedPurchaseOrder from './updateOcrImportedPurchaseOrder.js';
 
 const handler = async (event) => {
   try {

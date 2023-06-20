@@ -46,7 +46,7 @@ const updateOcrImportedPurchaseOrder = async (
   };
 
   if (ocrImportedPurchaseOrder.ocr_suggested_purchase_order_number)
-    updatedItem.ocr_suggested_purchase_order_number =
+    updatedItem.ocr_suggesetd_purchase_order_number =
       ocrImportedPurchaseOrder.ocr_suggested_purchase_order_number;
 
   if (ocrImportedPurchaseOrder.vendor_id)
