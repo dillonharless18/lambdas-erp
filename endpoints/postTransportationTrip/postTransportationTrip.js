@@ -21,13 +21,13 @@ const postTransportationTrip = async (
 ) => {
   await initializeDb();
 
-  if (typeof body !== 'object' || body === null) {
-    console.error('Error: The transportation trip parameter must be an object');
+  if (typeof body !== 'object' || body === null || Object.keys(body).length === 0) {
+    console.error('Error: The transportation trip parameter must be a non-empty object');
     return {
       statusCode: 400,
       body: JSON.stringify({
         error:
-          'Invalid input format: The transportation trip parameter must be an object',
+          'Invalid input format: The transportation trip parameter must be a non-empty object',
       }),
     };
   }
