@@ -15,10 +15,12 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderRequestItemComment = async (comment) => {
+const postPurchaseOrderRequestItemComment = async (comment, purchaseOrderRequestItemId) => {
   await initializeDb();
 
-  if (!comment) {
+  if (!purchaseOrderRequestItemId) {
+    throw new Error('The purchase_order_request_item_id field must not be null');
+  } else if (!comment) {
     throw new Error('The comment parameter must not be null');
   }
 
@@ -28,8 +30,7 @@ const postPurchaseOrderRequestItemComment = async (comment) => {
 
   const dataToInsert = {
     purchase_order_request_item_comment_id: uuidv4(),
-    purchase_order_request_item_id:
-      purchaseOrderRequestItemComment.purchase_order_request_item_id,
+    purchase_order_request_item_id: purchaseOrderRequestItemId,
     comment_text: purchaseOrderRequestItemComment.comment_text,
     created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
     created_at: knexInstance.raw('NOW()'),

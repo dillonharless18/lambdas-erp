@@ -1,5 +1,5 @@
 {
-  "apiPath": "purchase-order-request-item",
+  "apiPath": "purchase-order-request-items/{purchase_order_request_item_id}",
   "httpMethod": "PATCH",
   "name": "updatePurchaseOrderRequestItem",
   "allowedGroups": ["logistics", "project_manager", "admin"]

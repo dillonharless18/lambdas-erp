@@ -14,11 +14,11 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrder = async (purchaseOrder) => {
+const updatePurchaseOrder = async (purchaseOrder, purchaseOrderId) => {
   await initializeDb();
 
-  if (!purchaseOrder.purchase_order_id) {
-    throw new Error('Missing purchase_order_id');
+  if (!purchaseOrderId) {
+    throw new Error('The purchase_order_id field must not be null');
   }
 
   let purchaseOrderData = new PurchaseOrder({
@@ -32,7 +32,7 @@ const updatePurchaseOrder = async (purchaseOrder) => {
   ); // remove null or empty values
 
   await knexInstance('purchase_order')
-    .where('purchase_order_id', purchaseOrderData.purchase_order_id)
+    .where('purchase_order_id', purchaseOrderId)
     .update(purchaseOrderData);
 
   return {

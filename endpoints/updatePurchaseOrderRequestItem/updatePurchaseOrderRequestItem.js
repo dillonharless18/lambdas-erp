@@ -14,9 +14,12 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrderRequestItem = async (item) => {
+const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId) => {
   await initializeDb();
 
+  if (!purchaseOrderRequestItemId) {
+    throw new Error('The purchase_order_request_item_id field must not be null');
+  }
   if (typeof item !== 'object' || item === null) {
     console.error('Error: The item parameter must be an object');
     return {
@@ -53,7 +56,7 @@ const updatePurchaseOrderRequestItem = async (item) => {
   await knexInstance('purchase_order_request_item')
     .where(
       'purchase_order_request_item_id',
-      purchaseOrderRequestItem.purchase_order_request_item_id
+      purchaseOrderRequestItemId
     )
     .update(updatedItem);
 
