@@ -1,4 +1,4 @@
-import deletepurchaseOrderTransportationRequest from './/deletePurchaseOrderTransportationRequest.js';
+import deleteOpenTransportationRequest from './deleteOpenTransportationRequest.js';
 
 const handler = async (event) => {
   try {
@@ -17,7 +17,7 @@ const handler = async (event) => {
       };
     }
 
-    return await deletepurchaseOrderTransportationRequest(
+    return await deleteOpenTransportationRequest(
       purchaseOrderTransportationRequestId
     );
   } catch (error) {
