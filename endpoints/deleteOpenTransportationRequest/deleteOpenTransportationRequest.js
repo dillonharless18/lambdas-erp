@@ -13,7 +13,7 @@ const initializeDb = async () => {
   }
 };
 
-const deletepurchaseOrderTransportationRequest = async (
+const deleteOpenTransportationRequest = async (
   purchaseOrderTransportationRequestId
 ) => {
   await initializeDb();
@@ -32,14 +32,14 @@ const deletepurchaseOrderTransportationRequest = async (
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Transportation Request deleted successfully!',
+        message: 'Open Transportation Request deleted successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in deletePurchaseOrderTransportationRequest:', error);
+    console.error('Error in deleteOpenTransportationRequest:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error.message}` }),
@@ -49,4 +49,4 @@ const deletepurchaseOrderTransportationRequest = async (
     };
   }
 };
-export default deletepurchaseOrderTransportationRequest;
+export default deleteOpenTransportationRequest;
