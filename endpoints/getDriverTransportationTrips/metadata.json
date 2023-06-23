@@ -1,0 +1,6 @@
+{
+  "apiPath": "driver-transportation-trips/{driver_id}",
+  "httpMethod": "GET",
+  "name": "getdrivertransportationtrips",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}

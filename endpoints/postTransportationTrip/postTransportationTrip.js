@@ -30,6 +30,15 @@ const postTransportationTrip = async (
       }),
     };
   }
+  if (body.purchase_order_transportation_request_ids?.length === 0) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error:
+          'Invalid input format: No data provided in purchase_order_transportation_request_ids',
+      }),
+    };
+  }
 
   const transportationTrip = new TransportationTrip(body);
 
@@ -46,20 +55,17 @@ const postTransportationTrip = async (
   };
 
   try {
-    let transportationTripId = ''
     await knexInstance.transaction(async (trx) => {
       const transportationTripRes = await trx('transportation_trip')
         .insert(dataToInsert)
         .returning('transportation_trip_id');
 
-      transportationTripId = transportationTripRes[0].transportation_trip_id
-
-      transportationTrip.purchase_order_transportation_request_ids.map(async (id) => {
+      const promises = transportationTrip.purchase_order_transportation_request_ids.map(async (id) => {
         await trx(
           'transportation_trip_by_purchase_order_transportation_request'
         ).insert({
           purchase_order_transportation_request_id: id,
-          transportation_trip_id: transportationTripId,
+          transportation_trip_id: transportationTripRes[0].transportation_trip_id,
           transportation_request_status_id: 2, //Assigned
           created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
           created_at: knexInstance.raw('NOW()'),
@@ -75,13 +81,13 @@ const postTransportationTrip = async (
           .where('purchase_order_transportation_request_id', id);
       })
 
+      await Promise.all(promises);
     });
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Transportation Trip added successfully!',
-        data: transportationTripId,
+        message: 'Transportation Trip added successfully!'
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
