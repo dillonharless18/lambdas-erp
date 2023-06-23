@@ -1,5 +1,5 @@
 {
-  "apiPath": "transportation-trip/{purchaseOrderTransportationRequestId}",
+  "apiPath": "transportation-trip",
   "httpMethod": "POST",
   "name": "postTransportationTrip",
   "allowedGroups": ["logistics", "project_manager", "admin"]

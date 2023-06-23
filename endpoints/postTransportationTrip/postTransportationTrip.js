@@ -16,7 +16,6 @@ const initializeDb = async () => {
 };
 
 const postTransportationTrip = async (
-  purchaseOrderTransportationRequestId,
   body
 ) => {
   await initializeDb();
@@ -47,40 +46,42 @@ const postTransportationTrip = async (
   };
 
   try {
+    let transportationTripId = ''
     await knexInstance.transaction(async (trx) => {
-      const transportationTripId = await trx('transportation_trip')
+      const transportationTripRes = await trx('transportation_trip')
         .insert(dataToInsert)
         .returning('transportation_trip_id');
 
-      await trx(
-        'transportation_trip_by_purchase_order_transportation_request'
-      ).insert({
-        purchase_order_transportation_request_id:
-          purchaseOrderTransportationRequestId,
-        transportation_trip_id: transportationTripId[0].transportation_trip_id,
-        transportation_request_status_id: 2, //Assigned
-        created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-        created_at: knexInstance.raw('NOW()'),
-        last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-        last_updated_at: knexInstance.raw('NOW()'),
-      });
+      transportationTripId = transportationTripRes[0].transportation_trip_id
 
-      await trx('purchase_order_transportation_request')
-        .update({
+      transportationTrip.purchase_order_transportation_request_ids.map(async (id) => {
+        await trx(
+          'transportation_trip_by_purchase_order_transportation_request'
+        ).insert({
+          purchase_order_transportation_request_id: id,
+          transportation_trip_id: transportationTripId,
           transportation_request_status_id: 2, //Assigned
+          created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+          created_at: knexInstance.raw('NOW()'),
+          last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
           last_updated_at: knexInstance.raw('NOW()'),
-        })
-        .where(
-          'purchase_order_transportation_request_id',
-          purchaseOrderTransportationRequestId
-        );
+        });
+
+        await trx('purchase_order_transportation_request')
+          .update({
+            transportation_request_status_id: 2, //Assigned
+            last_updated_at: knexInstance.raw('NOW()'),
+          })
+          .where('purchase_order_transportation_request_id', id);
+      })
+
     });
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Transportation Trip added successfully!',
-        data: dataToInsert.purchase_order_transportation_request_id,
+        data: transportationTripId,
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
