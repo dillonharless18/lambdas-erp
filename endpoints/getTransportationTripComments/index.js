@@ -2,7 +2,7 @@ import getTransportationTripComments from './getTransportationTripComments.js';
 
 const handler = async (event, context) => {
   try {
-    const transportationTripId = event.pathParameters?.transportaion_trip_id;
+    const transportationTripId = event.pathParameters?.transportation_trip_id;
     if (!transportationTripId) {
       return {
         statusCode: 400,

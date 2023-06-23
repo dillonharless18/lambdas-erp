@@ -21,9 +21,13 @@ const postTransportationTripComment = async (comment, transportationTripId) => {
   if (
     !comment ||
     typeof comment !== 'object' ||
-    Object.keys(comment).length === 0
+    Object.keys(comment).length === 0 ||
+    !comment.comment_text ||
+    comment.comment_text.trim() === ''
   ) {
-    throw new Error('The comment parameter must not be empty');
+    throw new Error(
+      'The comment and comment_text parameters must not be empty and should be an object with some keys'
+    );
   }
 
   const transportationTripComment = new TransportationTripComment(comment);
@@ -49,10 +53,7 @@ const postTransportationTripComment = async (comment, transportationTripId) => {
       },
     };
   } catch (error) {
-    console.error(
-      'Error in posTransportationTripComment',
-      error
-    );
+    console.error('Error in posTransportationTripComment', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
