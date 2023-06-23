@@ -28,6 +28,9 @@ const postTransportationTrip = async (
         error:
           'Invalid input format: The transportation trip parameter must be a non-empty object',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
   if (body.purchase_order_transportation_request_ids?.length === 0) {
@@ -37,6 +40,9 @@ const postTransportationTrip = async (
         error:
           'Invalid input format: No data provided in purchase_order_transportation_request_ids',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 

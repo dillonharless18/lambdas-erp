@@ -22,6 +22,9 @@ const getDriverTransportationTrips = async (driverId) => {
         error:
           'Invalid input format: No driver_id provided',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 
