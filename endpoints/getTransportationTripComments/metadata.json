@@ -1,0 +1,6 @@
+{
+  "apiPath": "transportation-trips/{transportaion_trip_id}/comments",
+  "httpMethod": "GET",
+  "name": "getTransportationTripComments",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
