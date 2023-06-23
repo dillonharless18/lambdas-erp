@@ -1,0 +1,6 @@
+{
+  "apiPath": "transportation-trips/{transportation_trip_id}",
+  "httpMethod": "DELETE",
+  "name": "deleteTransportationTrip",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
