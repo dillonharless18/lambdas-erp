@@ -1,0 +1,9 @@
+{
+  "apiPath": "transportation-trips",
+  "httpMethod": "GET",
+  "name": "getTransportationTrips",
+  "allowedGroups": ["logistics", "project_manager", "admin"],
+  "requestParameters": {
+    "status": false
+  }
+}
