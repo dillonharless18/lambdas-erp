@@ -8,7 +8,7 @@ const handler = async (event, context) => {
         statusCode: 400,
         body: JSON.stringify({
           error:
-            'Missing purchase_order_transportation_request_id path parameter',
+            'Missing transportaion_trip_id path parameter',
         }),
         headers: {
           'Access-Control-Allow-Origin': '*',
