@@ -39,7 +39,8 @@ const getTransportationTrips = async (transportationTripStatus) => {
         'vehicle_type',
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
-      );
+      )
+      .where('is_active', true);
 
     if (transportationTripStatus) {
       let transportaionTripStatusID = await knexInstance(
@@ -48,7 +49,7 @@ const getTransportationTrips = async (transportationTripStatus) => {
         .select('transportation_trip_status_id')
         .where('transportation_trip_status_name', transportationTripStatus);
 
-      query = query.where(
+      query = query.andWhere(
         'transportation_trip_status_id',
         transportaionTripStatusID
       );
