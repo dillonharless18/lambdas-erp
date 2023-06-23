@@ -120,8 +120,8 @@ const getDriverTransportationTrips = async (driverId) => {
       .groupBy(
         'trip.transportation_trip_id',
         'user_created_trip.user_id',
-        'driver.driver_id',
-        'vehicle.vehicle_type_id',
+        'driver.user_id',
+        'vehicle_type.vehicle_type_id',
         "transportation_trip_status.transportation_trip_status_id"
       )
       .where("trip.driver_id", driverId)
