@@ -40,18 +40,19 @@ const getTransportationTrips = async (transportationTripStatus) => {
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
       )
-      .where('is_active', true);
+      .where('transportation_trip.is_active', true);
 
     if (transportationTripStatus) {
       let transportaionTripStatusID = await knexInstance(
         'transportation_trip_status'
       )
         .select('transportation_trip_status_id')
-        .where('transportation_trip_status_name', transportationTripStatus);
+        .where('transportation_trip_status_name', transportationTripStatus)
+        .first();
 
       query = query.andWhere(
-        'transportation_trip_status_id',
-        transportaionTripStatusID
+        'transportation_trip.transportation_trip_status_id',
+        transportaionTripStatusID.transportation_trip_status_id
       );
     }
 
@@ -71,6 +72,9 @@ const getTransportationTrips = async (transportationTripStatus) => {
       body: JSON.stringify({
         error: `Server Error, ${error}`,
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 };
