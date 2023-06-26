@@ -128,7 +128,7 @@ const getDriverTransportationTrips = async (driverId) => {
         "transportation_trip_status.transportation_trip_status_id"
       )
       .where("trip.driver_id", driverId)
-      .andwhere('trip.is_active', true);
+      .andWhere('trip.is_active', true);
 
     return {
       statusCode: 200,
