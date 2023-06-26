@@ -106,16 +106,16 @@ const getDriverTransportationTrips = async (driverId) => {
               'additional_details',request.additional_details,
               'created_at',request.created_at,
               'last_updated_at',request.last_updated_at,
-              'future_transportation_date, request.future_transportation_date',
-              'transportation_time, request.transportation_time',
-              'contact_name, request.contact_name',
-              'contact_number, request.contact_number',
-              'recipients, request.recipients',
+              'future_transportation_date', request.future_transportation_date,
+              'transportation_time', request.transportation_time,
+              'contact_name', request.contact_name,
+              'contact_number', request.contact_number,
+              'recipients', request.recipients,
               'created_by', json_build_object('user_id', user_created_request.user_id, 'requester', (user_created_request.first_name || ' ' || user_created_request.last_name)),
               'urgent_order_status',json_build_object('urgent_order_status_id', urgent_order_request.urgent_order_status_id, 'urgent_order_status_name', urgent_order_request.urgent_order_status_name),
               'project', json_build_object('project_id', project.project_id, 'project_name', project.project_name),
-              'transportation_request_type, json_build_object('transportation_request_type_id', transportation_request_type.transportation_request_type_id, 'transportation_request_type_name', transportation_request_type.transportation_request_type_name)',
-              'transportation_request_status', json_build_object('transportation_request_status_id', transportation_request_status.transportation_request_status_id, 'transportation_request_status_name', transportation_request_status.transportation_request_status_name)'
+              'transportation_request_type', json_build_object('transportation_request_type_id', transportation_request_type.transportation_request_type_id, 'transportation_request_type_name', transportation_request_type.transportation_request_type_name),
+              'transportation_request_status', json_build_object('transportation_request_status_id', transportation_request_status.transportation_request_status_id, 'transportation_request_status_name', transportation_request_status.transportation_request_status_name)
             )
           ) as purchase_order_transportation_requests
         `)
@@ -125,9 +125,9 @@ const getDriverTransportationTrips = async (driverId) => {
         'user_created_trip.user_id',
         'driver.user_id',
         'vehicle_type.vehicle_type_id',
-        "transportation_trip_status.transportation_trip_status_id"
+        'transportation_trip_status.transportation_trip_status_id'
       )
-      .where("trip.driver_id", driverId)
+      .where('trip.driver_id', driverId)
       .andWhere('trip.is_active', true);
 
     return {
