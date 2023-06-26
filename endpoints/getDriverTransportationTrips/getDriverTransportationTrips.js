@@ -31,7 +31,7 @@ const getDriverTransportationTrips = async (driverId) => {
 
   await initializeDb();
   try {
-    const trips = await knex('transportation_trip as trip')
+    const trips = await knexInstance('transportation_trip as trip')
       .join('transportation_trip_by_purchase_order_transportation_request as po_request', 'trip.transportation_trip_id', '=', 'po_request.transportation_trip_id')
       .join('purchase_order_transportation_request as request', 'request.purchase_order_transportation_request_id', '=', 'po_request.purchase_order_transportation_request_id')
       .leftJoin(
