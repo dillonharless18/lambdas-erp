@@ -1,6 +1,6 @@
 {
   "apiPath": "transportation-trips/{transportation_trip_id}",
-  "httpMethod": "UPDATE",
+  "httpMethod": "PATCH",
   "name": "updateTransportationTrip",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }
