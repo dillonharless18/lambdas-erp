@@ -75,6 +75,11 @@ const getDriverTransportationTrips = async (driverId) => {
         'request.transportation_request_status_id',
         'transportation_request_status.transportation_request_status_id'
       )
+      .leftJoin(
+        'transportation_request_status as trip_by_po_request_status',
+        'po_request.transportation_request_status_id',
+        'trip_by_po_request_status.transportation_request_status_id'
+      )
       .select([
         'trip.transportation_trip_id',
         'trip.created_at',
@@ -116,6 +121,7 @@ const getDriverTransportationTrips = async (driverId) => {
               'project', json_build_object('project_id', project.project_id, 'project_name', project.project_name),
               'transportation_request_type', json_build_object('transportation_request_type_id', transportation_request_type.transportation_request_type_id, 'transportation_request_type_name', transportation_request_type.transportation_request_type_name),
               'transportation_request_status', json_build_object('transportation_request_status_id', transportation_request_status.transportation_request_status_id, 'transportation_request_status_name', transportation_request_status.transportation_request_status_name)
+              'trip_by_po_request_status', json_build_object('transportation_request_status_id', trip_by_po_request_status.transportation_request_status_id, 'transportation_request_status_name', trip_by_po_request_status.transportation_request_status_name)
             )
           ) as purchase_order_transportation_requests
         `)

@@ -1,0 +1,6 @@
+{
+  "apiPath": "transportation-trip/{transportation_trip_id}/purchase-order-request/{purchase_order_transportation_request_id}",
+  "httpMethod": "PATCH",
+  "name": "updateTransportationTripByPurchaseOrderReques",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
