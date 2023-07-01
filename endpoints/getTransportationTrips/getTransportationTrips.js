@@ -22,13 +22,23 @@ const getTransportationTrips = async (transportationTripStatus) => {
         knexInstance.raw(
           "(driver.first_name || ' ' || driver.last_name) as driverName"
         ),
+        knexInstance.raw(
+          "(requester.first_name || ' ' || requester.last_name) as requester"
+        ),
         'transportation_trip_status.transportation_trip_status_name',
         'vehicle_type.vehicle_type_name',
+        'potr.from_location',
+        'potr.to_location',
       ])
       .leftJoin(
         'user as driver',
         'transportation_trip.driver_id',
         'driver.user_id'
+      )
+      .leftJoin(
+        'user as requester',
+        'transportation_trip.created_by',
+        'requester.user_id'
       )
       .leftJoin(
         'transportation_trip_status',
@@ -39,6 +49,16 @@ const getTransportationTrips = async (transportationTripStatus) => {
         'vehicle_type',
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
+      )
+      .leftJoin(
+        'transportation_trip_by_purchase_order_transportation_request as ttpotr',
+        'transportation_trip.transportation_trip_id',
+        'ttpotr.transportation_trip_id'
+      )
+      .leftJoin(
+        'purchase_order_transportation_request as potr',
+        'ttpotr.purchase_order_transportation_request_id',
+        'potr.purchase_order_transportation_request_id'
       )
       .where('transportation_trip.is_active', true);
 
@@ -78,5 +98,4 @@ const getTransportationTrips = async (transportationTripStatus) => {
     };
   }
 };
-
 export default getTransportationTrips;
