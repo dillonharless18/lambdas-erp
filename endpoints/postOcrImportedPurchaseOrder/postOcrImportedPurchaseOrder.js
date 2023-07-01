@@ -34,18 +34,19 @@ const postOcrImportedPurchaseOrder = async (
         error:
           'Invalid input format: The ocrImportedPurchaseOrder parameter must be an object',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 
   const purchaseOrder = new OcrImportedPurchaseOrderDTO(
     ocrImportedPurchaseOrder
   );
-
+  const purchase_order_id = uuidv4();
+  const purchase_order_number = Math.floor(Math.random() * 1e12).toString();
   try {
     await knexInstance.transaction(async (trx) => {
-      const purchase_order_id = uuidv4();
-      const purchase_order_number = Math.floor(Math.random() * 1e12).toString();
-
       const purchaseOrderId = await trx('purchase_order')
         .insert({
           purchase_order_id,
@@ -127,6 +128,12 @@ const postOcrImportedPurchaseOrder = async (
       statusCode: 200,
       body: JSON.stringify({
         message: 'OCr Imported Purchase Order created successfully!',
+        purchaseOrderDetails: [
+          {
+            purchase_order_number: purchase_order_number,
+            purchase_order_id: purchase_order_id,
+          },
+        ],
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
