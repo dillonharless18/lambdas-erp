@@ -22,7 +22,7 @@ const getTransportationTrips = async (transportationTripStatus) => {
         knexInstance.raw(
           "(driver.first_name || ' ' || driver.last_name) as driverName"
         ),
-        dknexInstance.raw(
+        knexInstance.raw(
           "(requester.first_name || ' ' || requester.last_name) as requester"
         ),
         'transportation_trip_status.transportation_trip_status_name',
@@ -63,7 +63,9 @@ const getTransportationTrips = async (transportationTripStatus) => {
       .where('transportation_trip.is_active', true);
 
     if (transportationTripStatus) {
-      let transportaionTripStatusID = await db('transportation_trip_status')
+      let transportaionTripStatusID = await knexInstance(
+        'transportation_trip_status'
+      )
         .select('transportation_trip_status_id')
         .where('transportation_trip_status_name', transportationTripStatus)
         .first();
@@ -96,5 +98,4 @@ const getTransportationTrips = async (transportationTripStatus) => {
     };
   }
 };
-
 export default getTransportationTrips;
