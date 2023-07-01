@@ -33,6 +33,9 @@ const updateOcrImportedPurchaseOrder = async (
         error:
           'Invalid input format: The ocrImportedPurchaseOrderObject parameter must be an object',
       }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
     };
   }
 
