@@ -27,8 +27,6 @@ const getTransportationTrips = async (transportationTripStatus) => {
         ),
         'transportation_trip_status.transportation_trip_status_name',
         'vehicle_type.vehicle_type_name',
-        'potr.from_location',
-        'potr.to_location',
       ])
       .leftJoin(
         'user as driver',
@@ -49,16 +47,6 @@ const getTransportationTrips = async (transportationTripStatus) => {
         'vehicle_type',
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
-      )
-      .leftJoin(
-        'transportation_trip_by_purchase_order_transportation_request as ttpotr',
-        'transportation_trip.transportation_trip_id',
-        'ttpotr.transportation_trip_id'
-      )
-      .leftJoin(
-        'purchase_order_transportation_request as potr',
-        'ttpotr.purchase_order_transportation_request_id',
-        'potr.purchase_order_transportation_request_id'
       )
       .where('transportation_trip.is_active', true);
 
