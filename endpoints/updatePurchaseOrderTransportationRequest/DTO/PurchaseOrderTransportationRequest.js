@@ -6,8 +6,6 @@ class PurchaseOrderTransportationRequest {
     this.additional_details = request.additional_details;
     this.urgent_order_status_id = request.urgent_order_status_id;
     this.transportation_request_type_id = request.transportation_request_type_id
-    this.created_by = request.created_by;
-    this.last_updated_by = request.created_by;
     this.transportation_request_status_id = request.transportation_request_status_id
   }
 }
