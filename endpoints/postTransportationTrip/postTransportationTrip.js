@@ -90,10 +90,46 @@ const postTransportationTrip = async (
       await Promise.all(promises);
     });
 
+    const addedTrip = await knexInstance('transportation_trip')
+      .select([
+        'transportation_trip.*',
+        knexInstance.raw(
+          "(driver.first_name || ' ' || driver.last_name) as driverName"
+        ),
+        knexInstance.raw(
+          "(requester.first_name || ' ' || requester.last_name) as requester"
+        ),
+        'transportation_trip_status.transportation_trip_status_name',
+        'vehicle_type.vehicle_type_name',
+      ])
+      .leftJoin(
+        'user as driver',
+        'transportation_trip.driver_id',
+        'driver.user_id'
+      )
+      .leftJoin(
+        'user as requester',
+        'transportation_trip.created_by',
+        'requester.user_id'
+      )
+      .leftJoin(
+        'transportation_trip_status',
+        'transportation_trip.transportation_trip_status_id',
+        'transportation_trip_status.transportation_trip_status_id'
+      )
+      .leftJoin(
+        'vehicle_type',
+        'transportation_trip.vehicle_type_id',
+        'vehicle_type.vehicle_type_id'
+      )
+      .where('transportation_trip.is_active', true)
+      .andWhere('transportation_trip.transportation_trip_id', dataToInsert.transportation_trip_id)
+
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Transportation Trip added successfully!'
+        message: 'Transportation Trip added successfully!',
+        data: addedTrip
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
