@@ -41,7 +41,7 @@ const updateTransportationTripByPurchaseOrderRequest = async (data, transportati
     ...transportationTripByPurchaseOrderRequest
   };
 
-  await knexInstance('transportation_trip_by_purchase_order_request')
+  await knexInstance('transportation_trip_by_purchase_order_transportation_request')
     .where(
       'transportation_trip_id',
       transportationTripId
