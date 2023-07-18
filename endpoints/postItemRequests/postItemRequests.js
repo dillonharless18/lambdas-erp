@@ -23,7 +23,7 @@ const postItemRequests = async (items, userSub) => {
   }
 
   const user = await knexInstance('user')
-    .where('sub', userSub)
+    .where('cognito_sub', userSub)
     .pluck('user_id');
 
   const vendor = await knexInstance('vendor')
