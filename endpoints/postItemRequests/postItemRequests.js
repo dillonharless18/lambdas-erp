@@ -15,12 +15,16 @@ const initializeDb = async () => {
   }
 };
 
-const postItemRequests = async (items) => {
+const postItemRequests = async (items, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
     throw new Error('The items parameter must be an array');
   }
+
+  const user = await knexInstance('user')
+    .where('sub', userSub)
+    .pluck('user_id');
 
   const vendor = await knexInstance('vendor')
     .select('vendor_id')
@@ -40,8 +44,8 @@ const postItemRequests = async (items) => {
 
   const dataToInsert = purchaseOrderItems.map((item) => ({
     purchase_order_request_item_id: uuidv4(),
-    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    created_by: user[0],
+    last_updated_by: user[0],
     item_name: item.item_name,
     price: '0',
     quantity: item.quantity,

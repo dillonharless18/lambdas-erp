@@ -3,8 +3,9 @@ import postItemRequests from './postItemRequests.js';
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).requestItems;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await postItemRequests(body);
+    return await postItemRequests(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
