@@ -15,14 +15,24 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderRequestItemComment = async (comment, purchaseOrderRequestItemId) => {
+const postPurchaseOrderRequestItemComment = async (
+  comment,
+  purchaseOrderRequestItemId,
+  userSub
+) => {
   await initializeDb();
 
   if (!purchaseOrderRequestItemId) {
-    throw new Error('The purchase_order_request_item_id field must not be null');
+    throw new Error(
+      'The purchase_order_request_item_id field must not be null'
+    );
   } else if (!comment) {
     throw new Error('The comment parameter must not be null');
   }
+
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const purchaseOrderRequestItemComment = new PurchaseOrderRequestItemComment(
     comment
@@ -32,7 +42,7 @@ const postPurchaseOrderRequestItemComment = async (comment, purchaseOrderRequest
     purchase_order_request_item_comment_id: uuidv4(),
     purchase_order_request_item_id: purchaseOrderRequestItemId,
     comment_text: purchaseOrderRequestItemComment.comment_text,
-    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    created_by: user[0],
     created_at: knexInstance.raw('NOW()'),
   };
 

@@ -15,12 +15,17 @@ const initializeDb = async () => {
   }
 };
 
-const postOcrImportedPurchaseOrderComment = async (comment) => {
+const postOcrImportedPurchaseOrderComment = async (comment, userSub) => {
   await initializeDb();
 
   if (!comment) {
     throw new Error('The comment parameter must not be null');
   }
+
+  const user = await knexInstance('user')
+  .where('cognito_sub', userSub)
+  .pluck('user_id');
+
 
   const ocrImportedPurchaseOrderComment = new OcrImportedPurchaseOrderComment(
     comment
@@ -31,7 +36,7 @@ const postOcrImportedPurchaseOrderComment = async (comment) => {
     ocr_imported_purchase_order_draft_id:
       ocrImportedPurchaseOrderComment.ocr_imported_purchase_order_draft_id,
     comment_text: ocrImportedPurchaseOrderComment.comment_text,
-    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    created_by: user[0],
     created_at: knexInstance.raw('NOW()'),
   };
 

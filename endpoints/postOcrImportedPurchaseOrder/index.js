@@ -5,6 +5,8 @@ const handler = async (event) => {
     const ocrImportedPurchaseOrderId =
       event.pathParameters?.ocrImportedPurchaseOrderId;
     const body = JSON.parse(event.body).ocrImportedPurchaseOrder;
+    const userSub = event.requestContext.authorizer.sub;
+
 
     if (!ocrImportedPurchaseOrderId) {
       return {
@@ -18,7 +20,7 @@ const handler = async (event) => {
       };
     }
 
-    return await postOcrImportedPurchaseOrder(ocrImportedPurchaseOrderId, body);
+    return await postOcrImportedPurchaseOrder(ocrImportedPurchaseOrderId, body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {

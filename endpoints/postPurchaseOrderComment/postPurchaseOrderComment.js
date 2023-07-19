@@ -15,7 +15,7 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderComment = async (comment, purchaseOrderId) => {
+const postPurchaseOrderComment = async (comment, purchaseOrderId, userSub) => {
   await initializeDb();
 
   if (!purchaseOrderId) {
@@ -27,10 +27,15 @@ const postPurchaseOrderComment = async (comment, purchaseOrderId) => {
   ) {
     throw new Error('The comment parameter must not be empty');
   }
+
+  const user = await knexInstance('user')
+  .where('cognito_sub', userSub)
+  .pluck('user_id');
+
   const purchaseOrderComment = new PurchaseOrderComment({
     purchase_order_comment_id: uuidv4(),
     purchase_order_id: purchaseOrderId,
-    created_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+    created_by: user[0],
     created_at: knexInstance.raw('NOW()'),
     ...comment,
   });

@@ -3,9 +3,15 @@ import postPurchaseOrderRequestItemComment from './postPurchaseOrderRequestItemC
 const handler = async (event) => {
   try {
     const comment = JSON.parse(event.body).comment;
-    const purchaseOrderRequestItemId = event.pathParameters?.purchase_order_request_item_id;
+    const purchaseOrderRequestItemId =
+      event.pathParameters?.purchase_order_request_item_id;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await postPurchaseOrderRequestItemComment(comment, purchaseOrderRequestItemId);
+    return await postPurchaseOrderRequestItemComment(
+      comment,
+      purchaseOrderRequestItemId,
+      userSub
+    );
   } catch (error) {
     console.error('Error in handler:', error);
     return {

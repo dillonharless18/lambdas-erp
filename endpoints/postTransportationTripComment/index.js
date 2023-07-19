@@ -4,6 +4,7 @@ const handler = async (event) => {
   try {
     const comment = JSON.parse(event.body).comment;
     const transportationTripId = event.pathParameters?.transportation_trip_id;
+    const userSub = event.requestContext.authorizer.sub;
     if (!transportationTripId) {
       return {
         statusCode: 400,
@@ -16,7 +17,11 @@ const handler = async (event) => {
       };
     }
 
-    return await postTransportationTripComment(comment, transportationTripId);
+    return await postTransportationTripComment(
+      comment,
+      transportationTripId,
+      userSub
+    );
   } catch (error) {
     console.error('Error in handler:', error);
     return {

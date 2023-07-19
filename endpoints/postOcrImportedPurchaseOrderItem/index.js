@@ -3,8 +3,10 @@ import postOcrImportedPurchaseOrderItem from './postOcrImportedPurchaseOrderItem
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).ocrImportedPurchaseOrderItem;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await postOcrImportedPurchaseOrderItem(body);
+
+    return await postOcrImportedPurchaseOrderItem(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {

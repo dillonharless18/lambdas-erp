@@ -3,8 +3,9 @@ import postPurchaseOrderTransportationRequest from './postPurchaseOrderTransport
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await postPurchaseOrderTransportationRequest(body);
+    return await postPurchaseOrderTransportationRequest(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
