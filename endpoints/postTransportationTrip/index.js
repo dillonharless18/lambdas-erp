@@ -3,10 +3,9 @@ import postTransportationTrip from './postTransportationTrip.js';
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).transportationTrip;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await postTransportationTrip(
-      body
-    );
+    return await postTransportationTrip(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
