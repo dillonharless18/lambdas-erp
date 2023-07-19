@@ -17,7 +17,8 @@ const initializeDb = async () => {
 
 const postOcrImportedPurchaseOrder = async (
   ocrImportedPurchaseOrderId,
-  ocrImportedPurchaseOrder
+  ocrImportedPurchaseOrder,
+  userSub
 ) => {
   await initializeDb();
 
@@ -39,6 +40,10 @@ const postOcrImportedPurchaseOrder = async (
       },
     };
   }
+  const user = await knexInstance('user')
+  .where('cognito_sub', userSub)
+  .pluck('user_id');
+
 
   const purchaseOrder = new OcrImportedPurchaseOrderDTO(
     ocrImportedPurchaseOrder
@@ -50,8 +55,8 @@ const postOcrImportedPurchaseOrder = async (
       const purchaseOrderId = await trx('purchase_order')
         .insert({
           purchase_order_id,
-          created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-          last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+          created_by: user[0],
+          last_updated_by: user[0],
           total_price: purchaseOrder.total_price,
           vendor_id: purchaseOrder.vendor_id,
           purchase_order_status_id: '2', // Needs Receiving
@@ -84,8 +89,8 @@ const postOcrImportedPurchaseOrder = async (
             .insert({
               purchase_order_item_id: uuidv4(),
               purchase_order_id: purchase_order_id,
-              created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-              last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+              created_by: user[0],
+              last_updated_by: user[0],
               price: item.price,
               quantity: item.quantity,
               unit_of_measure: item.unit_of_measure,
