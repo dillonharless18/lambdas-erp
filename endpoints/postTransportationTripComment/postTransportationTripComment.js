@@ -15,7 +15,11 @@ const initializeDb = async () => {
   }
 };
 
-const postTransportationTripComment = async (comment, transportationTripId) => {
+const postTransportationTripComment = async (
+  comment,
+  transportationTripId,
+  userSub
+) => {
   await initializeDb();
 
   if (
@@ -30,13 +34,17 @@ const postTransportationTripComment = async (comment, transportationTripId) => {
     );
   }
 
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
+
   const transportationTripComment = new TransportationTripComment(comment);
 
   const dataToInsert = {
     transportation_trip_comment_id: uuidv4(),
     transportation_trip_id: transportationTripId,
     comment_text: transportationTripComment.comment_text,
-    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    created_by: user[0],
     created_at: knexInstance.raw('NOW()'),
   };
 
