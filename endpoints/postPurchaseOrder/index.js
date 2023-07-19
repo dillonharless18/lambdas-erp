@@ -3,8 +3,9 @@ import postPurchaseOrder from './postPurchaseOrder.js';
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).purchaseOrder;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await postPurchaseOrder(body);
+    return await postPurchaseOrder(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
