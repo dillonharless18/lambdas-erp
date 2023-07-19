@@ -15,12 +15,16 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderTransportationRequest = async (body) => {
+const postPurchaseOrderTransportationRequest = async (body, userSub) => {
   await initializeDb();
 
   if (!body) {
     throw new Error('No data provided');
   }
+
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const transportationRequestData = new PurchaseOrderTransportationRequest(
     body
@@ -33,11 +37,13 @@ const postPurchaseOrderTransportationRequest = async (body) => {
     from_location: transportationRequestData.from_location,
     to_location: transportationRequestData.to_location,
     additional_details: transportationRequestData.additional_details,
-    urgent_order_status_id: transportationRequestData.urgent_order_status_id ? parseInt(transportationRequestData.urgent_order_status_id) : null,
+    urgent_order_status_id: transportationRequestData.urgent_order_status_id
+      ? parseInt(transportationRequestData.urgent_order_status_id)
+      : null,
     transportation_request_status_id: 1, // means status is Open
-    created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    created_by: user[0],
     created_at: knexInstance.raw('NOW()'),
-    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
   };
 
@@ -50,7 +56,7 @@ const postPurchaseOrderTransportationRequest = async (body) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Purchase Order Transportation Request added successfully!',
-        data: dataToInsert.purchase_order_transportation_request_id
+        data: dataToInsert.purchase_order_transportation_request_id,
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
