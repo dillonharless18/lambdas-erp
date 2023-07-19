@@ -15,7 +15,10 @@ const initializeDb = async () => {
   }
 };
 
-const postOcrImportedPurchaseOrderItem = async (ocrImportedPurchaseOrderItem) => {
+const postOcrImportedPurchaseOrderItem = async (
+  ocrImportedPurchaseOrderItem,
+  userSub
+) => {
   await initializeDb();
 
   if (
@@ -33,6 +36,9 @@ const postOcrImportedPurchaseOrderItem = async (ocrImportedPurchaseOrderItem) =>
       }),
     };
   }
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   try {
     const ocrImportedPOItem = new OcrImportedPurchaseOrderItem(
@@ -40,9 +46,10 @@ const postOcrImportedPurchaseOrderItem = async (ocrImportedPurchaseOrderItem) =>
     );
     await knexInstance('ocr_imported_purchase_order_draft_item').insert({
       ocr_imported_purchase_order_draft_item_id: uuidv4(),
-      ocr_imported_purchase_order_draft_id: ocrImportedPOItem.ocr_imported_purchase_order_draft_id,
-      created_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
-      last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+      ocr_imported_purchase_order_draft_id:
+        ocrImportedPOItem.ocr_imported_purchase_order_draft_id,
+      created_by: user[0],
+      last_updated_by: user[0],
       price: ocrImportedPOItem.price,
       quantity: ocrImportedPOItem.quantity,
       unit_of_measure: ocrImportedPOItem.unit_of_measure,
