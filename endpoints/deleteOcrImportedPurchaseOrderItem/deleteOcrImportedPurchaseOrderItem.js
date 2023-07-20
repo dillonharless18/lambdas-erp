@@ -13,12 +13,17 @@ const initializeDb = async () => {
   }
 };
 
-const deleteOcrImportedPurchaseOrderItem = async (ocrImportedPurchaseOrderItemId) => {
+const deleteOcrImportedPurchaseOrderItem = async (
+  ocrImportedPurchaseOrderItemId
+) => {
   await initializeDb();
 
   try {
     await knexInstance('ocr_imported_purchase_order_draft_item')
-      .where('ocr_imported_purchase_order_draft_item_id', ocrImportedPurchaseOrderItemId)
+      .where(
+        'ocr_imported_purchase_order_draft_item_id',
+        ocrImportedPurchaseOrderItemId
+      )
       .update({
         is_active: false,
         last_updated_at: knexInstance.raw('NOW()'),

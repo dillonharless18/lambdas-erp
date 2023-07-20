@@ -33,12 +33,16 @@ const purchaseOrderItemStatusAgainstVendor = async (vendorId) => {
   }
 };
 
-const updatePurchaseOrderRequestItems = async (items) => {
+const updatePurchaseOrderRequestItems = async (items, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
     throw new Error('The items parameter must be an array');
   }
+
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const purchaseOrderItems = items.map(
     (item) => new PurchaseOrderRequestItem(item)
@@ -50,7 +54,7 @@ const updatePurchaseOrderRequestItems = async (items) => {
         await purchaseOrderItemStatusAgainstVendor(item.vendor_id);
 
       const updatedItem = {
-        last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+        last_updated_by: user[0],
         last_updated_at: knexInstance.raw('NOW()'),
       };
 

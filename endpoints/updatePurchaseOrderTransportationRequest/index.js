@@ -2,10 +2,16 @@ import updatePurchaseOrderTransportationRequest from './updatePurchaseOrderTrans
 
 const handler = async (event) => {
   try {
-    const body = JSON.parse(event.body).transportationRequest
-    const purchaseOrderTransportationRequestId = event.pathParameters?.purchase_order_transportation_request_id;
+    const body = JSON.parse(event.body).transportationRequest;
+    const purchaseOrderTransportationRequestId =
+      event.pathParameters?.purchase_order_transportation_request_id;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await updatePurchaseOrderTransportationRequest(body, purchaseOrderTransportationRequestId);
+    return await updatePurchaseOrderTransportationRequest(
+      body,
+      purchaseOrderTransportationRequestId,
+      userSub
+    );
   } catch (error) {
     console.error('Error in handler:', error);
     return {

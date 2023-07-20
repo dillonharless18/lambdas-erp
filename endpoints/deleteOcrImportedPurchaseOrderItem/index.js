@@ -9,7 +9,8 @@ const handler = async (event) => {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: 'Missing ocr_imported_purchase_order_draft_item_id path parameter',
+          error:
+            'Missing ocr_imported_purchase_order_draft_item_id path parameter',
         }),
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -17,7 +18,9 @@ const handler = async (event) => {
       };
     }
 
-    return await deleteOcrImportedPurchaseOrderItemfrom(ocrImportedPurchaseOrderItemId);
+    return await deleteOcrImportedPurchaseOrderItemfrom(
+      ocrImportedPurchaseOrderItemId
+    );
   } catch (error) {
     console.error('Error in handler:', error);
     return {
