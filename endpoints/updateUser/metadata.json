@@ -1,0 +1,6 @@
+{
+  "apiPath": "users/{user_id}",
+  "httpMethod": "PATCH",
+  "name": "updateUser",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
