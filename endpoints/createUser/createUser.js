@@ -85,7 +85,7 @@ const createUser = async (userData) => {
   const user = new User(userData);
   const sub = createUserAndAddToGroup(
     user.user_role,
-    `${user.first_name} ${user.last_name}`,
+    `${user.first_name}_${user.last_name}`,
     user.user_email,
     user.phone_number
   );
