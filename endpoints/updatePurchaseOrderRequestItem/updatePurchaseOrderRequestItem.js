@@ -14,7 +14,7 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId) => {
+const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId, userSub) => {
   await initializeDb();
 
   if (!purchaseOrderRequestItemId) {
@@ -30,10 +30,14 @@ const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId) 
     };
   }
 
+  const user = await knexInstance('user')
+  .where('cognito_sub', userSub)
+  .pluck('user_id');
+
   const purchaseOrderRequestItem = new PurchaseOrderRequestItem(item);
 
   const updatedItem = {
-    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
   };
 
