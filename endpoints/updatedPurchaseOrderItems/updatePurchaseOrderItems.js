@@ -14,23 +14,29 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrderItems = async (items) => {
+const updatePurchaseOrderItems = async (items, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
     throw new Error('The items parameter must be an array');
   }
 
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
+
   await Promise.all(
     items.map(async (item) => {
       let itemData = new PurchaseOrderItem({
         ...item,
-        last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+        last_updated_by: user[0],
         last_updated_at: knexInstance.raw('NOW()'),
-      })
+      });
 
       itemData = Object.fromEntries(
-        Object.entries(itemData).filter(([_, val]) => val !== null && val !== undefined && val !== "")
+        Object.entries(itemData).filter(
+          ([_, val]) => val !== null && val !== undefined && val !== ''
+        )
       ); // remove null or empty values
 
       await knexInstance('purchase_order_item')
