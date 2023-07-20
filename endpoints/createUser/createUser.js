@@ -100,7 +100,7 @@ const createUser = async (userData) => {
   };
 
   await knexInstance('user')
-    .update(dataToInsert);
+    .insert(dataToInsert);
 
   return {
     statusCode: 200,
