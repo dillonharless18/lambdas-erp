@@ -3,7 +3,7 @@ import getAllUsers from './getAllUsers.js';
 const handler = async (event, context) => {
   try {
     const queryParams = event.queryStringParameters;
-    const userRole = queryParams? queryParams.role : null;
+    const userRole = queryParams ? queryParams.role : null;
 
     return await getAllUsers(userRole);
   } catch (error) {

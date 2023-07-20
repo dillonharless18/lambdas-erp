@@ -4,7 +4,6 @@ const handler = async (event) => {
   try {
     const driverId = event.pathParameters?.driver_id;
     return await getDriverTransportationTrips(driverId);
-
   } catch (error) {
     console.error('Error in handler:', error);
     return {

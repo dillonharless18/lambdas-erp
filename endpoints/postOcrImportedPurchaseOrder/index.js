@@ -7,7 +7,6 @@ const handler = async (event) => {
     const body = JSON.parse(event.body).ocrImportedPurchaseOrder;
     const userSub = event.requestContext.authorizer.sub;
 
-
     if (!ocrImportedPurchaseOrderId) {
       return {
         statusCode: 400,
@@ -20,7 +19,11 @@ const handler = async (event) => {
       };
     }
 
-    return await postOcrImportedPurchaseOrder(ocrImportedPurchaseOrderId, body, userSub);
+    return await postOcrImportedPurchaseOrder(
+      ocrImportedPurchaseOrderId,
+      body,
+      userSub
+    );
   } catch (error) {
     console.error('Error in handler:', error);
     return {

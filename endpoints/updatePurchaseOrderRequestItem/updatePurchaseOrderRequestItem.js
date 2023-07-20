@@ -14,11 +14,17 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId, userSub) => {
+const updatePurchaseOrderRequestItem = async (
+  item,
+  purchaseOrderRequestItemId,
+  userSub
+) => {
   await initializeDb();
 
   if (!purchaseOrderRequestItemId) {
-    throw new Error('The purchase_order_request_item_id field must not be null');
+    throw new Error(
+      'The purchase_order_request_item_id field must not be null'
+    );
   }
   if (typeof item !== 'object' || item === null) {
     console.error('Error: The item parameter must be an object');
@@ -31,8 +37,8 @@ const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId, 
   }
 
   const user = await knexInstance('user')
-  .where('cognito_sub', userSub)
-  .pluck('user_id');
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const purchaseOrderRequestItem = new PurchaseOrderRequestItem(item);
 
@@ -58,10 +64,7 @@ const updatePurchaseOrderRequestItem = async (item, purchaseOrderRequestItemId, 
       purchaseOrderRequestItem.urgent_order_status_id;
 
   await knexInstance('purchase_order_request_item')
-    .where(
-      'purchase_order_request_item_id',
-      purchaseOrderRequestItemId
-    )
+    .where('purchase_order_request_item_id', purchaseOrderRequestItemId)
     .update(updatedItem);
 
   return {

@@ -23,9 +23,8 @@ const postOcrImportedPurchaseOrderComment = async (comment, userSub) => {
   }
 
   const user = await knexInstance('user')
-  .where('cognito_sub', userSub)
-  .pluck('user_id');
-
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const ocrImportedPurchaseOrderComment = new OcrImportedPurchaseOrderComment(
     comment
