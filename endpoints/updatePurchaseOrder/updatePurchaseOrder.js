@@ -14,21 +14,27 @@ const initializeDb = async () => {
   }
 };
 
-const updatePurchaseOrder = async (purchaseOrder, purchaseOrderId) => {
+const updatePurchaseOrder = async (purchaseOrder, purchaseOrderId, userSub) => {
   await initializeDb();
 
   if (!purchaseOrderId) {
     throw new Error('The purchase_order_id field must not be null');
   }
 
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
+
   let purchaseOrderData = new PurchaseOrder({
     ...purchaseOrder,
-    last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+    last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
   });
 
   purchaseOrderData = Object.fromEntries(
-    Object.entries(purchaseOrderData).filter(([_, val]) => val !== null && val !== undefined && val !== "")
+    Object.entries(purchaseOrderData).filter(
+      ([_, val]) => val !== null && val !== undefined && val !== ''
+    )
   ); // remove null or empty values
 
   await knexInstance('purchase_order')
