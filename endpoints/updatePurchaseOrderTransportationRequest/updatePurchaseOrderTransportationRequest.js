@@ -14,12 +14,20 @@ const initializeDb = async () => {
   }
 };
 
-const postPurchaseOrderTransportationRequest = async (body, purchaseOrderTransportationRequestId) => {
+const postPurchaseOrderTransportationRequest = async (
+  body,
+  purchaseOrderTransportationRequestId,
+  userSub
+) => {
   await initializeDb();
 
   if (!body) {
     throw new Error('No data provided');
   }
+
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const transportationRequestData = new PurchaseOrderTransportationRequest(
     body
@@ -27,29 +35,42 @@ const postPurchaseOrderTransportationRequest = async (body, purchaseOrderTranspo
 
   let dataToUpdate = {
     purchase_order_id: transportationRequestData.purchase_order_id,
-    transportation_request_type_id: transportationRequestData.transportation_request_type_id ? parseInt(transportationRequestData.transportation_request_type_id) : null,
+    transportation_request_type_id:
+      transportationRequestData.transportation_request_type_id
+        ? parseInt(transportationRequestData.transportation_request_type_id)
+        : null,
     from_location: transportationRequestData.from_location,
     to_location: transportationRequestData.to_location,
     additional_details: transportationRequestData.additional_details,
-    urgent_order_status_id: transportationRequestData.urgent_order_status_id ? parseInt(transportationRequestData.urgent_order_status_id) : null,
-    transportation_request_status_id: transportationRequestData.transportation_request_status_id ? parseInt(transportationRequestData.transportation_request_status_id) : null,
-    last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+    urgent_order_status_id: transportationRequestData.urgent_order_status_id
+      ? parseInt(transportationRequestData.urgent_order_status_id)
+      : null,
+    transportation_request_status_id:
+      transportationRequestData.transportation_request_status_id
+        ? parseInt(transportationRequestData.transportation_request_status_id)
+        : null,
+    last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
   };
 
   dataToUpdate = Object.fromEntries(
-    Object.entries(dataToUpdate).filter(([_, val]) => val !== null && val !== undefined && val !== "")
+    Object.entries(dataToUpdate).filter(
+      ([_, val]) => val !== null && val !== undefined && val !== ''
+    )
   );
 
   try {
     await knexInstance('purchase_order_transportation_request')
-      .where('purchase_order_transportation_request_id', purchaseOrderTransportationRequestId)
+      .where(
+        'purchase_order_transportation_request_id',
+        purchaseOrderTransportationRequestId
+      )
       .update(dataToUpdate);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Purchase Order Transportation Request updated successfully!'
+        message: 'Purchase Order Transportation Request updated successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
