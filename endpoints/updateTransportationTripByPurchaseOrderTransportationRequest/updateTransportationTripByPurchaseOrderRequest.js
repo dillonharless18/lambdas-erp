@@ -14,11 +14,18 @@ const initializeDb = async () => {
   }
 };
 
-const updateTransportationTripByPurchaseOrderRequest = async (data, transportationTripId, purchaseOrderTransportationRequestId) => {
+const updateTransportationTripByPurchaseOrderRequest = async (
+  data,
+  transportationTripId,
+  purchaseOrderTransportationRequestId,
+  userSub
+) => {
   await initializeDb();
 
   if (!purchaseOrderTransportationRequestId) {
-    throw new Error('The purchase_order_transportation_request_id field must not be null');
+    throw new Error(
+      'The purchase_order_transportation_request_id field must not be null'
+    );
   }
   if (!transportationTripId) {
     throw new Error('The transportation_trip_id field must not be null');
@@ -33,26 +40,34 @@ const updateTransportationTripByPurchaseOrderRequest = async (data, transportati
     };
   }
 
-  const transportationTripByPurchaseOrderRequest = new TransportationTripByPurchaseOrderRequest(data);
+  const user = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
+
+  const transportationTripByPurchaseOrderRequest =
+    new TransportationTripByPurchaseOrderRequest(data);
 
   const updatedData = {
-    last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+    last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
-    ...transportationTripByPurchaseOrderRequest
+    ...transportationTripByPurchaseOrderRequest,
   };
 
-  await knexInstance('transportation_trip_by_purchase_order_transportation_request')
-    .where(
-      'transportation_trip_id',
-      transportationTripId
+  await knexInstance(
+    'transportation_trip_by_purchase_order_transportation_request'
+  )
+    .where('transportation_trip_id', transportationTripId)
+    .andWhere(
+      'purchase_order_transportation_request_id',
+      purchaseOrderTransportationRequestId
     )
-    .andWhere('purchase_order_transportation_request_id', purchaseOrderTransportationRequestId)
     .update(updatedData);
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Transportation Trip By Purchase Order Request updated successfully!',
+      message:
+        'Transportation Trip By Purchase Order Request updated successfully!',
     }),
     headers: {
       'Access-Control-Allow-Origin': '*',

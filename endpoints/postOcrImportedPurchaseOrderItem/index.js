@@ -5,7 +5,6 @@ const handler = async (event) => {
     const body = JSON.parse(event.body).ocrImportedPurchaseOrderItem;
     const userSub = event.requestContext.authorizer.sub;
 
-
     return await postOcrImportedPurchaseOrderItem(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);

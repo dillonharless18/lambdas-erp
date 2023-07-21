@@ -38,16 +38,16 @@ const updateUser = async (userData, userId, userSub) => {
   let updatedUser = {
     last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
-    ...user
+    ...user,
   };
 
   updatedUser = Object.fromEntries(
-    Object.entries(updatedUser).filter(([_, val]) => val !== null && val !== undefined && val !== "")
+    Object.entries(updatedUser).filter(
+      ([_, val]) => val !== null && val !== undefined && val !== ''
+    )
   ); // remove null or empty values
 
-  await knexInstance('user')
-    .where('user_id', userId)
-    .update(updatedUser);
+  await knexInstance('user').where('user_id', userId).update(updatedUser);
 
   return {
     statusCode: 200,

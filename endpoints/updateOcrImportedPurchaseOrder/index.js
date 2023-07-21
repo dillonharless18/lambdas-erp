@@ -5,6 +5,7 @@ const handler = async (event) => {
     const ocrImportedPurchaseOrderDraftId =
       event.pathParameters?.ocr_imported_purchase_order_draft_id;
     const body = JSON.parse(event.body).ocrImportedPurchaseOrder;
+    const userSub = event.requestContext.authorizer.sub;
 
     if (!ocrImportedPurchaseOrderDraftId) {
       return {
@@ -20,7 +21,8 @@ const handler = async (event) => {
 
     return await updateOcrImportedPurchaseOrder(
       ocrImportedPurchaseOrderDraftId,
-      body
+      body,
+      userSub
     );
   } catch (error) {
     console.error('Error in handler:', error);

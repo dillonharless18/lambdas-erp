@@ -27,6 +27,9 @@ const getTransportationTrips = async (transportationTripStatus) => {
         ),
         'transportation_trip_status.transportation_trip_status_name',
         'vehicle_type.vehicle_type_name',
+        knexInstance.raw(
+          '(SELECT count(*) FROM public.transportation_trip_by_purchase_order_transportation_request WHERE transportation_trip_id = transportation_trip.transportation_trip_id AND is_active = true) as totalStops'
+        ),
       ])
       .leftJoin(
         'user as driver',

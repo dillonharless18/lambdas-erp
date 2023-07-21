@@ -29,8 +29,8 @@ const postPurchaseOrderComment = async (comment, purchaseOrderId, userSub) => {
   }
 
   const user = await knexInstance('user')
-  .where('cognito_sub', userSub)
-  .pluck('user_id');
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const purchaseOrderComment = new PurchaseOrderComment({
     purchase_order_comment_id: uuidv4(),

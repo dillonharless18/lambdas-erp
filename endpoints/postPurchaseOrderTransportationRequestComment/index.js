@@ -5,7 +5,7 @@ const handler = async (event) => {
     const comment = JSON.parse(event.body).comment;
     const purchaseOrderTransportationRequestId =
       event.pathParameters?.purchase_order_transportation_request_id;
-      const userSub = event.requestContext.authorizer.sub;
+    const userSub = event.requestContext.authorizer.sub;
 
     if (!purchaseOrderTransportationRequestId) {
       return {

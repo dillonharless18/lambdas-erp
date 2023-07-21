@@ -14,13 +14,11 @@ const initializeDb = async () => {
 };
 
 const getDriverTransportationTrips = async (driverId) => {
-
   if (!driverId) {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        error:
-          'Invalid input format: No driver_id provided',
+        error: 'Invalid input format: No driver_id provided',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -28,22 +26,27 @@ const getDriverTransportationTrips = async (driverId) => {
     };
   }
 
-
   await initializeDb();
   try {
     const trips = await knexInstance('transportation_trip as trip')
-      .join('transportation_trip_by_purchase_order_transportation_request as po_request', 'trip.transportation_trip_id', '=', 'po_request.transportation_trip_id')
-      .join('purchase_order_transportation_request as request', 'request.purchase_order_transportation_request_id', '=', 'po_request.purchase_order_transportation_request_id')
+      .join(
+        'transportation_trip_by_purchase_order_transportation_request as po_request',
+        'trip.transportation_trip_id',
+        '=',
+        'po_request.transportation_trip_id'
+      )
+      .join(
+        'purchase_order_transportation_request as request',
+        'request.purchase_order_transportation_request_id',
+        '=',
+        'po_request.purchase_order_transportation_request_id'
+      )
       .leftJoin(
         'user as user_created_trip',
         'trip.created_by',
         'user_created_trip.user_id'
       )
-      .leftJoin(
-        'user as driver',
-        'trip.driver_id',
-        'driver.user_id'
-      )
+      .leftJoin('user as driver', 'trip.driver_id', 'driver.user_id')
       .leftJoin(
         'transportation_trip_status',
         'trip.transportation_trip_status_id',

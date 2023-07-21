@@ -14,7 +14,11 @@ const initializeDb = async () => {
   }
 };
 
-const updateTransportationTrip = async (body, transportationTripId) => {
+const updateTransportationTrip = async (
+  body,
+  transportationTripId,
+  userSub
+) => {
   await initializeDb();
 
   try {
@@ -24,10 +28,14 @@ const updateTransportationTrip = async (body, transportationTripId) => {
       );
     }
 
+    const user = await knexInstance('user')
+      .where('cognito_sub', userSub)
+      .pluck('user_id');
+
     let transportationTripData = new TransportationTrip(body);
 
     const updatedTransportationTrip = {
-      last_updated_by: '1b3ef41c-23af-4eee-bbd7-5610b38e37f2',
+      last_updated_by: user[0],
       last_updated_at: knexInstance.raw('NOW()'),
     };
 
