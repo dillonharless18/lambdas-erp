@@ -14,7 +14,7 @@ const initializeDb = async () => {
   }
 };
 
-const updateUser = async (userData, userId) => {
+const updateUser = async (userData, userId, userSub) => {
   await initializeDb();
 
   if (!userId) {
@@ -29,11 +29,14 @@ const updateUser = async (userData, userId) => {
       }),
     };
   }
+  const loggedInUser = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
 
   const user = new User(userData);
 
   let updatedUser = {
-    last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+    last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
     ...user
   };
