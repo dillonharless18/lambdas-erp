@@ -3,8 +3,9 @@ import createUser from './createUser.js';
 const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).userData;
+    const userSub = event.requestContext.authorizer.sub;
 
-    return await createUser(body);
+    return await createUser(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {

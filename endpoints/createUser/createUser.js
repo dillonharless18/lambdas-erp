@@ -69,7 +69,7 @@ const initializeDb = async () => {
   }
 };
 
-const createUser = async (userData) => {
+const createUser = async (userData, userSub) => {
   await initializeDb();
 
   if (typeof userData !== 'object' || userData === null) {
@@ -82,6 +82,10 @@ const createUser = async (userData) => {
     };
   }
 
+  const loggedInUser = await knexInstance('user')
+    .where('cognito_sub', userSub)
+    .pluck('user_id');
+
   const user = new User(userData);
   const sub = createUserAndAddToGroup(
     user.user_role,
@@ -91,9 +95,9 @@ const createUser = async (userData) => {
   );
 
   let dataToInsert = {
-    last_updated_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+    last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
-    created_by: '4566a3j7-92a8-40f8-8f00-f8fc355bbk7g',
+    created_by: loggedInUser[0],
     created_at: knexInstance.raw('NOW()'),
     cognito_sub: sub,
     ...user
