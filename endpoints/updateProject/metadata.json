@@ -1,6 +1,6 @@
 {
   "apiPath": "projects",
-  "httpMethod": "GET",
-  "name": "getAllProjects",
+  "httpMethod": "PATCH",
+  "name": "updateProject",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }
