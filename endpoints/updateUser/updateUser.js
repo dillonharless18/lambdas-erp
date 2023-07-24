@@ -29,14 +29,14 @@ const updateUser = async (userData, userId, userSub) => {
       }),
     };
   }
-  const userSub = await knexInstance('user')
+  const loggedInUser = await knexInstance('user')
     .where('cognito_sub', userSub)
     .pluck('user_id');
 
   const user = new User(userData);
 
   let updatedUser = {
-    last_updated_by: userSub[0],
+    last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
     ...user,
   };
