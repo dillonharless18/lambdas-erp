@@ -1,0 +1,6 @@
+{
+  "apiPath": "vendors",
+  "httpMethod": "POST",
+  "name": "postVendor",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
