@@ -1,6 +1,5 @@
 class Vendor {
   constructor(data) {
-    this.vendor_id = data.vendor_id;
     this.vendor_name = data.vendor_name;
     this.is_active = data.is_active;
     this.is_net_vendor = data.is_net_vendor;
