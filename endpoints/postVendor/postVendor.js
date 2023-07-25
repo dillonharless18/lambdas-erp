@@ -38,6 +38,7 @@ const postVendor = async (vendorData, userSub) => {
     last_updated_at: knexInstance.raw('NOW()'),
     created_by: loggedInUser[0],
     created_at: knexInstance.raw('NOW()'),
+    is_active: true,
     ...vendor
   };
 
