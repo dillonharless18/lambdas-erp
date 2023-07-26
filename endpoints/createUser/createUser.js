@@ -109,7 +109,7 @@ const createUser = async (userData, userSub) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'user updated successfully!',
+      message: 'user created successfully!',
     }),
     headers: {
       'Access-Control-Allow-Origin': '*',
