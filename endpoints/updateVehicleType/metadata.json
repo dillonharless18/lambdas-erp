@@ -1,0 +1,6 @@
+{
+  "apiPath": "vehicle-type/vehicle_type_id",
+  "httpMethod": "PATCH",
+  "name": "updateVehicleType",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
