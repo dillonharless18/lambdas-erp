@@ -1,0 +1,6 @@
+{
+  "apiPath": "credit-cards",
+  "httpMethod": "POST",
+  "name": "postCreditCard",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
