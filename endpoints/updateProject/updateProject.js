@@ -15,7 +15,7 @@ const initializeDb = async () => {
   }
 };
 
-const postProject = async (body, userSub) => {
+const postProject = async (ProjectId, body, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(body)) {
@@ -40,7 +40,9 @@ const postProject = async (body, userSub) => {
   }
 
   try {
-    await knexInstance('project').insert(updatedProject);
+    await knexInstance('project')
+      .update(updatedProject)
+      .where('project_id', ProjectId);
 
     return {
       statusCode: 200,

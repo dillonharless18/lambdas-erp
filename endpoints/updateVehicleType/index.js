@@ -1,12 +1,12 @@
-import updateProject from './updateProject.js';
+import updateVehicleType from './updateVehicleType.js';
 
 const handler = async (event) => {
   try {
-    const projectId = event.pathParameters?.project_id;
-    const body = JSON.parse(event.body).project;
+    const vehicleTypeId = event.pathParameters?.vehicle_type_id;
+    const body = JSON.parse(event.body).vehicleType;
     const userSub = event.requestContext.authorizer.sub;
 
-    return await updateProject(projectId, body, userSub);
+    return await updateVehicleType(vehicleTypeId, body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
