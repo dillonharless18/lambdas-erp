@@ -14,7 +14,7 @@ const initializeDb = async () => {
   }
 };
 
-const postProject = async (vehicleTypeId, body, userSub) => {
+const updateVehicleType = async (vehicleTypeId, body, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(body)) {
