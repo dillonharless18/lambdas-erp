@@ -1,0 +1,6 @@
+{
+  "apiPath": "projects",
+  "httpMethod": "POST",
+  "name": "postProject",
+  "allowedGroups": ["logistics", "project_manager", "admin"]
+}
