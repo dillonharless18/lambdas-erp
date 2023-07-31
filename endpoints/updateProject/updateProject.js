@@ -1,6 +1,5 @@
 import Project from './DTO/Project.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
-import { v4 as uuidv4 } from 'uuid';
 
 let knexInstance;
 
@@ -18,8 +17,14 @@ const initializeDb = async () => {
 const updatedProject = async (ProjectId, body, userSub) => {
   await initializeDb();
 
-  if (!Array.isArray(body)) {
-    throw new Error('The project parameter must be an array');
+  if (typeof body !== 'object' || body === null) {
+    console.error('Error: The project parameter must be an object');
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error: 'Invalid input format: The project parameter must be an object',
+      }),
+    };
   }
 
   const user = await knexInstance('user')
