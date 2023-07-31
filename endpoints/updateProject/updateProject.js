@@ -15,7 +15,7 @@ const initializeDb = async () => {
   }
 };
 
-const postProject = async (ProjectId, body, userSub) => {
+const updatedProject = async (ProjectId, body, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(body)) {
@@ -47,14 +47,14 @@ const postProject = async (ProjectId, body, userSub) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Project added successfully!',
+        message: 'Project updated successfully!',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
     };
   } catch (error) {
-    console.error('Error in postProject:', error);
+    console.error('Error in updateProject:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: `Server Error, ${error}` }),
@@ -65,4 +65,4 @@ const postProject = async (ProjectId, body, userSub) => {
   }
 };
 
-export default postProject;
+export default updatedProject;
