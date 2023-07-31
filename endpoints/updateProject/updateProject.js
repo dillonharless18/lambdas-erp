@@ -14,7 +14,7 @@ const initializeDb = async () => {
   }
 };
 
-const updatedProject = async (ProjectId, body, userSub) => {
+const updatedProject = async (projectId, body, userSub) => {
   await initializeDb();
 
   if (typeof body !== 'object' || body === null) {
@@ -47,7 +47,7 @@ const updatedProject = async (ProjectId, body, userSub) => {
   try {
     await knexInstance('project')
       .update(updatedProject)
-      .where('project_id', ProjectId);
+      .where('project_id', projectId);
 
     return {
       statusCode: 200,
