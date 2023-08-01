@@ -63,4 +63,4 @@ const updateVehicleType = async (vehicleTypeId, body, userSub) => {
   }
 };
 
-export default postProject;
+export default updateVehicleType;
