@@ -1,6 +1,6 @@
 {
   "apiPath": "credit-cards/{credit_card_id}",
   "httpMethod": "PATCH",
-  "name": "postCreditCard",
+  "name": "updateCreditCard",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }

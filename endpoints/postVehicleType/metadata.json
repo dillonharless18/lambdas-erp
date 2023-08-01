@@ -1,6 +1,6 @@
 {
-  "apiPath": "projects",
+  "apiPath": "vehicle-type",
   "httpMethod": "POST",
-  "name": "postProject",
+  "name": "postVehicleType",
   "allowedGroups": ["logistics", "project_manager", "admin"]
 }
