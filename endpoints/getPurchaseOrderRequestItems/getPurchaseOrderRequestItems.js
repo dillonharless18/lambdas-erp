@@ -13,10 +13,10 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItems = async (status) => {
+const getPurchaseOrderRequestItems = async (status, userSub) => {
   await initializeDb();
   try {
-    const getAllPurchaseOrderRequestItems = await knexInstance(
+    const query = knexInstance(
       'purchase_order_request_item'
     )
       .join(
@@ -79,7 +79,16 @@ const getPurchaseOrderRequestItems = async (status) => {
         '=',
         status
       )
-      .andWhere('purchase_order_request_item.is_active', '=', true);
+
+    if (userSub) {
+      const user = await knexInstance('user')
+        .where('cognito_sub', userSub)
+        .pluck('user_id');
+
+      query.where('created_by', '=', user[0])
+    }
+
+    const getAllPurchaseOrderRequestItems = await query.where('purchase_order_request_item.is_active', '=', true);
 
     return {
       statusCode: 200,
