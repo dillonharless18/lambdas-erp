@@ -4,6 +4,7 @@ const handler = async (event, context) => {
   try {
     const queryParams = event.queryStringParameters;
     const status = queryParams.status;
+    const userSub = queryParams.userSub;
     if (!status) {
       return {
         statusCode: 400,
@@ -15,7 +16,7 @@ const handler = async (event, context) => {
         },
       };
     }
-    return await getPurchaseOrderRequestItems(status);
+    return await getPurchaseOrderRequestItems(status, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
