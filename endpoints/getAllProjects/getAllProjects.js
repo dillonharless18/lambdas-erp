@@ -1,5 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { DatabaseError, NotFoundError, getHeaders } from './errors.js';
+import createSuccessResponse from './apiResponseUtil.js';
 
 let knexInstance;
 
@@ -21,11 +22,7 @@ const getAllProjects = async () => {
     if (!projects || projects.length === 0) {
       throw new NotFoundError('No projects found.');
     }
-    return {
-      statusCode: 200,
-      body: JSON.stringify(projects),
-      headers: getHeaders(),
-    };
+    return createSuccessResponse(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
     throw error; // propagate the error to the handler
