@@ -9,21 +9,13 @@ const buildApiResponse = (statusCode, body) => {
 };
 
 const createErrorResponse = (errorObject) => {
-  if (!(errorObject instanceof CustomError)) {
-    // Handle potential non-CustomError instances gracefully
-    errorObject = {
-      message: 'Internal Server Error',
-      statusCode: 500,
-    };
-  }
-
   return buildApiResponse(errorObject.statusCode || 500, {
     error: errorObject.message || 'Internal Server Error',
   });
 };
 
 const createSuccessResponse = (bodyObject) => {
-  return buildApiResponse(200, bodyObject);
+  return buildApiResponse(200, JSON.stringify(bodyObject));
 };
 
 export { createErrorResponse, createSuccessResponse };
