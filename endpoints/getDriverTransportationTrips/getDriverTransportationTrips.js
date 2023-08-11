@@ -13,12 +13,12 @@ const initializeDb = async () => {
   }
 };
 
-const getDriverTransportationTrips = async (driverId) => {
-  if (!driverId) {
+const getDriverTransportationTrips = async (cognitoSub) => {
+  if (!cognitoSub) {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        error: 'Invalid input format: No driver_id provided',
+        error: 'Invalid input format: No cognito_sub provided',
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -28,6 +28,10 @@ const getDriverTransportationTrips = async (driverId) => {
 
   await initializeDb();
   try {
+    const loggedInUser = await knexInstance('user')
+      .where('cognito_sub', cognitoSub)
+      .pluck('user_id');
+
     const trips = await knexInstance('transportation_trip as trip')
       .join(
         'transportation_trip_by_purchase_order_transportation_request as po_request',
@@ -136,7 +140,7 @@ const getDriverTransportationTrips = async (driverId) => {
         'vehicle_type.vehicle_type_id',
         'transportation_trip_status.transportation_trip_status_id'
       )
-      .where('trip.driver_id', driverId)
+      .where('trip.driver_id', loggedInUser[0])
       .andWhere('trip.is_active', true);
 
     return {
