@@ -13,10 +13,10 @@ const initializeDb = async () => {
   }
 };
 
-const getOcrImportedPurhaseOrders = async () => {
+const getOcrImportedPurhaseOrders = async (userSub) => {
   await initializeDb();
   try {
-    const octImportedPurchaseOrders = await knexInstance(
+    const query =  knexInstance(
       'ocr_imported_purchase_order_draft as pod'
     )
       .leftJoin(
@@ -103,6 +103,16 @@ const getOcrImportedPurhaseOrders = async () => {
       )
       .where('pod.is_active', '=', true)
       .andWhere('podi.is_active', '=', true);
+
+      if (userSub) {
+        const user = await knexInstance('user')
+          .where('cognito_sub', userSub)
+          .pluck('user_id');
+  
+        query.where('created_by', '=', user[0])
+      }
+
+      const octImportedPurchaseOrders = await query;
 
     return {
       statusCode: 200,
