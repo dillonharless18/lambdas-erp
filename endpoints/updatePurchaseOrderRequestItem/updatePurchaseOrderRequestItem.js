@@ -62,6 +62,8 @@ const updatePurchaseOrderRequestItem = async (
   if (purchaseOrderRequestItem.urgent_order_status_id)
     updatedItem.urgent_order_status_id =
       purchaseOrderRequestItem.urgent_order_status_id;
+  if (purchaseOrderRequestItem.price)
+    updatedItem.price = purchaseOrderRequestItem.price;
 
   await knexInstance('purchase_order_request_item')
     .where('purchase_order_request_item_id', purchaseOrderRequestItemId)
