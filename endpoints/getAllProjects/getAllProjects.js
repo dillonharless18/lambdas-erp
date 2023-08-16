@@ -1,6 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
-import { DatabaseError, NotFoundError } from './errors.js';
-import createSuccessResponse from './apiResponseUtil.js';
+import { DatabaseError, NotFoundError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
