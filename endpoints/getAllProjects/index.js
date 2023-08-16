@@ -1,5 +1,5 @@
 import getAllProjects from './getAllProjects.js';
-import createErrorResponse from './apiResponseUtil.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 const handler = async (event, context) => {
   try {
