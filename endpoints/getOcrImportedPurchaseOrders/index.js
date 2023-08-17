@@ -2,8 +2,9 @@ import getOcrImportedPurhaseOrders from './getOcrImportedPurchaseOrders.js';
 
 const handler = async (event) => {
   try {
-    const userSub = queryParams.userSub;
-    
+    const queryParams = event.queryStringParameters;
+    const userSub = queryParams ? queryParams.userSub : null;
+
     return await getOcrImportedPurhaseOrders(userSub);
   } catch (error) {
     console.error('Error in handler:', error);
