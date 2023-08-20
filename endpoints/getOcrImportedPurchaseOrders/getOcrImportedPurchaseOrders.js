@@ -72,7 +72,7 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
       )
       .select(
         knexInstance.raw(
-          "json_agg(json_build_object('ocr_imported_purchase_order_draft_item_id', item.ocr_imported_purchase_order_draft_item_id, 'ocr_imported_purchase_order_draft_id', item.ocr_imported_purchase_order_draft_id, 'item_name', item.item_name, 'price', item.price, 'quantity', item.quantity, 'unit_of_measure', item.unit_of_measure, 'description', item.description, 'created_at', item.created_at, 'last_updated_at', item.last_updated_at )) as ocr_imported_purchase_order_items"
+          "json_agg(json_build_object('ocr_imported_purchase_order_draft_item_id', item.ocr_imported_purchase_order_draft_item_id, 'ocr_imported_purchase_order_draft_id', item.ocr_imported_purchase_order_draft_id, 'item_name', item.item_name, 'price', item.price, 'quantity', item.quantity, 'unit_of_measure', item.unit_of_measure, 'description', item.description, 'project', json_build_object('project_name', project.project_name, 'project_id', project.project_id), 'created_at', item.created_at, 'last_updated_at', item.last_updated_at)) as ocr_imported_purchase_order_items"
         )
       )
       .groupBy(
