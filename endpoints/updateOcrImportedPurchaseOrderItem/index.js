@@ -1,13 +1,11 @@
 import updateOcrImportedPurchaseOrderItem from './updateOcrImportedPurchaseOrderItem.js';
-import {
-  createErrorResponse,
-  NotFoundError,
-} from '/opt/nodejs/apiResponseUtil.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
+import { NotFoundError } from '/opt/nodejs/errors.js';
 
 const handler = async (event) => {
   try {
     const ocrImportedPurchaseOrderDraftItemId =
-      event.pathParameters?.ocr_imported_purchase_order_draft_id;
+      event.pathParameters?.ocr_imported_purchase_order_draft_item_id;
     const body = JSON.parse(event.body).ocrImportedPurchaseOrderItem;
     const userSub = event.requestContext.authorizer.sub;
 
