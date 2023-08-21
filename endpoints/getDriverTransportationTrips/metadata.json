@@ -1,5 +1,5 @@
 {
-  "apiPath": "drivers/{driver_id}/transportation_trips",
+  "apiPath": "drivers/{cognito_sub}/transportation-trips",
   "httpMethod": "GET",
   "name": "getDriverTransportationTrips",
   "allowedGroups": ["logistics", "project_manager", "admin"]

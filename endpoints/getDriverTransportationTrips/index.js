@@ -2,8 +2,8 @@ import getDriverTransportationTrips from './getDriverTransportationTrips.js';
 
 const handler = async (event) => {
   try {
-    const driverId = event.pathParameters?.driver_id;
-    return await getDriverTransportationTrips(driverId);
+    const cognitoSub = event.requestContext.authorizer.sub;
+    return await getDriverTransportationTrips(cognitoSub);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
