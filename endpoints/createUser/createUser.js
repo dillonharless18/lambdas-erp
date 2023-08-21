@@ -1,6 +1,7 @@
 import User from './DTO/User.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { CognitoIdentityProviderClient, AdminCreateUserCommand, AdminAddUserToGroupCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { v4 as uuidv4 } from 'uuid';
 
 const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
 const allowedGroups = {
@@ -95,6 +96,7 @@ const createUser = async (userData, userSub) => {
   );
 
   let dataToInsert = {
+    user_id: uuidv4(),
     last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
     created_by: loggedInUser[0],
