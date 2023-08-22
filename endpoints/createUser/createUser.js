@@ -16,7 +16,7 @@ async function createUserAndAddToGroup(cognitoUserGroupName, userName, userEmail
   const params = {
     UserPoolId: process.env.USER_POOL_ID,
     Username: userName,
-    TemporaryPassword: "oneXerp123",
+    TemporaryPassword: "oneXerp123!",
     UserAttributes: [
       {
         Name: "email",
@@ -88,7 +88,7 @@ const createUser = async (userData, userSub) => {
     .pluck('user_id');
 
   const user = new User(userData);
-  const sub = createUserAndAddToGroup(
+  const sub = await createUserAndAddToGroup(
     user.user_role,
     `${user.first_name}_${user.last_name}`,
     user.user_email,
