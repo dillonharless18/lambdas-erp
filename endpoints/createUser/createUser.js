@@ -32,7 +32,7 @@ async function createUserAndAddToGroup(cognitoUserGroupName, userName, userEmail
   try {
     const createUserCommand = new AdminCreateUserCommand(params);
     const createUserResult = await client.send(createUserCommand);
-    userSub = createUserResult.User.UserSub
+    const userSub = createUserResult.User.UserSub
 
     console.log("User created successfully");
 
@@ -102,6 +102,7 @@ const createUser = async (userData, userSub) => {
     created_by: loggedInUser[0],
     created_at: knexInstance.raw('NOW()'),
     cognito_sub: sub,
+    is_active: true,
     ...user
   };
 
