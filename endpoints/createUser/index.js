@@ -1,7 +1,8 @@
 import createUser from './createUser.js';
 
-const handler = async (event) => {
+const handler = async (event, context) => {
   try {
+    context.callbackWaitsForEmptyEventLoop = true;
     const body = JSON.parse(event.body).userData;
     const userSub = event.requestContext.authorizer.sub;
 
