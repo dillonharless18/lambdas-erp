@@ -32,19 +32,13 @@ const postPurchaseOrderTransportationRequest = async (body, userSub) => {
 
   const dataToInsert = {
     purchase_order_transportation_request_id: uuidv4(),
-    purchase_order_id: transportationRequestData.purchase_order_id,
-    transportation_request_type_id: 1, // means its purchase order transportation request (PO)
-    from_location: transportationRequestData.from_location,
-    to_location: transportationRequestData.to_location,
-    additional_details: transportationRequestData.additional_details,
-    urgent_order_status_id: transportationRequestData.urgent_order_status_id
-      ? parseInt(transportationRequestData.urgent_order_status_id)
-      : null,
+    transportation_request_type_id: transportationRequestData.purchase_order_id ? 1 : 2, // 1 means PO and 2 means item
     transportation_request_status_id: 1, // means status is Open
     created_by: user[0],
     created_at: knexInstance.raw('NOW()'),
     last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
+    ...transportationRequestData,
   };
 
   try {
