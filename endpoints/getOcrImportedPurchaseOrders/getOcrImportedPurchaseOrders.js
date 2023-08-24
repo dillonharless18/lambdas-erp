@@ -98,9 +98,13 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
         .where('cognito_sub', userSub)
         .pluck('user_id');
 
+      // query
+      //   .where('pod.created_by', '=', user[0])
+      //   .andWhere('podi.created_by', '=', user[0]);
       query
-        .where('pod.created_by', '=', user[0])
-        .andWhere('podi.created_by', '=', user[0]);
+          .where('user_created_pod.created_by', '=', user[0])
+          .andWhere('user_created_podi.created_by', '=', user[0]);
+
     }
     const octImportedPurchaseOrders = await query;
 
