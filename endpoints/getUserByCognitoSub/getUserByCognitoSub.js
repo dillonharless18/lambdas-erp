@@ -28,9 +28,16 @@ const getUserByCognitoSub = async (cognitoSub) => {
 
   await initializeDb();
   try {
-    const loggedInUser = await knexInstance('user')
+    const user = await knexInstance('user')
       .select('*')
       .where('cognito_sub', cognitoSub)
+      .andWhere('is_active', true)
+
+    if (user.length === 0) {
+      throw new Error("No active user found with the provided cognito_sub.");
+    }
+
+    const loggedInUser = user[0]
 
     return {
       statusCode: 200,
