@@ -94,6 +94,8 @@ const createUser = async (userData, userSub) => {
     user.user_email,
     user.phone_number
   );
+  
+  console.log(`createUserAndAddToGroup response sub: ${JSON.stringify(sub, null, 2)}`)
 
   let dataToInsert = {
     user_id: uuidv4(),
