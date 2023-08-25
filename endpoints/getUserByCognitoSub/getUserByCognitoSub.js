@@ -10,7 +10,6 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    // console.error('Error initializing database:', error);
     throw new DatabaseError('Failed to initialize the database.');
   }
 };
