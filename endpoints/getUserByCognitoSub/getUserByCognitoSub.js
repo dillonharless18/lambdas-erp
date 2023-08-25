@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { DatabaseError, NotFoundError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,22 +10,14 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    // console.error('Error initializing database:', error);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
 const getUserByCognitoSub = async (cognitoSub) => {
   if (!cognitoSub) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: 'Invalid input format: No cognito_sub provided',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new NotFoundError('Invalid input format: No cognito_sub provided');
   }
 
   await initializeDb();
@@ -33,30 +27,13 @@ const getUserByCognitoSub = async (cognitoSub) => {
       .where('cognito_sub', cognitoSub)
       .andWhere('is_active', true)
 
-    if (user.length === 0) {
-      throw new Error("No active user found with the provided cognito_sub.");
+    if (!user || user.length === 0) {
+      throw new NotFoundError("No active user found with the provided cognito_sub.");
     }
 
-    const loggedInUser = user[0]
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(user[0])
   } catch (error) {
-    console.error('Error fetching User data:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: `Server Error, ${error}`,
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw error
   }
 };
 
