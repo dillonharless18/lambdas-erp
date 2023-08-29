@@ -71,7 +71,7 @@ const postItemRequests = async (items, userSub) => {
       message: 'Item Requests added successfully!',
     });
   } catch (error) {
-    // console.error('Error in postPurchaseOrderRequestItems:', error);
+    console.error('Error in postPurchaseOrderRequestItems:', error);
     throw error;
   }
 };
