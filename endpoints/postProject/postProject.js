@@ -18,8 +18,8 @@ const initializeDb = async () => {
 const postProject = async (body, userSub) => {
   await initializeDb();
 
-  if (!Array.isArray(body)) {
-    throw new Error('The project parameter must be an array');
+  if (typeof body !== 'object') {
+    throw new Error('The project parameter must be an object');
   }
 
   const user = await knexInstance('user')
