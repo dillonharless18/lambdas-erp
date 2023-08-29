@@ -1,5 +1,7 @@
 import ItemRequest from './DTO/ItemRequests.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { DatabaseError, BadRequestError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 import { v4 as uuidv4 } from 'uuid';
 
 let knexInstance;
@@ -10,8 +12,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    // console.error('Error initializing database:', error);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -19,7 +21,7 @@ const postItemRequests = async (items, userSub) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
-    throw new Error('The items parameter must be an array');
+    throw new BadRequestError('The items parameter must be an array');
   }
 
   const user = await knexInstance('user')
@@ -65,24 +67,12 @@ const postItemRequests = async (items, userSub) => {
   try {
     await knexInstance('purchase_order_request_item').insert(dataToInsert);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Item Requests added successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Item Requests added successfully!',
+    });
   } catch (error) {
-    console.error('Error in postPurchaseOrderRequestItems:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    // console.error('Error in postPurchaseOrderRequestItems:', error);
+    throw error;
   }
 };
 
