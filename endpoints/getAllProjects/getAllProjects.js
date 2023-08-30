@@ -30,13 +30,8 @@ const getAllProjects = async () => {
         )
       )
       .from('project as p')
-      .join('user as createdBy', 'createdBy.created_by', '=', 'p.created_by')
-      .join(
-        'user as updatedBy',
-        'updatedBy.last_updated_by',
-        '=',
-        'p.last_updated_by'
-      )
+      .join('user as createdBy', 'createdBy.user_id', '=', 'p.created_by')
+      .join('user as updatedBy', 'updatedBy.user_id', '=', 'p.last_updated_by')
       .where('p.is_active', true);
 
     if (!projects || projects.length === 0) {

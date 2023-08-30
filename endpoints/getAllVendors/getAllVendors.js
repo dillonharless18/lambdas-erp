@@ -28,13 +28,8 @@ const getAllVendors = async () => {
         )
       )
       .from('vendor as v')
-      .join('user as createdBy', 'createdBy.created_by', '=', 'v.created_by')
-      .join(
-        'user as updatedBy',
-        'updatedBy.last_updated_by',
-        '=',
-        'v.last_updated_by'
-      )
+      .join('user as createdBy', 'createdBy.user_id', '=', 'v.created_by')
+      .join('user as updatedBy', 'updatedBy.user_id', '=', 'v.last_updated_by')
       .where('v.is_active', true);
     return {
       statusCode: 200,
