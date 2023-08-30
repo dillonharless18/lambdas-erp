@@ -134,7 +134,6 @@ const createUser = async (userData, userSub) => {
         is_active: true,
         ...user,
     };
-    console.log(dataToInsert);
 
     await knexInstance("user").insert(dataToInsert);
 
