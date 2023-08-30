@@ -16,9 +16,27 @@ const initializeDb = async () => {
 const getAllUsers = async (userRole) => {
   await initializeDb();
   try {
-    let query = knexInstance.select('*').from('user').where('is_active', true);
+    let query = knexInstance
+      .select(
+        'u.*',
+        knexInstance.raw(
+          '("createdBy".first_name || \' \' || "createdBy".last_name) AS CreatedBy'
+        ),
+        knexInstance.raw(
+          '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS UpdatedBy'
+        )
+      )
+      .from('user as u')
+      .join('user as createdBy', 'createdBy.created_by', '=', 'u.created_by')
+      .join(
+        'user as updatedBy',
+        'updatedBy.last_updated_by',
+        '=',
+        'u.last_updated_by'
+      )
+      .where('u.is_active', true);
     if (userRole) {
-      query = query.andWhere('user_role', userRole);
+      query = query.andWhere('u.user_role', userRole);
     }
     const users = await query;
 
