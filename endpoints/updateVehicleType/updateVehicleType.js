@@ -17,8 +17,8 @@ const initializeDb = async () => {
 const updateVehicleType = async (vehicleTypeId, body, userSub) => {
   await initializeDb();
 
-  if (!Array.isArray(body)) {
-    throw new Error('The vehicleType parameter must be an array');
+  if (typeof body !== 'object') {
+    throw new Error('The vehicleType parameter must be an object');
   }
 
   try {
