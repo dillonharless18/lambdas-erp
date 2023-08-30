@@ -91,7 +91,9 @@ const getFirstInitial = (name) => {
     }
 
     console.error(`The following name is null or not a string: ${name}`);
-    throw new Error(`The following name is null or not a string: ${name}`);
+    throw error(
+        new Error(`The following name is null or not a string: ${name}`)
+    );
 };
 
 const createUser = async (userData, userSub) => {
@@ -115,7 +117,7 @@ const createUser = async (userData, userSub) => {
     const firstInitial = getFirstInitial(user.first_name);
     const sub = await createUserAndAddToGroup(
         user.user_role,
-        `${firstInitial.toLowerCase()}.${user.last_name.toLowerCase()}`,
+        `${firstInitial}.${user.last_name}`,
         user.user_email,
         user.phone_number
     );
@@ -141,6 +143,7 @@ const createUser = async (userData, userSub) => {
         statusCode: 200,
         body: JSON.stringify({
             message: "user created successfully!",
+            userData: JSON.stringify(dataToInsert),
         }),
         headers: {
             "Access-Control-Allow-Origin": "*",
