@@ -16,7 +16,22 @@ const initializeDb = async () => {
 const getAllCreditCards = async () => {
   await initializeDb();
   try {
-    const creditCards = await knexInstance.select('*').from('credit_card');
+    // const creditCards = await knexInstance.select('*').from('credit_card');
+    const creditCards = await knexInstance
+      .select(
+        'cc.*',
+        knexInstance.raw(
+          '("createdBy".first_name || \' \' || "createdBy".last_name) AS CreatedBy'
+        ),
+        knexInstance.raw(
+          '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS UpdatedBy'
+        )
+      )
+      .from('credit_card as cc')
+      .join('user as createdBy', 'createdBy.user_id', '=', 'cc.created_by')
+      .join('user as updatedBy', 'updatedBy.user_id', '=', 'cc.last_updated_by')
+      .where('cc.is_active', true);
+
     return {
       statusCode: 200,
       body: JSON.stringify(creditCards),
