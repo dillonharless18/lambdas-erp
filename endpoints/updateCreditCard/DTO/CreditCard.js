@@ -6,4 +6,4 @@ class CreditCard {
   }
 }
 
-export default Vendor;
+export default CreditCard;
