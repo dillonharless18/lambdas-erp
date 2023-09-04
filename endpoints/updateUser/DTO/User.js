@@ -1,11 +1,12 @@
 class User {
-  constructor(item) {
-    this.first_name = item.first_name;
-    this.last_name = item.last_name;
-    this.phone_number = item.phone_number;
-    this.user_email = item.user_email;
-    this.user_role = item.user_role;
-    this.ocr_tool_id = item.ocr_tool_id;
+  constructor(user) {
+    this.first_name = user.first_name;
+    this.last_name = user.last_name;
+    this.phone_number = user.phone_number;
+    this.user_email = user.user_email;
+    this.user_role = user.user_role;
+    this.ocr_tool_id = user.ocr_tool_id;
+    this.is_active = user.is_active
   }
 }
 
