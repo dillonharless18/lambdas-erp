@@ -29,9 +29,8 @@ const getAllUsers = async (userRole) => {
       .from('user as u')
       .join('user as createdBy', 'createdBy.user_id', '=', 'u.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'u.last_updated_by')
-      .where('u.is_active', true);
     if (userRole) {
-      query = query.andWhere('u.user_role', userRole);
+      query = query.where('u.is_active', true).andWhere('u.user_role', userRole);
     }
     const users = await query;
 
