@@ -2,5 +2,8 @@
   "apiPath": "projects",
   "httpMethod": "GET",
   "name": "getAllProjects",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": ["logistics", "project_manager", "admin"],
+  "requestParameters": {
+    "isAll": true
+  }
 }

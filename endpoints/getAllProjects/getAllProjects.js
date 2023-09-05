@@ -15,11 +15,11 @@ const initializeDb = async () => {
   }
 };
 
-const getAllProjects = async () => {
+const getAllProjects = async (isAll) => {
   await initializeDb();
   try {
     // const projects = await knexInstance.select('*').from('project');
-    const projects = await knexInstance
+    let query = knexInstance
       .select(
         'p.*',
         knexInstance.raw(
@@ -32,8 +32,12 @@ const getAllProjects = async () => {
       .from('project as p')
       .join('user as createdBy', 'createdBy.user_id', '=', 'p.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'p.last_updated_by')
-      .where('p.is_active', true);
 
+
+    if (!isAll) {
+      query = query.where('p.is_active', true);
+    }
+    const projects = await query;
     if (!projects || projects.length === 0) {
       throw new NotFoundError('No projects found.');
     }
