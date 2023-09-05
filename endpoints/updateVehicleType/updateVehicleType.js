@@ -28,16 +28,18 @@ const updateVehicleType = async (vehicleTypeId, body, userSub) => {
 
     const vehicleType = new VehicleType(body);
 
-    const updatedVehicleType = {
+    let updatedVehicleType = {
       last_updated_by: user[0],
       last_updated_at: knexInstance.raw('NOW()'),
+      ...vehicleType
     };
 
-    for (let key of Object.keys(vehicleType)) {
-      if (vehicleType[key]) {
-        updatedVehicleType[key] = vehicleType[key];
-      }
-    }
+    updatedVehicleType = Object.fromEntries(
+      Object.entries(updatedVehicleType).filter(
+        ([_, val]) => val !== null && val !== undefined && val !== ''
+      )
+    ); // remove null or empty values
+
     await knexInstance('vehicle_type')
       .where('vehicle_type_id', vehicleTypeId)
       .update(updatedVehicleType);
