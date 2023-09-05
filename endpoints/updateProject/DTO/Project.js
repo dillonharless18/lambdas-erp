@@ -4,6 +4,7 @@ class Project {
     this.project_code = project.project_code;
     this.material_budget = project.material_budget;
     this.labor_budget = project.labor_budget;
+    this.is_active = project.is_active
   }
 }
 

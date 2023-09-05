@@ -36,13 +36,14 @@ const updatedProject = async (projectId, body, userSub) => {
   const updatedProject = {
     last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
+    ...project
   };
 
-  for (let key of Object.keys(project)) {
-    if (project[key]) {
-      updatedProject[key] = project[key];
-    }
-  }
+  updatedProject = Object.fromEntries(
+    Object.entries(updatedProject).filter(
+      ([_, val]) => val !== null && val !== undefined && val !== ''
+    )
+  ); // remove null or empty values
 
   try {
     await knexInstance('project')
