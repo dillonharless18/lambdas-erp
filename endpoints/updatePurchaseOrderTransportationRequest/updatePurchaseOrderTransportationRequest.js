@@ -49,6 +49,8 @@ const postPurchaseOrderTransportationRequest = async (
       transportationRequestData.transportation_request_status_id
         ? parseInt(transportationRequestData.transportation_request_status_id)
         : null,
+    future_transportation_date: transportationRequestData.future_transportation_date,
+    transportation_time: transportationRequestData.transportation_time,
     last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
   };
