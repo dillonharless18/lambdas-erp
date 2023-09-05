@@ -2,7 +2,9 @@ import getAllVehicleType from './getAllVehicleType.js';
 
 const handler = async (event, context) => {
   try {
-    return await getAllVehicleType();
+    const queryParams = event.queryStringParameters;
+    const isAll = queryParams?.isAll
+    return await getAllVehicleType(isAll);
   } catch (error) {
     console.error('Error in handler:', error);
     return {

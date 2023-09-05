@@ -13,11 +13,11 @@ const initializeDb = async () => {
   }
 };
 
-const getAllVehicleType = async () => {
+const getAllVehicleType = async (isAll) => {
   await initializeDb();
   try {
     // const vehicleType = await knexInstance.select('*').from('vehicle_type');
-    const vehicleType = await knexInstance
+    let query = knexInstance
       .select(
         'vt.*',
         knexInstance.raw(
@@ -30,8 +30,11 @@ const getAllVehicleType = async () => {
       .from('vehicle_type as vt')
       .join('user as createdBy', 'createdBy.user_id', '=', 'vt.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'vt.last_updated_by')
-      .where('vt.is_active', true);
 
+    if (!isAll) {
+      query = query.where('vt.is_active', true);
+    }
+    const vehicleType = await query
     return {
       statusCode: 200,
       body: JSON.stringify(vehicleType),
