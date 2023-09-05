@@ -9,6 +9,8 @@ class PurchaseOrderTransportationRequest {
       request.transportation_request_type_id;
     this.transportation_request_status_id =
       request.transportation_request_status_id;
+    this.future_transportation_date = request.future_transportation_date;
+    this.transportation_time = request.transportation_time
   }
 }
 
