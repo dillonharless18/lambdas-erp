@@ -33,7 +33,7 @@ const updatedProject = async (projectId, body, userSub) => {
 
   const project = new Project(body);
 
-  const updatedProject = {
+  let updatedProject = {
     last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
     ...project
