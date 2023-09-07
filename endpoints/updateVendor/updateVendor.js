@@ -35,6 +35,10 @@ const updateVendor = async (vendorData, vendorId, userSub) => {
 
   const vendor = new Vendor(vendorData);
 
+  if (vendor.payment_terms === 'Net 30') {
+    vendor.is_net_vendor = true;
+  }
+
   let updatedVendor = {
     last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
