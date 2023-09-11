@@ -66,9 +66,10 @@ async function createUserAndAddToGroup(
         await client.send(addUserToGroupCommand);
         console.log("User added to group successfully");
 
-        return userSub;
+        return { error: null, sub: userSub }
     } catch (err) {
         console.error(err);
+        return { error: err, sub: null }
     }
 }
 
@@ -113,12 +114,15 @@ const createUser = async (userData, userSub) => {
 
     const user = new User(userData);
     const firstInitial = getFirstInitial(user.first_name);
-    const sub = await createUserAndAddToGroup(
+    const { error, sub } = await createUserAndAddToGroup(
         user.user_role,
         `${firstInitial.toLowerCase()}.${user.last_name.toLowerCase()}`,
         user.user_email,
         user.phone_number
     );
+    if (error) {
+        throw error;
+    }
 
     console.log(
         `createUserAndAddToGroup response sub: ${JSON.stringify(sub, null, 2)}`

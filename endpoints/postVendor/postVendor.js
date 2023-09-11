@@ -22,7 +22,8 @@ const postVendor = async (vendorData, userSub) => {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        error: 'Invalid input format: The vendorData parameter must be an object',
+        error:
+          'Invalid input format: The vendorData parameter must be an object',
       }),
     };
   }
@@ -33,17 +34,20 @@ const postVendor = async (vendorData, userSub) => {
 
   const vendor = new Vendor(vendorData);
 
+  if (vendor.payment_terms === 'Net 30') {
+    vendor.is_net_vendor = true;
+  }
+
   let dataToInsert = {
     last_updated_by: loggedInUser[0],
     last_updated_at: knexInstance.raw('NOW()'),
     created_by: loggedInUser[0],
     created_at: knexInstance.raw('NOW()'),
     is_active: true,
-    ...vendor
+    ...vendor,
   };
 
-  await knexInstance('vendor')
-    .insert(dataToInsert);
+  await knexInstance('vendor').insert(dataToInsert);
 
   return {
     statusCode: 200,

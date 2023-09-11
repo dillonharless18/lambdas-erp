@@ -16,9 +16,7 @@ const initializeDb = async () => {
 const getPurchaseOrderRequestItems = async (status, userSub) => {
   await initializeDb();
   try {
-    const query = knexInstance(
-      'purchase_order_request_item'
-    )
+    const query = knexInstance('purchase_order_request_item')
       .join(
         'user as createdBy',
         'createdBy.user_id',
@@ -49,6 +47,16 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
         '=',
         'purchase_order_request_item.purchase_order_request_item_status_id'
       )
+      .leftJoin(
+        knexInstance('purchase_order_request_item_comment')
+          .select('purchase_order_request_item_id')
+          .count('* as comments_count')
+          .groupBy('purchase_order_request_item_id')
+          .as('comments'),
+        'comments.purchase_order_request_item_id',
+        '=',
+        'purchase_order_request_item.purchase_order_request_item_id'
+      )
       .select(
         'purchase_order_request_item.purchase_order_request_item_id',
         'purchase_order_request_item.last_updated_by',
@@ -72,23 +80,30 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
         'project.project_name',
         'urgent_order_status.urgent_order_status_name as urgent_status',
         'vendor.vendor_name',
-        'purchase_order_request_item_status.purchase_order_request_item_status_name'
+        'purchase_order_request_item_status.purchase_order_request_item_status_name',
+        knexInstance.raw(
+          'COALESCE(comments.comments_count, 0) as comments_count'
+        )
       )
       .where(
         'purchase_order_request_item_status.purchase_order_request_item_status_name',
         '=',
         status
-      )
+      );
 
     if (userSub) {
       const user = await knexInstance('user')
         .where('cognito_sub', userSub)
         .pluck('user_id');
 
-      query.where('created_by', '=', user[0])
+      query.where('created_by', '=', user[0]);
     }
 
-    const getAllPurchaseOrderRequestItems = await query.where('purchase_order_request_item.is_active', '=', true);
+    const getAllPurchaseOrderRequestItems = await query.where(
+      'purchase_order_request_item.is_active',
+      '=',
+      true
+    );
 
     return {
       statusCode: 200,
