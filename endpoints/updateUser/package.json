@@ -16,5 +16,8 @@
     "pg": "^8.11.0",
     "serverless": "^3.31.0",
     "serverless-offline": "^12.0.4"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.405.0"
   }
 }
