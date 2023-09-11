@@ -53,8 +53,21 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
         'po.credit_card_id',
         'credit_card.credit_card_id'
       )
+      .leftJoin(
+        knexInstance('ocr_imported_purchase_order_draft_comment')
+          .select('ocr_imported_purchase_order_draft_id')
+          .count('* as comment_count')
+          .groupBy('ocr_imported_purchase_order_draft_id')
+          .as('comments'),
+        'comments.ocr_imported_purchase_order_draft_id',
+        '=',
+        'po.ocr_imported_purchase_order_draft_id'
+      )
       .select(
         'po.ocr_imported_purchase_order_draft_id',
+        knexInstance.raw(
+          'COALESCE(comments.comment_count, 0) as comment_count'
+        ),
         knexInstance.raw(
           `json_build_object('user_id', user_created_pod.user_id, 'requester', ("user_created_pod".first_name || ' ' || "user_created_pod".last_name)) as created_by`
         ),
@@ -88,7 +101,8 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
         'po.last_updated_at',
         'po.ocr_suggested_vendor',
         'po.ocr_suggesetd_purchase_order_number',
-        'po.s3_uri'
+        'po.s3_uri',
+        'comments.comment_count'
       )
       .where('po.is_active', '=', true)
       .andWhere('item.is_active', '=', true);
@@ -102,9 +116,8 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
       //   .where('pod.created_by', '=', user[0])
       //   .andWhere('podi.created_by', '=', user[0]);
       query
-          .where('user_created_pod.created_by', '=', user[0])
-          .andWhere('user_created_podi.created_by', '=', user[0]);
-
+        .where('user_created_pod.created_by', '=', user[0])
+        .andWhere('user_created_podi.created_by', '=', user[0]);
     }
     const octImportedPurchaseOrders = await query;
 
