@@ -4,8 +4,9 @@ const handler = async (event) => {
   try {
     const queryParams = event.queryStringParameters;
     const transportationTripStatus = queryParams ? queryParams.status : null;
+    const isAll = queryParams?.isAll ?? null
 
-    return await getTransportationTrips(transportationTripStatus);
+    return await getTransportationTrips(transportationTripStatus, isAll);
   } catch (error) {
     console.error('Error in handler:', error);
     return {
