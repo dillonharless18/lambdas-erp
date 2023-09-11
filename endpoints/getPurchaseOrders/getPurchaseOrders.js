@@ -151,41 +151,55 @@ const getPurchaseOrders = async (status) => {
       },
     ];
 
-    const getPurchaseOrders = await knexInstance('purchase_order')
+    const getPurchaseOrders = await knexInstance('purchase_order as po')
+      .leftJoin(
+        'purchase_order_comment',
+        'po.purchase_order_id',
+        '=',
+        'purchase_order_comment.purchase_order_id'
+      )
+      .leftJoin(
+        knexInstance('purchase_order_comment')
+          .select('purchase_order_id')
+          .count('* as comment_count')
+          .groupBy('purchase_order_id')
+          .as('comments'),
+        'comments.purchase_order_id',
+        '=',
+        'po.purchase_order_id'
+      )
       .select(
-        'purchase_order.purchase_order_id',
-        'purchase_order.last_updated_by',
-        'purchase_order.created_by',
-        'purchase_order.created_at',
-        'purchase_order.total_price',
-        'purchase_order.purchase_order_number',
-        'purchase_order.vendor_id',
-        'purchase_order.purchase_order_status_id',
-        'purchase_order.quickbooks_purchase_order_id',
-        'purchase_order.s3_uri',
+        'po.purchase_order_id',
+        'po.last_updated_by',
+        'po.created_by',
+        'po.created_at',
+        'po.total_price',
+        'po.purchase_order_number',
+        'po.vendor_id',
+        'po.purchase_order_status_id',
+        'po.quickbooks_purchase_order_id',
+        'po.s3_uri',
         knexInstance.raw(
           '("createdBy".first_name || \' \' || "createdBy".last_name) AS requester'
         ),
         'vendor.vendor_name',
         'purchase_order_status.purchase_order_status_name',
+        knexInstance.raw(
+          'COALESCE(comments.comment_count, 0) as comment_count'
+        ),
         knexInstance.raw(createJsonAgg(jsonBuildList, 'purchase_order_items'))
       )
-      .join(
-        'user as createdBy',
-        'createdBy.user_id',
-        '=',
-        'purchase_order.created_by'
-      )
-      .join('vendor', 'vendor.vendor_id', '=', 'purchase_order.vendor_id')
+      .join('user as createdBy', 'createdBy.user_id', '=', 'po.created_by')
+      .join('vendor', 'vendor.vendor_id', '=', 'po.vendor_id')
       .join(
         'purchase_order_status',
         'purchase_order_status.purchase_order_status_id',
         '=',
-        'purchase_order.purchase_order_status_id'
+        'po.purchase_order_status_id'
       )
       .join(
         'purchase_order_item',
-        'purchase_order.purchase_order_id',
+        'po.purchase_order_id',
         'purchase_order_item.purchase_order_id'
       )
       .join(
@@ -201,19 +215,20 @@ const getPurchaseOrders = async (status) => {
       )
       .where('purchase_order_status.purchase_order_status_name', '=', status)
       .groupBy(
-        'purchase_order.purchase_order_id',
-        'purchase_order.last_updated_by',
-        'purchase_order.created_by',
-        'purchase_order.created_at',
-        'purchase_order.total_price',
-        'purchase_order.purchase_order_number',
-        'purchase_order.vendor_id',
-        'purchase_order.purchase_order_status_id',
-        'purchase_order.quickbooks_purchase_order_id',
-        'purchase_order.s3_uri',
+        'po.purchase_order_id',
+        'po.last_updated_by',
+        'po.created_by',
+        'po.created_at',
+        'po.total_price',
+        'po.purchase_order_number',
+        'po.vendor_id',
+        'po.purchase_order_status_id',
+        'po.quickbooks_purchase_order_id',
+        'po.s3_uri',
         'requester',
         'vendor.vendor_name',
-        'purchase_order_status.purchase_order_status_name'
+        'purchase_order_status.purchase_order_status_name',
+        'comments.comment_count'
       );
 
     return {
