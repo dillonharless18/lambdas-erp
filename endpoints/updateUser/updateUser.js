@@ -1,63 +1,160 @@
-import User from './DTO/User.js';
-import initializeKnex from '/opt/nodejs/db/index.js';
+import User from "./DTO/User.js";
+import initializeKnex from "/opt/nodejs/db/index.js";
+import pkg from "@aws-sdk/client-cognito-identity-provider";
+const {
+    CognitoIdentityProviderClient,
+    ListUsersCommand,
+    AdminUpdateUserAttributesCommand,
+} = pkg;
 
 let knexInstance;
 
 const initializeDb = async () => {
-  try {
-    if (!knexInstance) {
-      knexInstance = await initializeKnex();
+    try {
+        if (!knexInstance) {
+            knexInstance = await initializeKnex();
+        }
+    } catch (error) {
+        console.error("Error initializing database:", error);
+        throw error;
     }
-  } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
-  }
 };
 
-const updateUser = async (userData, userId, userSub) => {
-  await initializeDb();
+async function getCognitoUsernameBySub(userPoolId, sub) {
+    try {
+        const client = new CognitoIdentityProviderClient({
+            region: process.env.AWS_REGION,
+        });
+        console.log(`UserPoolId: ${userPoolId}, sub: ${sub}`);
+        const command = new ListUsersCommand({
+            UserPoolId: userPoolId,
+            Filter: `sub = "${sub}"`,
+        });
 
-  if (!userId) {
-    throw new Error('The user_id field must not be null');
-  }
-  if (typeof userData !== 'object' || userData === null) {
-    console.error('Error: The userData parameter must be an object');
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: 'Invalid input format: The userData parameter must be an object',
-      }),
+        const response = await client.send(command);
+        console.log("ListUserCommand response", response);
+        if (response.Users && response.Users.length > 0) {
+            return response.Users[0].Username;
+        } else {
+            throw new Error("User not found");
+        }
+    } catch (error) {
+        console.error("Error fetching username:", error);
+        throw error;
+    }
+}
+
+async function updateUserInCognito(userPoolId, username, phoneNumber, email) {
+    console.log("updateUserInCognito");
+    console.log(
+        `UserPoolId ${userPoolId}`,
+        `username: ${username}`,
+        `phoneNumber: ${phoneNumber}`,
+        `email: ${email}`
+    );
+    const userAttributesToUpdate = [];
+    if (isValidString(phoneNumber)) {
+        userAttributesToUpdate.push({
+            Name: "phone_number",
+            Value: phoneNumber,
+        });
+    }
+    if (isValidString(email)) {
+        userAttributesToUpdate.push({
+            Name: "email",
+            Value: email,
+        });
+    }
+    if (userAttributesToUpdate.length === 0) {
+        return;
+    }
+
+    try {
+        const client = new CognitoIdentityProviderClient({
+            region: process.env.AWS_REGION,
+        });
+        const command = new AdminUpdateUserAttributesCommand({
+            UserPoolId: userPoolId,
+            Username: username,
+            UserAttributes: userAttributesToUpdate,
+        });
+
+        const response = await client.send(command);
+        console.log("User phone number updated successfully:", response);
+    } catch (error) {
+        console.error("Error updating user phone number:", error);
+        throw error;
+    }
+}
+
+const updateUserInDb = async (userData, userId, userSub) => {
+    await initializeDb();
+
+    if (!userId) {
+        throw new Error("The user_id field must not be null");
+    }
+    if (typeof userData !== "object" || userData === null) {
+        console.error("Error: The userData parameter must be an object");
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                error: "Invalid input format: The userData parameter must be an object",
+            }),
+        };
+    }
+    const loggedInUser = await knexInstance("user")
+        .where("cognito_sub", userSub)
+        .pluck("user_id");
+
+    const user = new User(userData);
+
+    let updatedUser = {
+        last_updated_by: loggedInUser[0],
+        last_updated_at: knexInstance.raw("NOW()"),
+        ...user,
     };
-  }
-  const loggedInUser = await knexInstance('user')
-    .where('cognito_sub', userSub)
-    .pluck('user_id');
 
-  const user = new User(userData);
+    updatedUser = Object.fromEntries(
+        Object.entries(updatedUser).filter(
+            ([_, val]) => val !== null && val !== undefined && val !== ""
+        )
+    ); // remove null or empty values
 
-  let updatedUser = {
-    last_updated_by: loggedInUser[0],
-    last_updated_at: knexInstance.raw('NOW()'),
-    ...user,
-  };
+    await knexInstance("user").where("user_id", userId).update(updatedUser);
 
-  updatedUser = Object.fromEntries(
-    Object.entries(updatedUser).filter(
-      ([_, val]) => val !== null && val !== undefined && val !== ''
-    )
-  ); // remove null or empty values
-
-  await knexInstance('user').where('user_id', userId).update(updatedUser);
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'user updated successfully!',
-    }),
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  };
+    return user;
 };
 
-export default updateUser;
+const getTargetUserSubForUpdateRequest = async (userID) => {
+    console.log("getTargetUserSubForUpdateRequest");
+    console.log(`userID: ${userID}`);
+
+    try {
+        await initializeDb();
+        const targetUserSub = await knexInstance("user")
+            .where("user_id", userID)
+            .pluck("cognito_sub");
+
+        if (targetUserSub.length <= 0) {
+            throw new Error(`No cognito_sub found for userId: ${userID}`);
+        }
+
+        return targetUserSub[0];
+    } catch (error) {
+        console.error("Error in getTargetUserSubForUpdateRequest", error);
+        throw error;
+    }
+};
+
+const isValidString = (stringToValidate) => {
+    return (
+        typeof stringToValidate === "string" && stringToValidate.trim() !== ""
+    );
+};
+
+export {
+    getCognitoUsernameBySub,
+    updateUserInCognito,
+    updateUserInDb,
+    getTargetUserSubForUpdateRequest,
+};
