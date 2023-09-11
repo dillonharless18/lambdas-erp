@@ -31,7 +31,7 @@ const deleteTransportationTrip = async (transportationTripId) => {
       )
         .where('transportation_trip_id', transportationTripId)
         .update({
-          is_active: false,
+          is_active: true,
           last_updated_at: trx.raw('NOW()'),
           transportation_request_status_id: 1, //Open
         })
