@@ -13,7 +13,7 @@ const initializeDb = async () => {
   }
 };
 
-const getTransportationTrips = async (transportationTripStatus) => {
+const getTransportationTrips = async (transportationTripStatus, isAll) => {
   await initializeDb();
   try {
     let query = knexInstance('transportation_trip')
@@ -51,7 +51,11 @@ const getTransportationTrips = async (transportationTripStatus) => {
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
       )
-      .where('transportation_trip.is_active', true);
+
+    if (!isAll) {
+      query = query.where('transportation_trip.is_active', true);
+    }
+
 
     if (transportationTripStatus) {
       let transportaionTripStatusID = await knexInstance(
