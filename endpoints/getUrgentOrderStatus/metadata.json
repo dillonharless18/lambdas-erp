@@ -2,5 +2,5 @@
   "apiPath": "getUrgentOrderStatus",
   "httpMethod": "GET",
   "name": "getUrgentOrderStatus",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": ["logistics", "project_manager", "admin", "basic_user"]
 }
