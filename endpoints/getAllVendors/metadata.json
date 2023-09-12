@@ -2,5 +2,5 @@
   "apiPath": "getAllVendors",
   "httpMethod": "GET",
   "name": "getAllVendors",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": ["logistics", "project_manager", "admin", "basic_user"]
 }
