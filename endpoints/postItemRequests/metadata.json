@@ -2,5 +2,5 @@
   "apiPath": "item-requests",
   "httpMethod": "POST",
   "name": "postItemRequests",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": ["logistics", "project_manager", "admin", "basic_user"]
 }
