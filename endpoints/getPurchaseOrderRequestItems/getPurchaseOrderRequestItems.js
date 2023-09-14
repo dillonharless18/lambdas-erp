@@ -96,7 +96,7 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
         .where('cognito_sub', userSub)
         .pluck('user_id');
 
-      query.where('created_by', '=', user[0]);
+      query.where('purchase_order_request_item.created_by', '=', user[0]);
     }
 
     const getAllPurchaseOrderRequestItems = await query.where(
