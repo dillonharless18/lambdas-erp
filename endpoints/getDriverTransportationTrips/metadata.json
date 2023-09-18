@@ -2,5 +2,11 @@
   "apiPath": "driver-transportation-trips",
   "httpMethod": "GET",
   "name": "getDriverTransportationTrips",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

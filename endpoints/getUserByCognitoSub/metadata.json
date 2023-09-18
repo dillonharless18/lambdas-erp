@@ -2,5 +2,11 @@
   "apiPath": "user-data",
   "httpMethod": "GET",
   "name": "getUserByCognitoSub",
-  "allowedGroups": ["logistics", "project_manager", "admin", "basic_user", "driver"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

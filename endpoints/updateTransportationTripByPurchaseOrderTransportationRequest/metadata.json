@@ -2,5 +2,11 @@
   "apiPath": "transportation-trip/{transportation_trip_id}/purchase-order-transportation-request/{purchase_order_transportation_request_id}",
   "httpMethod": "PATCH",
   "name": "updateTransportationTripByPurchaseOrderTransportationRequest",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

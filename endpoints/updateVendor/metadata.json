@@ -2,5 +2,11 @@
   "apiPath": "vendors/{vendor_id}",
   "httpMethod": "PATCH",
   "name": "updateVendor",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

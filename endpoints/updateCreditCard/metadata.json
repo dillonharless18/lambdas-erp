@@ -2,5 +2,11 @@
   "apiPath": "credit-cards/{credit_card_id}",
   "httpMethod": "PATCH",
   "name": "updateCreditCard",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

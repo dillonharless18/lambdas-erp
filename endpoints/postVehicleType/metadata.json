@@ -2,5 +2,11 @@
   "apiPath": "vehicle-type",
   "httpMethod": "POST",
   "name": "postVehicleType",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

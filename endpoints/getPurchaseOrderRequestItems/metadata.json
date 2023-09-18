@@ -2,7 +2,13 @@
   "apiPath": "purchase-order-request-items",
   "httpMethod": "GET",
   "name": "getPurchaseOrderRequestItems",
-  "allowedGroups": ["logistics", "project_manager", "admin", "basic_user"],
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ],
   "requestParameters": {
     "status": true
   }

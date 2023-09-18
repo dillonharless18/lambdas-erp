@@ -2,5 +2,11 @@
   "apiPath": "ocr-imported-purchase-order/comments",
   "httpMethod": "POST",
   "name": "postOcrImportedPurchaseOrderComment",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

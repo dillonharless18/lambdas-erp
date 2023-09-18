@@ -2,7 +2,13 @@
   "apiPath": "vehicle-type",
   "httpMethod": "GET",
   "name": "getAllVehicleType",
-  "allowedGroups": ["logistics", "project_manager", "admin"],
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ],
   "requestParameters": {
     "isAll": true
   }
