@@ -231,7 +231,7 @@ const getPurchaseOrders = async (status) => {
         'comments.comment_count'
       );
     if (status === 'Received') {
-      query = query.whereNot('purchase_order_item_status.purchase_order_item_status_id', 2) // don't fetch returned items
+      query = query.whereNot('purchase_order_item_status.purchase_order_item_status_id', 5) // don't fetch returned items
     }
     const getPurchaseOrders = await query
 
