@@ -44,7 +44,7 @@ const postOcrImportedPurchaseOrderItem = async (
     const ocrImportedPOItem = new OcrImportedPurchaseOrderItem(
       ocrImportedPurchaseOrderItem
     );
-    await knexInstance('ocr_imported_purchase_order_draft_item').insert({
+    const dataToInsert = {
       ocr_imported_purchase_order_draft_item_id: uuidv4(),
       ocr_imported_purchase_order_draft_id:
         ocrImportedPOItem.ocr_imported_purchase_order_draft_id,
@@ -60,12 +60,14 @@ const postOcrImportedPurchaseOrderItem = async (
       created_at: knexInstance.raw('NOW()'),
       last_updated_at: knexInstance.raw('NOW()'),
       is_active: true,
-    });
+    }
+    await knexInstance('ocr_imported_purchase_order_draft_item').insert(dataToInsert);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: 'OCR Imported Purchase Order Item added successfully!',
+        data: dataToInsert.ocr_imported_purchase_order_draft_item_id
       }),
       headers: {
         'Access-Control-Allow-Origin': '*',
