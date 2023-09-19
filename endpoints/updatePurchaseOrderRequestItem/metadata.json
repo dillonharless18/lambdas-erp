@@ -2,5 +2,11 @@
   "apiPath": "purchase-order-request-items/{purchase_order_request_item_id}",
   "httpMethod": "PATCH",
   "name": "updatePurchaseOrderRequestItem",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

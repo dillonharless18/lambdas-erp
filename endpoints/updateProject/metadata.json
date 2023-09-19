@@ -2,5 +2,11 @@
   "apiPath": "projects/{project_id}",
   "httpMethod": "PATCH",
   "name": "updateProject",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

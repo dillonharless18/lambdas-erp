@@ -2,5 +2,11 @@
   "apiPath": "net-vendor-request-item/{net_vendor_request_item_id}",
   "httpMethod": "DELETE",
   "name": "deleteNetVendorRequestItem",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

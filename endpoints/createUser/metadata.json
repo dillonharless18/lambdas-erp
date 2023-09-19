@@ -2,5 +2,11 @@
   "apiPath": "users",
   "httpMethod": "POST",
   "name": "createUser",
-  "allowedGroups": ["admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

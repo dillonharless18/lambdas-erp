@@ -2,5 +2,11 @@
   "apiPath": "open-transportation-requests/{purchase_order_transportation_request_id}/comment",
   "httpMethod": "POST",
   "name": "postPurchaseOrderTransportationRequestComment",
-  "allowedGroups": ["logistics", "project_manager", "admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }

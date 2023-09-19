@@ -2,7 +2,13 @@
   "apiPath": "users",
   "httpMethod": "GET",
   "name": "getAllUsers",
-  "allowedGroups": ["logistics", "project_manager", "admin"],
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ],
   "requestParameters": {
     "role": false
   }

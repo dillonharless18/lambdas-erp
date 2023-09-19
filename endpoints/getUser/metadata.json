@@ -2,5 +2,11 @@
   "apiPath": "users/{user_id}",
   "httpMethod": "GET",
   "name": "getUser",
-  "allowedGroups": ["admin"]
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
 }
