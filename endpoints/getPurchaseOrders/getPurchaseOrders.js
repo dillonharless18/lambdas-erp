@@ -151,7 +151,7 @@ const getPurchaseOrders = async (status) => {
       },
     ];
 
-    const getPurchaseOrders = await knexInstance('purchase_order as po')
+    let query = knexInstance('purchase_order as po')
       .leftJoin(
         'purchase_order_comment',
         'po.purchase_order_id',
@@ -230,6 +230,10 @@ const getPurchaseOrders = async (status) => {
         'purchase_order_status.purchase_order_status_name',
         'comments.comment_count'
       );
+    if (status === 'Received') {
+      query = query.whereNot('purchase_order_item_status.purchase_order_item_status_id', 5) // don't fetch returned items
+    }
+    const getPurchaseOrders = await query
 
     return {
       statusCode: 200,
