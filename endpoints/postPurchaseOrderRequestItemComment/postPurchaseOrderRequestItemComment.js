@@ -1,6 +1,8 @@
 import PurchaseOrderRequestItemComment from './DTO/PurchaseOrderRequestItemComment.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
+import { DatabaseError, NotFoundError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -10,8 +12,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -23,11 +25,11 @@ const postPurchaseOrderRequestItemComment = async (
   await initializeDb();
 
   if (!purchaseOrderRequestItemId) {
-    throw new Error(
+    throw NotFoundError(
       'The purchase_order_request_item_id field must not be null'
     );
   } else if (!comment) {
-    throw new Error('The comment parameter must not be null');
+    throw new NotFoundError('The comment parameter must not be null');
   }
 
   const user = await knexInstance('user')
@@ -51,24 +53,12 @@ const postPurchaseOrderRequestItemComment = async (
       dataToInsert
     );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Purchase Order Request Item Comment added successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(
+      'Purchase Order Request Item Comment added successfully!'
+    );
   } catch (error) {
-    console.error('Error in postPurchaseOrderRequestItemComment:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    console.error('Error in postPurchaseOrderRequestItemComment:', error.stack);
+    throw error;
   }
 };
 
