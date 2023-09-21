@@ -1,4 +1,6 @@
 import getPurchaseOrderRequestItems from './getPurchaseOrderRequestItems.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
+import { NotFoundError } from '/opt/nodejs/errors.js';
 
 const handler = async (event, context) => {
   try {
@@ -6,26 +8,12 @@ const handler = async (event, context) => {
     const status = queryParams.status;
     const userSub = queryParams.userSub;
     if (!status) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error: 'Missing status path parameter',
-        }),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      };
+      throw new NotFoundError('Missing status path parameter');
     }
     return await getPurchaseOrderRequestItems(status, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 
