@@ -1,4 +1,9 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,8 +13,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -21,13 +26,7 @@ const deletePurchaseOrderRequestItems = async (requestBody) => {
     !requestBody.requestItems ||
     !Array.isArray(requestBody.requestItems)
   ) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Invalid request body' }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new BadRequestError('Invalid request body');
   }
 
   try {
@@ -40,24 +39,12 @@ const deletePurchaseOrderRequestItems = async (requestBody) => {
         last_updated_at: knexInstance.raw('NOW()'),
       });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Purchase Order Request Items deleted successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(
+      'Purchase Order Request Items deleted successfully!'
+    );
   } catch (error) {
     console.error('Error in postPurchaseOrderRequestItems:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error.message}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw error;
   }
 };
 export default deletePurchaseOrderRequestItems;
