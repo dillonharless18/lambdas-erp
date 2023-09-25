@@ -25,11 +25,11 @@ const postPurchaseOrderRequestItemComment = async (
   await initializeDb();
 
   if (!purchaseOrderRequestItemId) {
-    throw NotFoundError(
+    throw BadRequestError(
       'The purchase_order_request_item_id field must not be null'
     );
   } else if (!comment) {
-    throw new NotFoundError('The comment parameter must not be null');
+    throw new BadRequestError('The comment parameter must not be null');
   }
 
   const user = await knexInstance('user')

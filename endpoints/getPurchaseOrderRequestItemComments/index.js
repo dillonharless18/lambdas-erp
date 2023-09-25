@@ -1,13 +1,13 @@
 import getPurchaseOrderRequestItemsComments from './getPurchaseOrderRequestItemComments.js';
 import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
-import { NotFoundError } from '/opt/nodejs/errors.js';
+import { BadRequestError } from '/opt/nodejs/errors.js';
 
 const handler = async (event, context) => {
   try {
     const purchaseOrderRequestItemId =
       event.pathParameters?.purchase_order_request_item_id;
     if (!purchaseOrderRequestItemId) {
-      throw new NotFoundError(
+      throw new BadRequestError(
         'Missing purchase_order_request_item_id path parameter'
       );
     }
