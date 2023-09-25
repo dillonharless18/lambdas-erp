@@ -38,6 +38,8 @@ async function createUserAndAddToGroup(
                 Value: userPhoneNumber,
             },
         ],
+        DesiredDeliveryMediums: ["EMAIL"],
+        MessageAction: "SUPPRESS" // TODO Determine if this is desired and if not, update it.
     };
 
     try {
@@ -47,7 +49,7 @@ async function createUserAndAddToGroup(
 
         console.log("User created successfully");
 
-        const groupName = allowedGroups.get(cognitoUserGroupName);
+        const groupName = allowedGroups[cognitoUserGroupName];
 
         if (!groupName) {
             throw new Error(
