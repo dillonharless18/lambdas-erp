@@ -1,4 +1,6 @@
 import PurchaseOrderDTO from './DTO/PurchaseOrderDTO.js';
+import { DatabaseError, BadRequestError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,8 +12,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -20,12 +22,9 @@ const postPurchaseOrder = async (order, userSub) => {
 
   if (typeof order !== 'object' || order === null) {
     console.error('Error: The order parameter must be an object');
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: 'Invalid input format: The order parameter must be an object',
-      }),
-    };
+    throw new BadRequestError(
+      'Invalid input format: The order parameter must be an object'
+    );
   }
 
   const user = await knexInstance('user')
@@ -102,25 +101,13 @@ const postPurchaseOrder = async (order, userSub) => {
       await Promise.all(purchaseOrderItemPromises);
     });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Purchase Order created successfully!',
-        purchaseOrderDetails: purchaseOrderDetails,
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Purchase Order created successfully!',
+      purchaseOrderDetails: purchaseOrderDetails,
+    });
   } catch (error) {
-    console.error('Error in postPurchaseOrder:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error.message}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    console.error('Error in postPurchaseOrder:', error.stack);
+    throw error;
   }
 };
 
