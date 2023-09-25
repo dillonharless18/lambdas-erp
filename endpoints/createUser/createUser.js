@@ -49,7 +49,6 @@ async function createUserAndAddToGroup(
 
         console.log("User created successfully");
 
-        // const groupName = allowedGroups.get(cognitoUserGroupName);
         const groupName = allowedGroups[cognitoUserGroupName];
 
         if (!groupName) {
