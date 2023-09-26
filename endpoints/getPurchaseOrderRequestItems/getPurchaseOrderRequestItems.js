@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { DatabaseError, NotFoundError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,8 +10,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -105,21 +107,10 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
       true
     );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(getAllPurchaseOrderRequestItems),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(getAllPurchaseOrderRequestItems);
   } catch (error) {
     console.error('Error fetching PurchaseOrderRequestItems:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: `Server Error, ${error}`,
-      }),
-    };
+    throw error;
   }
 };
 

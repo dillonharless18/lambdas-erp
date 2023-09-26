@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { DatabaseError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,15 +10,14 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
 const getAllCreditCards = async () => {
   await initializeDb();
   try {
-    // const creditCards = await knexInstance.select('*').from('credit_card');
     const creditCards = await knexInstance
       .select(
         'cc.*',
@@ -32,22 +33,10 @@ const getAllCreditCards = async () => {
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'cc.last_updated_by')
       .where('cc.is_active', true);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(creditCards),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(creditCards);
   } catch (error) {
-    console.error('Error fetching credit cards:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    console.error('Error fetching credit cards:', error.stack);
+    throw error;
   }
 };
 

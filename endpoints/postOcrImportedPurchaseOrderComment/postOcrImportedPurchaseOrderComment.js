@@ -1,4 +1,6 @@
 import OcrImportedPurchaseOrderComment from './DTO/OcrImportedPurchaseOrderComment.js';
+import { DatabaseError, BadRequestError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,8 +12,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -19,7 +21,7 @@ const postOcrImportedPurchaseOrderComment = async (comment, userSub) => {
   await initializeDb();
 
   if (!comment) {
-    throw new Error('The comment parameter must not be null');
+    throw new BadRequestError('The comment parameter must not be null');
   }
 
   const user = await knexInstance('user')
@@ -44,25 +46,15 @@ const postOcrImportedPurchaseOrderComment = async (comment, userSub) => {
       dataToInsert
     );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message:
-          'Ocr Imported Purchase Order Draft Comment added successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Ocr Imported Purchase Order Draft Comment added successfully!',
+    });
   } catch (error) {
-    console.error('Error in Ocr Imported Purchase Order Draft Comment:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    console.error(
+      'Error in Ocr Imported Purchase Order Draft Comment:',
+      error.stack
+    );
+    throw error;
   }
 };
 
