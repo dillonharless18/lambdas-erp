@@ -10,7 +10,7 @@ class PurchaseOrderTransportationRequest {
     this.recipients = request.recipients;
     this.contact_number = request.contact_number;
     this.contact_name = request.contact_name;
-    this.future_transportation_date = request.future_transportation_date;
+    this.future_transportation_date = request.future_transportation_date ? new Date(request.future_transportation_date) : null;
     this.transportation_time = request.transportation_time
   }
 }
