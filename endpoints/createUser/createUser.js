@@ -45,7 +45,9 @@ async function createUserAndAddToGroup(
     try {
         const createUserCommand = new AdminCreateUserCommand(params);
         const createUserResult = await client.send(createUserCommand);
-        const userSub = createUserResult.User.UserSub;
+        const userAttributes = createUserResult.User.Attributes;
+        const userSub = userAttributes.find(attr => attr.Name === 'sub').Value;
+
 
         console.log("User created successfully");
 
