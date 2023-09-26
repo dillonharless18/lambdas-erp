@@ -62,9 +62,9 @@ const updateOcrImportedPurchaseOrderItem = async (
       )
       .update(updatedItem);
 
-    return createSuccessResponse(
-      'Ocr Imported Purchase Order Item updated successfully!'
-    );
+    return createSuccessResponse({
+      message: 'Ocr Imported Purchase Order Item updated successfully!',
+    });
   } catch (error) {
     // console.error('Error fetching projects:', error.stack); // Logging error stack
     throw error; // propagate the error to the handler

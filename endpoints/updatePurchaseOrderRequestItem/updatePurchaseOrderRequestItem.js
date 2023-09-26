@@ -73,9 +73,9 @@ const updatePurchaseOrderRequestItem = async (
       .where('purchase_order_request_item_id', purchaseOrderRequestItemId)
       .update(updatedItem);
 
-    return createSuccessResponse(
-      'Purchase Order Request Item updated successfully!'
-    );
+    return createSuccessResponse({
+      message: 'Purchase Order Request Item updated successfully!',
+    });
   } catch (error) {
     console.error('Error:', error.stack); // Logging error stack
     throw error; // propagate the error to the handler

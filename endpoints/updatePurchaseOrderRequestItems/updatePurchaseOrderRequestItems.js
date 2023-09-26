@@ -88,9 +88,9 @@ const updatePurchaseOrderRequestItems = async (items, userSub) => {
       })
     );
 
-    return createSuccessResponse(
-      'Purchase Order Request Items updated successfully!'
-    );
+    return createSuccessResponse({
+      message: 'Purchase Order Request Items updated successfully!',
+    });
   } catch (error) {
     console.error('Error fetching projects:', error.stack); // Logging error stack
     throw error; // propagate the error to the handler

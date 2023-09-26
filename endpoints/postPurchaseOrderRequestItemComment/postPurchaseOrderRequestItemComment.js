@@ -53,9 +53,9 @@ const postPurchaseOrderRequestItemComment = async (
       dataToInsert
     );
 
-    return createSuccessResponse(
-      'Purchase Order Request Item Comment added successfully!'
-    );
+    return createSuccessResponse({
+      message: 'Purchase Order Request Item Comment added successfully!',
+    });
   } catch (error) {
     console.error('Error in postPurchaseOrderRequestItemComment:', error.stack);
     throw error;

@@ -1,8 +1,5 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
-import {
-  DatabaseError,
-  BadRequestError,
-} from '/opt/nodejs/errors.js';
+import { DatabaseError, BadRequestError } from '/opt/nodejs/errors.js';
 import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
@@ -39,9 +36,9 @@ const deletePurchaseOrderRequestItems = async (requestBody) => {
         last_updated_at: knexInstance.raw('NOW()'),
       });
 
-    return createSuccessResponse(
-      'Purchase Order Request Items deleted successfully!'
-    );
+    return createSuccessResponse({
+      message: 'Purchase Order Request Items deleted successfully!',
+    });
   } catch (error) {
     console.error('Error in postPurchaseOrderRequestItems:', error);
     throw error;
