@@ -27,7 +27,20 @@ const getOpenTransportationRequests = async () => {
         'trs.transportation_request_status_name',
         'trt.transportation_request_type_name',
         'uos.urgent_order_status_name',
+        knexInstance.raw(
+          'COALESCE(comments.comment_count, 0) as comment_count'
+        ),
       ])
+      .leftJoin(
+        knexInstance('purchase_order_transportation_request_comment')
+          .select('purchase_order_transportation_request_id')
+          .count('* as comment_count')
+          .groupBy('purchase_order_transportation_request_id')
+          .as('comments'),
+        'comments.purchase_order_transportation_request_id',
+        '=',
+        'potr.purchase_order_transportation_request_id'
+      )
       .leftJoin('project as p', 'p.project_id', 'potr.project_id')
       .leftJoin('user as u', 'u.user_id', 'potr.created_by')
       .leftJoin(
