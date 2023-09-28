@@ -30,7 +30,20 @@ const getTransportationTrips = async (transportationTripStatus, isAll) => {
         knexInstance.raw(
           '(SELECT count(*) FROM public.transportation_trip_by_purchase_order_transportation_request WHERE transportation_trip_id = transportation_trip.transportation_trip_id AND is_active = true) as totalStops'
         ),
+        knexInstance.raw(
+          'COALESCE(comments.comment_count, 0) as comment_count'
+        ),
       ])
+      .leftJoin(
+        knexInstance('transportation_trip_comment')
+          .select('transportation_trip_id')
+          .count('* as comment_count')
+          .groupBy('transportation_trip_id')
+          .as('comments'),
+        'comments.transportation_trip_id',
+        '=',
+        'transportation_trip.transportation_trip_id'
+      )
       .leftJoin(
         'user as driver',
         'transportation_trip.driver_id',
@@ -50,12 +63,11 @@ const getTransportationTrips = async (transportationTripStatus, isAll) => {
         'vehicle_type',
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
-      )
+      );
 
     if (!isAll) {
       query = query.where('transportation_trip.is_active', true);
     }
-
 
     if (transportationTripStatus) {
       let transportaionTripStatusID = await knexInstance(
