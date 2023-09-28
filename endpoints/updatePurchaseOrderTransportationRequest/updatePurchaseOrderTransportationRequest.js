@@ -68,6 +68,13 @@ const postPurchaseOrderTransportationRequest = async (
         purchaseOrderTransportationRequestId
       )
       .update(dataToUpdate);
+    // if purchase_order_transportation_request is completed that is a PO 
+    // then change the PO status to Recieved
+    if (dataToUpdate.purchase_order_number && dataToUpdate.transportation_request_status_id === 3) {
+      await knexInstance('purchase_order')
+        .where('purchase_order_id', dataToUpdate.purchase_order_id)
+        .update({ purchase_order_status_id: 4 });
+    }
 
     return {
       statusCode: 200,
