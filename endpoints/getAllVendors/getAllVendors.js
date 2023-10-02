@@ -15,10 +15,10 @@ const initializeDb = async () => {
   }
 };
 
-const getAllVendors = async () => {
+const getAllVendors = async (netVendors) => {
   await initializeDb();
   try {
-    const allVendors = await knexInstance
+    let query = knexInstance
       .select(
         'v.*',
         knexInstance.raw(
@@ -32,6 +32,12 @@ const getAllVendors = async () => {
       .join('user as createdBy', 'createdBy.user_id', '=', 'v.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'v.last_updated_by')
       .where('v.is_active', true);
+
+    if (netVendors) {
+      query = query.andWhere('is_net_vendor', true);
+    }
+
+    const allVendors = await query;
     return createSuccessResponse(allVendors);
   } catch (error) {
     console.error('Error fetching vendors:', error);
