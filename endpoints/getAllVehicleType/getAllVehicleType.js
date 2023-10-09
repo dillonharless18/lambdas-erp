@@ -30,11 +30,12 @@ const getAllVehicleType = async (isAll) => {
       .from('vehicle_type as vt')
       .join('user as createdBy', 'createdBy.user_id', '=', 'vt.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'vt.last_updated_by')
+      .orderBy('vt.created_at', 'asc');
 
     if (!isAll) {
       query = query.where('vt.is_active', true);
     }
-    const vehicleType = await query
+    const vehicleType = await query;
     return {
       statusCode: 200,
       body: JSON.stringify(vehicleType),

@@ -46,7 +46,8 @@ const getPurchaseOrderItems = async (purchase_order_id) => {
         'purchase_order_item_status.purchase_order_item_status_name'
       )
       .where('purchase_order_item.purchase_order_id', '=', purchase_order_id)
-      .andWhere('purchase_order_item.is_active', '=', true);
+      .andWhere('purchase_order_item.is_active', '=', true)
+      .orderBy('purchase_order_item.created_at', 'asc');
 
     return {
       statusCode: 200,

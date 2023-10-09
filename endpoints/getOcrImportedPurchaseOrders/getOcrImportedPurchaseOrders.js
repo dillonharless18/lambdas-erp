@@ -106,6 +106,7 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
         'po.s3_uri',
         'comments.comment_count'
       )
+      .orderBy('po.created_at', 'asc')
       .where('po.is_active', '=', true)
       .andWhere('item.is_active', '=', true);
 

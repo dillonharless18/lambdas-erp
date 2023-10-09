@@ -63,7 +63,8 @@ const getTransportationTrips = async (transportationTripStatus, isAll) => {
         'vehicle_type',
         'transportation_trip.vehicle_type_id',
         'vehicle_type.vehicle_type_id'
-      );
+      )
+      .orderBy('transportation_trip.created_at', 'asc');
 
     if (!isAll) {
       query = query.where('transportation_trip.is_active', true);

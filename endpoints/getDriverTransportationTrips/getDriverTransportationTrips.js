@@ -140,6 +140,7 @@ const getDriverTransportationTrips = async (cognitoSub) => {
         'vehicle_type.vehicle_type_id',
         'transportation_trip_status.transportation_trip_status_id'
       )
+      .orderBy('po_request.created_at', 'asc')
       .where('trip.driver_id', loggedInUser[0])
       .whereNot('trip_by_po_request_status.transportation_request_status_id', 4)
       .andWhere('trip.is_active', true);

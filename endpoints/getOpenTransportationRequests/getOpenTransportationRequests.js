@@ -64,7 +64,8 @@ const getOpenTransportationRequests = async () => {
         'potr.urgent_order_status_id'
       )
       .where('potr.transportation_request_status_id', 1)
-      .andWhere('potr.is_active', true);
+      .andWhere('potr.is_active', true)
+      .orderBy('potr.created_at', 'asc');
 
     return {
       statusCode: 200,
