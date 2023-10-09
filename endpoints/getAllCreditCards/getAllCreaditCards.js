@@ -31,8 +31,8 @@ const getAllCreditCards = async () => {
       .from('credit_card as cc')
       .join('user as createdBy', 'createdBy.user_id', '=', 'cc.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'cc.last_updated_by')
-      .where('cc.is_active', true);
-
+      .where('cc.is_active', true)
+      .orderBy('cc.credit_card_name');
     return createSuccessResponse(creditCards);
   } catch (error) {
     console.error('Error fetching credit cards:', error.stack);
