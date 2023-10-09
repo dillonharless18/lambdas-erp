@@ -229,11 +229,15 @@ const getPurchaseOrders = async (status) => {
         'vendor.vendor_name',
         'purchase_order_status.purchase_order_status_name',
         'comments.comment_count'
-      );
+      )
+      .orderBy('po.created_at', 'asc');
     if (status === 'Received') {
-      query = query.whereNot('purchase_order_item_status.purchase_order_item_status_id', 5) // don't fetch returned items
+      query = query.whereNot(
+        'purchase_order_item_status.purchase_order_item_status_id',
+        5
+      ); // don't fetch returned items
     }
-    const getPurchaseOrders = await query
+    const getPurchaseOrders = await query;
 
     return {
       statusCode: 200,
