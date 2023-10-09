@@ -29,7 +29,7 @@ const getAllUsers = async (userRole) => {
       .from('user as u')
       .join('user as createdBy', 'createdBy.user_id', '=', 'u.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'u.last_updated_by')
-      .orderBy('createdBy.first_name');
+      .orderBy('u.created_At', 'asc');
     if (userRole) {
       query = query
         .where('u.is_active', true)
