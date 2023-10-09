@@ -30,7 +30,7 @@ const getAllProjects = async (isAll) => {
         )
       )
       .from('project as p')
-      .orderBy('p.created_At', 'asc')
+      .orderBy('p.created_at', 'asc')
       .join('user as createdBy', 'createdBy.user_id', '=', 'p.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'p.last_updated_by');
 

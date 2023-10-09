@@ -32,7 +32,7 @@ const getAllVendors = async (netVendors) => {
       .join('user as createdBy', 'createdBy.user_id', '=', 'v.created_by')
       .join('user as updatedBy', 'updatedBy.user_id', '=', 'v.last_updated_by')
       .where('v.is_active', true)
-      .orderBy('v.created_At', 'asc');
+      .orderBy('v.created_at', 'asc');
 
     if (netVendors) {
       query = query.andWhere('is_net_vendor', true);
