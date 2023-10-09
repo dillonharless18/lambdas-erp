@@ -84,7 +84,7 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
         'vendor.vendor_name',
         'purchase_order_request_item_status.purchase_order_request_item_status_name',
         knexInstance.raw(
-          'COALESCE(comments.comments_count, 0) as comments_count'
+          'COALESCE(comments.comment_count::INTEGER, 0) as comment_count'
         )
       )
       .where(

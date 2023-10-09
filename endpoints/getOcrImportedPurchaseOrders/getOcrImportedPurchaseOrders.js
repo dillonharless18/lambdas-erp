@@ -68,7 +68,7 @@ const getOcrImportedPurhaseOrders = async (userSub) => {
       .select(
         'po.ocr_imported_purchase_order_draft_id',
         knexInstance.raw(
-          'COALESCE(comments.comment_count, 0) as comment_count'
+          'COALESCE(comments.comment_count::INTEGER, 0) as comment_count'
         ),
         knexInstance.raw(
           `json_build_object('user_id', user_created_pod.user_id, 'requester', ("user_created_pod".first_name || ' ' || "user_created_pod".last_name)) as created_by`

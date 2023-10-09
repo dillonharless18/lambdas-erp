@@ -28,7 +28,7 @@ const getOpenTransportationRequests = async () => {
         'trt.transportation_request_type_name',
         'uos.urgent_order_status_name',
         knexInstance.raw(
-          'COALESCE(comments.comment_count, 0) as comment_count'
+          'COALESCE(comments.comment_count::INTEGER, 0) as comment_count'
         ),
       ])
       .leftJoin(

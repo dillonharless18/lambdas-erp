@@ -31,7 +31,7 @@ const getTransportationTrips = async (transportationTripStatus, isAll) => {
           '(SELECT count(*) FROM public.transportation_trip_by_purchase_order_transportation_request WHERE transportation_trip_id = transportation_trip.transportation_trip_id AND is_active = true) as totalStops'
         ),
         knexInstance.raw(
-          'COALESCE(comments.comment_count, 0) as comment_count'
+          'COALESCE(comments.comment_count::INTEGER, 0) as comment_count'
         ),
       ])
       .leftJoin(
