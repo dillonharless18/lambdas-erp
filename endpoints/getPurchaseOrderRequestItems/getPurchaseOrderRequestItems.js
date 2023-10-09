@@ -91,7 +91,8 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
         'purchase_order_request_item_status.purchase_order_request_item_status_name',
         '=',
         status
-      );
+      )
+      .orderBy('purchase_order_request_item.created_at', 'asc');
 
     if (userSub) {
       const user = await knexInstance('user')
