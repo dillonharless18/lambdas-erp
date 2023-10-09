@@ -185,7 +185,7 @@ const getPurchaseOrders = async (status) => {
         'vendor.vendor_name',
         'purchase_order_status.purchase_order_status_name',
         knexInstance.raw(
-          'COALESCE(comments.comment_count, 0) as comment_count'
+          'COALESCE(comments.comment_count::INTEGER, 0) as comment_count'
         ),
         knexInstance.raw(createJsonAgg(jsonBuildList, 'purchase_order_items'))
       )
