@@ -52,7 +52,7 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
       .leftJoin(
         knexInstance('purchase_order_request_item_comment')
           .select('purchase_order_request_item_id')
-          .count('* as comments_count')
+          .count('* as comment_count')
           .groupBy('purchase_order_request_item_id')
           .as('comments'),
         'comments.purchase_order_request_item_id',
