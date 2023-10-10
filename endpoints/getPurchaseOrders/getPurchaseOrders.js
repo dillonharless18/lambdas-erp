@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { DatabaseError, BadRequestError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,14 +10,14 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
 const createJsonAgg = (JsonBuildList, aliasName) => {
   if (!Array.isArray(JsonBuildList) || JsonBuildList.length === 0) {
-    throw new Error('Missing or empty required array parameter!');
+    throw new BadRequestError('Missing or empty required array parameter!');
   }
   const jsonAggPrefix = 'JSON_AGG(JSON_BUILD_OBJECT(';
   const jsonAggSuffix = `)) AS ${aliasName}`;
@@ -239,21 +241,10 @@ const getPurchaseOrders = async (status) => {
     }
     const getPurchaseOrders = await query;
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(getPurchaseOrders),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(getPurchaseOrders);
   } catch (error) {
     console.error('Error fetching PurchaseOrders:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: `Server Error, ${error}`,
-      }),
-    };
+    throw error;
   }
 };
 

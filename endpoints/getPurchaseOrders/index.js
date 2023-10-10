@@ -1,30 +1,18 @@
 import getPurchaseOrders from './getPurchaseOrders.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
+import { BadRequestError } from '/opt/nodejs/errors.js';
 
 const handler = async (event) => {
   try {
     const queryParams = event.queryStringParameters;
     const status = queryParams.status;
     if (!status) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error: 'Missing status path parameter',
-        }),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      };
+      throw new BadRequestError('Query param Status is missing');
     }
     return await getPurchaseOrders(status);
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 
