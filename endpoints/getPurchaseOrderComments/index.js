@@ -1,29 +1,17 @@
 import getPurchaseOrderComments from './getPurchaseOrderComments.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
+import { BadRequestError } from '/opt/nodejs/errors.js';
 
 const handler = async (event, context) => {
   try {
     const purchaseOrderId = event.pathParameters?.purchase_order_id;
     if (!purchaseOrderId) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error: 'Missing purchase_order_id path parameter',
-        }),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      };
+      throw new BadRequestError('Missing purchase_order_id path parameter');
     }
     return await getPurchaseOrderComments(purchaseOrderId);
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 
