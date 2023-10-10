@@ -7,7 +7,7 @@ const handler = async (event, context) => {
     const ocrImportedOrderId =
       event.pathParameters?.ocr_imported_purchase_order_draft_id;
     if (!ocrImportedOrderId) {
-      return BadRequestError(
+      throw new BadRequestError(
         'Missing ocr_imported_purchase_order_draft_id path parameter'
       );
     }

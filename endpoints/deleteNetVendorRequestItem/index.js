@@ -8,7 +8,7 @@ const handler = async (event) => {
       event.pathParameters?.net_vendor_request_item_id;
 
     if (!netVendorRequestItemId) {
-      return BadRequestError(
+      throw new BadRequestError(
         'Missing net_vendor_request_item_id path parameter'
       );
     }
