@@ -1,4 +1,5 @@
 import postPurchaseOrderTransportationRequest from './postPurchaseOrderTransportationRequest.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 const handler = async (event) => {
   try {
@@ -8,13 +9,7 @@ const handler = async (event) => {
     return await postPurchaseOrderTransportationRequest(body, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 
