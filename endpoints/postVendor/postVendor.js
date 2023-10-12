@@ -36,6 +36,8 @@ const postVendor = async (vendorData, userSub) => {
 
   if (vendor.payment_terms === 'Net 30') {
     vendor.is_net_vendor = true;
+  }else{
+    vendor.is_net_vendor = false;
   }
 
   let dataToInsert = {

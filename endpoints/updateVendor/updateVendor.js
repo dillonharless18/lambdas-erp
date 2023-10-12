@@ -25,7 +25,8 @@ const updateVendor = async (vendorData, vendorId, userSub) => {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        error: 'Invalid input format: The vendorData parameter must be an object',
+        error:
+          'Invalid input format: The vendorData parameter must be an object',
       }),
     };
   }
@@ -37,6 +38,8 @@ const updateVendor = async (vendorData, vendorId, userSub) => {
 
   if (vendor.payment_terms === 'Net 30') {
     vendor.is_net_vendor = true;
+  } else {
+    vendor.is_net_vendor = false;
   }
 
   let updatedVendor = {
@@ -51,7 +54,9 @@ const updateVendor = async (vendorData, vendorId, userSub) => {
     )
   ); // remove null or empty values
 
-  await knexInstance('vendor').where('vendor_id', vendorId).update(updatedVendor);
+  await knexInstance('vendor')
+    .where('vendor_id', vendorId)
+    .update(updatedVendor);
 
   return {
     statusCode: 200,
