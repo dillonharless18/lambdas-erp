@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { InternalServerError, DatabaseError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,8 +10,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -67,21 +69,10 @@ const getOpenTransportationRequests = async () => {
       .andWhere('potr.is_active', true)
       .orderBy('potr.created_at', 'asc');
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(openTransportationRequests),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(openTransportationRequests);
   } catch (error) {
     console.error('Error fetching Open Transportation Requests:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: `Server Error, ${error}`,
-      }),
-    };
+    throw new InternalServerError();
   }
 };
 
