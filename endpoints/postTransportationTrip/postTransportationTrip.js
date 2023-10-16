@@ -1,4 +1,10 @@
 import TransportationTrip from './DTO/TransportationTrip.js';
+import {
+  InternalServerError,
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -26,28 +32,14 @@ const postTransportationTrip = async (body, userSub) => {
     console.error(
       'Error: The transportation trip parameter must be a non-empty object'
     );
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error:
-          'Invalid input format: The transportation trip parameter must be a non-empty object',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new BadRequestError(
+      'Invalid input format: The transportation trip parameter must be a non-empty object'
+    );
   }
   if (body.purchase_order_transportation_request_ids?.length === 0) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error:
-          'Invalid input format: No data provided in purchase_order_transportation_request_ids',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new BadRequestError(
+      'Invalid input format: No data provided in purchase_order_transportation_request_ids'
+    );
   }
 
   const user = await knexInstance('user')
@@ -140,25 +132,12 @@ const postTransportationTrip = async (body, userSub) => {
         dataToInsert.transportation_trip_id
       );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Transportation Trip added successfully!',
-        data: addedTrip,
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Transportation Trip added successfully!',
+    });
   } catch (error) {
     console.error('Error in postTransportationTrip:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 

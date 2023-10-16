@@ -1,4 +1,5 @@
 import getAllUsers from './getAllUsers.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 const handler = async (event, context) => {
   try {
@@ -8,13 +9,7 @@ const handler = async (event, context) => {
     return await getAllUsers(userRole);
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 

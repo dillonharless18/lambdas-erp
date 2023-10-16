@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { InternalServerError, DatabaseError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,8 +10,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -37,22 +39,10 @@ const getAllUsers = async (userRole) => {
     }
     const users = await query;
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(users),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(users);
   } catch (error) {
     console.error('Error fetching projects:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 
