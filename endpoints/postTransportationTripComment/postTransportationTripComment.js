@@ -1,4 +1,10 @@
 import TransportationTripComment from './DTO/TransportationTripComment.js';
+import {
+  InternalServerError,
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,8 +16,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -29,7 +35,7 @@ const postTransportationTripComment = async (
     !comment.comment_text ||
     comment.comment_text.trim() === ''
   ) {
-    throw new Error(
+    throw new BadRequestError(
       'The comment and comment_text parameters must not be empty and should be an object with some keys'
     );
   }
@@ -51,24 +57,12 @@ const postTransportationTripComment = async (
   try {
     await knexInstance('transportation_trip_comment').insert(dataToInsert);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Transportation Trip Comment added successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Transportation Trip Comment added successfully!',
+    });
   } catch (error) {
     console.error('Error in posTransportationTripComment', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 
