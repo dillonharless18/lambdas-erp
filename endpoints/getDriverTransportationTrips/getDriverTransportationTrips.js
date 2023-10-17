@@ -1,4 +1,10 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  InternalServerError,
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,22 +14,14 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
 const getDriverTransportationTrips = async (cognitoSub) => {
   if (!cognitoSub) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: 'Invalid input format: No cognito_sub provided',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new BadRequestError('Invalid input format: No cognito_sub provided');
   }
 
   await initializeDb();
@@ -146,24 +144,10 @@ const getDriverTransportationTrips = async (cognitoSub) => {
       .whereNot('trip_by_po_request_status.transportation_request_status_id', 4)
       .andWhere('trip.is_active', true);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(trips),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(trips);
   } catch (error) {
     console.error('Error fetching Driver Transportation Trips:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: `Server Error, ${error}`,
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 

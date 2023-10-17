@@ -1,4 +1,6 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import { InternalServerError, DatabaseError } from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,8 +10,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -31,22 +33,10 @@ const getTransportationTripComments = async (transportationTripId) => {
       .join('user', 'ttc.created_by', '=', 'user.user_id')
       .where('ttc.transportation_trip_id', transportationTripId);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(getAllTransportationTripComments),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse(getAllTransportationTripComments);
   } catch (error) {
     console.error('Error fetching Transportation Trip Comments:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 

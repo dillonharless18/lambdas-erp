@@ -1,4 +1,5 @@
 import updateTransportationTripByPurchaseOrderRequest from './updateTransportationTripByPurchaseOrderRequest.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 const handler = async (event) => {
   try {
@@ -16,13 +17,7 @@ const handler = async (event) => {
     );
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 

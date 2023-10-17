@@ -1,4 +1,6 @@
 import updateTransportationTrip from './updateTransportationTrip.js';
+import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
+import { BadRequestError } from '/opt/nodejs/errors.js';
 
 const handler = async (event) => {
   try {
@@ -7,27 +9,15 @@ const handler = async (event) => {
     const userSub = event.requestContext.authorizer.sub;
 
     if (!transportationTripId) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error: 'Missing transportation_trip_id path parameter',
-        }),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      };
+      throw new BadRequestError(
+        'Missing transportation_trip_id path parameter'
+      );
     }
 
     return await updateTransportationTrip(body, transportationTripId, userSub);
   } catch (error) {
     console.error('Error in handler:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createErrorResponse(error);
   }
 };
 
