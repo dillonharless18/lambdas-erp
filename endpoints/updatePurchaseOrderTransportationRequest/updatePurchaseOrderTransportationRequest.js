@@ -1,5 +1,11 @@
 import PurchaseOrderTransportationRequest from './DTO/PurchaseOrderTransportationRequest.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  InternalServerError,
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,8 +15,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -22,7 +28,7 @@ const postPurchaseOrderTransportationRequest = async (
   await initializeDb();
 
   if (!body) {
-    throw new Error('No data provided');
+    throw new BadRequestError('No data provided');
   }
 
   const user = await knexInstance('user')
@@ -49,7 +55,8 @@ const postPurchaseOrderTransportationRequest = async (
       transportationRequestData.transportation_request_status_id
         ? parseInt(transportationRequestData.transportation_request_status_id)
         : null,
-    future_transportation_date: transportationRequestData.future_transportation_date,
+    future_transportation_date:
+      transportationRequestData.future_transportation_date,
     transportation_time: transportationRequestData.transportation_time,
     last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
@@ -68,32 +75,23 @@ const postPurchaseOrderTransportationRequest = async (
         purchaseOrderTransportationRequestId
       )
       .update(dataToUpdate);
-    // if purchase_order_transportation_request is completed that is a PO 
+    // if purchase_order_transportation_request is completed that is a PO
     // then change the PO status to Recieved
-    if (dataToUpdate.purchase_order_number && dataToUpdate.transportation_request_status_id === 3) {
+    if (
+      dataToUpdate.purchase_order_number &&
+      dataToUpdate.transportation_request_status_id === 3
+    ) {
       await knexInstance('purchase_order')
         .where('purchase_order_id', dataToUpdate.purchase_order_id)
         .update({ purchase_order_status_id: 4 });
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Purchase Order Transportation Request updated successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Purchase Order Transportation Request updated successfully!',
+    });
   } catch (error) {
     console.error('Error in updatePurchaseOrderTransportationRequest:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 
