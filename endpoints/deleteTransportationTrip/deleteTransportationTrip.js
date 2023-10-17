@@ -1,4 +1,10 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  InternalServerError,
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -8,8 +14,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -45,24 +51,12 @@ const deleteTransportationTrip = async (transportationTripId) => {
         .whereIn('purchase_order_transportation_request_id', ids);
     });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Transportation Trip deleted successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Transportation Trip deleted successfully!',
+    });
   } catch (error) {
     console.error('Error in deleteTransportationTrip:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error.message}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 export default deleteTransportationTrip;
