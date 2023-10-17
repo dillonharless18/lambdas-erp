@@ -1,5 +1,11 @@
 import TransportationTrip from './DTO/TransportationTrip.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  InternalServerError,
+  DatabaseError,
+  BadRequestError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,8 +15,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -23,7 +29,7 @@ const updateTransportationTrip = async (
 
   try {
     if (typeof body !== 'object' || body === null) {
-      throw new Error(
+      throw new BadRequestError(
         'Invalid input format: The transportationTrip parameter must be an object'
       );
     }
@@ -49,26 +55,12 @@ const updateTransportationTrip = async (
       .where('transportation_trip_id', transportationTripId)
       .update(updatedTransportationTrip);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Transportation Trip updated successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Transportation Trip updated successfully!',
+    });
   } catch (error) {
     console.error('Error:', error.message);
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: error.message,
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 
