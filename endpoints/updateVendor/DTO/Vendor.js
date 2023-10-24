@@ -8,9 +8,19 @@ class Vendor {
     this.account_payable_contact = data.account_payable_contact;
     this.account_payable_contact_number = data.account_payable_contact_number;
     this.tax_ID = data.tax_ID;
-    this.billed_from = data.billed_from;
-    this.shipped_from = data.shipped_from;
+    this.billed_from_address1 = data.billed_from_address1;
+    this.billed_from_address2 = data.billed_from_address2;
+    this.billed_from_city = data.billed_from_city;
+    this.billed_from_state = data.billed_from_state;
+    this.billed_from_postal_code = data.billed_from_postal_code;
+    this.billed_from_country = data.billed_from_country;
     this.payment_terms = data.payment_terms;
+    this.shipped_from_address1 = data.shipped_from_address1;
+    this.shipped_from_address2 = data.shipped_from_address2;
+    this.shipped_from_city = data.shipped_from_city;
+    this.shipped_from_state = data.shipped_from_state;
+    this.shipped_from_postal_code = data.shipped_from_postal_code;
+    this.shipped_from_country = data.shipped_from_country;
     this.email = data.email;
     this.phone_number = data.phone_number;
   }
