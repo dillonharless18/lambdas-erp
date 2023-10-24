@@ -67,7 +67,7 @@ const getOpenTransportationRequests = async () => {
       )
       .where('potr.transportation_request_status_id', 1)
       .andWhere('potr.is_active', true)
-      .orderBy('potr.created_at', 'asc');
+      .orderBy('potr.future_transportation_date', 'asc');
 
     return createSuccessResponse(openTransportationRequests);
   } catch (error) {
