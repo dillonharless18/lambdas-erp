@@ -1,5 +1,11 @@
 import Project from './DTO/Project.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  BadRequestError,
+  InternalServerError,
+  DatabaseError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,8 +15,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -19,12 +25,9 @@ const updatedProject = async (projectId, body, userSub) => {
 
   if (typeof body !== 'object' || body === null) {
     console.error('Error: The project parameter must be an object');
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error: 'Invalid input format: The project parameter must be an object',
-      }),
-    };
+    throw new BadRequestError(
+      'Invalid input format: The project parameter must be an object'
+    );
   }
 
   const user = await knexInstance('user')
@@ -36,7 +39,7 @@ const updatedProject = async (projectId, body, userSub) => {
   let updatedProject = {
     last_updated_by: user[0],
     last_updated_at: knexInstance.raw('NOW()'),
-    ...project
+    ...project,
   };
 
   updatedProject = Object.fromEntries(
@@ -50,24 +53,10 @@ const updatedProject = async (projectId, body, userSub) => {
       .update(updatedProject)
       .where('project_id', projectId);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Project updated successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({ message: 'Project updated successfully!' });
   } catch (error) {
     console.error('Error in updateProject:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 
