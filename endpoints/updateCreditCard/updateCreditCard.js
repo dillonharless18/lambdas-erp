@@ -1,5 +1,11 @@
 import CreditCard from './DTO/CreditCard.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  BadRequestError,
+  InternalServerError,
+  DatabaseError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,58 +15,53 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
 const updateCreditCard = async (creditCardData, creditCardId, userSub) => {
   await initializeDb();
 
-  if (!creditCardId) {
-    throw new Error('The credit_card_id field must not be null');
-  }
-  if (typeof creditCardData !== 'object' || creditCardData === null) {
-    console.error('Error: The creditCard parameter must be an object');
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error:
-          'Invalid input format: The creditCard parameter must be an object',
-      }),
+  try {
+    if (!creditCardId) {
+      throw new BadRequestError('The credit_card_id field must not be null');
+    }
+    if (typeof creditCardData !== 'object' || creditCardData === null) {
+      console.error('Error: The creditCard parameter must be an object');
+      throw new BadRequestError(
+        'Invalid input format: The creditCard parameter must be an object'
+      );
+    }
+    const user = await knexInstance('user')
+      .where('cognito_sub', userSub)
+      .pluck('user_id');
+
+    const creditCard = new CreditCard(creditCardData);
+
+    let updatedCreditCard = {
+      last_updated_by: user[0],
+      last_updated_at: knexInstance.raw('NOW()'),
+      ...creditCard,
     };
-  }
-  const user = await knexInstance('user')
-    .where('cognito_sub', userSub)
-    .pluck('user_id');
 
-  const creditCard = new CreditCard(creditCardData);
+    updatedCreditCard = Object.fromEntries(
+      Object.entries(updatedCreditCard).filter(
+        ([_, val]) => val !== null && val !== undefined && val !== ''
+      )
+    );
 
-  let updatedCreditCard = {
-    last_updated_by: user[0],
-    last_updated_at: knexInstance.raw('NOW()'),
-    ...creditCard,
-  };
+    await knexInstance('credit_card')
+      .where('credit_card_id', creditCardId)
+      .update(updatedCreditCard);
 
-  updatedCreditCard = Object.fromEntries(
-    Object.entries(updatedCreditCard).filter(
-      ([_, val]) => val !== null && val !== undefined && val !== ''
-    )
-  );
-
-  await knexInstance('credit_card')
-    .where('credit_card_id', creditCardId)
-    .update(updatedCreditCard);
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
+    return createSuccessResponse({
       message: 'credit card updated successfully!',
-    }),
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  };
+    });
+  } catch (error) {
+    console.error(error);
+    throw new InternalServerError();
+  }
 };
 
 export default updateCreditCard;
