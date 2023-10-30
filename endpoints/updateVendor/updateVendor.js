@@ -23,44 +23,49 @@ const initializeDb = async () => {
 const updateVendor = async (vendorData, vendorId, userSub) => {
   await initializeDb();
 
-  if (!vendorId) {
-    throw new BadRequestError('The vendor_id field must not be null');
+  try {
+    if (!vendorId) {
+      throw new BadRequestError('The vendor_id field must not be null');
+    }
+    if (typeof vendorData !== 'object' || vendorData === null) {
+      console.error('Error: The vendorData parameter must be an object');
+      throw new BadRequestError(
+        'Invalid input format: The vendorData parameter must be an object'
+      );
+    }
+    const loggedInUser = await knexInstance('user')
+      .where('cognito_sub', userSub)
+      .pluck('user_id');
+
+    const vendor = new Vendor(vendorData);
+
+    if (vendor.payment_terms === 'Net 30') {
+      vendor.is_net_vendor = true;
+    } else {
+      vendor.is_net_vendor = false;
+    }
+
+    let updatedVendor = {
+      last_updated_by: loggedInUser[0],
+      last_updated_at: knexInstance.raw('NOW()'),
+      ...vendor,
+    };
+
+    updatedVendor = Object.fromEntries(
+      Object.entries(updatedVendor).filter(
+        ([_, val]) => val !== null && val !== undefined && val !== ''
+      )
+    ); // remove null or empty values
+
+    await knexInstance('vendor')
+      .where('vendor_id', vendorId)
+      .update(updatedVendor);
+
+    return createSuccessResponse({ message: 'vendor updated successfully!' });
+  } catch (error) {
+    console.error(error.stack);
+    throw new InternalServerError();
   }
-  if (typeof vendorData !== 'object' || vendorData === null) {
-    console.error('Error: The vendorData parameter must be an object');
-    throw new BadRequestError(
-      'Invalid input format: The vendorData parameter must be an object'
-    );
-  }
-  const loggedInUser = await knexInstance('user')
-    .where('cognito_sub', userSub)
-    .pluck('user_id');
-
-  const vendor = new Vendor(vendorData);
-
-  if (vendor.payment_terms === 'Net 30') {
-    vendor.is_net_vendor = true;
-  } else {
-    vendor.is_net_vendor = false;
-  }
-
-  let updatedVendor = {
-    last_updated_by: loggedInUser[0],
-    last_updated_at: knexInstance.raw('NOW()'),
-    ...vendor,
-  };
-
-  updatedVendor = Object.fromEntries(
-    Object.entries(updatedVendor).filter(
-      ([_, val]) => val !== null && val !== undefined && val !== ''
-    )
-  ); // remove null or empty values
-
-  await knexInstance('vendor')
-    .where('vendor_id', vendorId)
-    .update(updatedVendor);
-
-  return createSuccessResponse({ message: 'vendor updated successfully!' });
 };
 
 export default updateVendor;
