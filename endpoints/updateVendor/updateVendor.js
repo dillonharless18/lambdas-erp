@@ -1,5 +1,11 @@
 import Vendor from './DTO/Vendor.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  BadRequestError,
+  InternalServerError,
+  DatabaseError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,8 +15,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -18,17 +24,13 @@ const updateVendor = async (vendorData, vendorId, userSub) => {
   await initializeDb();
 
   if (!vendorId) {
-    throw new Error('The vendor_id field must not be null');
+    throw new BadRequestError('The vendor_id field must not be null');
   }
   if (typeof vendorData !== 'object' || vendorData === null) {
     console.error('Error: The vendorData parameter must be an object');
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        error:
-          'Invalid input format: The vendorData parameter must be an object',
-      }),
-    };
+    throw new BadRequestError(
+      'Invalid input format: The vendorData parameter must be an object'
+    );
   }
   const loggedInUser = await knexInstance('user')
     .where('cognito_sub', userSub)
@@ -58,15 +60,7 @@ const updateVendor = async (vendorData, vendorId, userSub) => {
     .where('vendor_id', vendorId)
     .update(updatedVendor);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'vendor updated successfully!',
-    }),
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  };
+  return createSuccessResponse({ message: 'vendor updated successfully!' });
 };
 
 export default updateVendor;
