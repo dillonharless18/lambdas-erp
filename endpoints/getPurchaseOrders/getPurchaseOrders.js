@@ -181,6 +181,8 @@ const getPurchaseOrders = async (status) => {
         'po.purchase_order_status_id',
         'po.quickbooks_purchase_order_id',
         'po.s3_uri',
+        'po.shipping_cost',
+        'po.estimated_taxes',
         knexInstance.raw(
           '("createdBy".first_name || \' \' || "createdBy".last_name) AS requester'
         ),

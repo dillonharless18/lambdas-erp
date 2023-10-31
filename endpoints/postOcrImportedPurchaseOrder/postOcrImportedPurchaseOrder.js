@@ -60,6 +60,8 @@ const postOcrImportedPurchaseOrder = async (
           vendor_id: purchaseOrder.vendor_id,
           purchase_order_status_id: '2', // Needs Receiving
           s3_uri: purchaseOrder.s3_uri,
+          shipping_cost: purchaseOrder.shipping_cost,
+          estimated_taxes: purchaseOrder.estimated_taxes,
           created_at: knexInstance.raw('NOW()'),
           last_updated_at: knexInstance.raw('NOW()'),
           purchase_order_number: purchase_order_number,
