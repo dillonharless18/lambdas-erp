@@ -5,9 +5,19 @@ const {
     CognitoIdentityProviderClient,
     ListUsersCommand,
     AdminUpdateUserAttributesCommand,
+    AdminRemoveUserFromGroupCommand,
+    AdminAddUserToGroupCommand
 } = pkg;
 
 let knexInstance;
+
+const allowedGroups = {
+    admin: "admin",
+    basic_user: "basic_user",
+    driver: "driver",
+    logistics: "logistics",
+    project_manager: "project_manager",
+};
 
 const initializeDb = async () => {
     try {
@@ -44,7 +54,7 @@ async function getCognitoUsernameBySub(userPoolId, sub) {
     }
 }
 
-async function updateUserInCognito(userPoolId, username, phoneNumber, email) {
+async function updateUserInCognito(userPoolId, username, phoneNumber, email, userRole, previousUserRole) {
     console.log("updateUserInCognito");
     console.log(
         `UserPoolId ${userPoolId}`,
@@ -81,6 +91,31 @@ async function updateUserInCognito(userPoolId, username, phoneNumber, email) {
 
         const response = await client.send(command);
         console.log("User phone number updated successfully:", response);
+
+        if(userRole !== previousUserRole){
+            const groupName = allowedGroups[userRole];
+            if (!groupName) {
+                throw new Error(
+                    `The provide groupName is invalid: ${userRole}`
+                );
+            }
+            const removeUserFromGroupCommand = AdminRemoveUserFromGroupCommand({
+                GroupName: previousUserRole,
+                UserPoolId: userPoolId,
+                Username: username
+            })
+            const userRomovedFromGroupRes = await client.send(removeUserFromGroupCommand);
+            console.log("User removed from group successfully:", userRomovedFromGroupRes);
+
+            const addUserToGroupCommand = new AdminAddUserToGroupCommand({ 
+                UserPoolId: userPoolId, 
+                Username: username, 
+                GroupName: groupName
+            });
+            const userAddedToGroupRes = await client.send(addUserToGroupCommand);
+            console.log("User added to group successfully:", userAddedToGroupRes);
+        }
+        
     } catch (error) {
         console.error("Error updating user phone number:", error);
         throw error;

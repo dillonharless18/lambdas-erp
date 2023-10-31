@@ -24,7 +24,9 @@ const handler = async (event) => {
             userPoolId,
             cognitoUsername,
             user.phone_number,
-            user.user_email
+            user.user_email, 
+            user.user_role,
+            body.previous_user_role
         );
 
         return {
