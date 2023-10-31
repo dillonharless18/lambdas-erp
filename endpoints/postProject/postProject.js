@@ -1,6 +1,12 @@
 import Project from './DTO/Project.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  BadRequestError,
+  InternalServerError,
+  DatabaseError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -10,8 +16,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -19,7 +25,7 @@ const postProject = async (body, userSub) => {
   await initializeDb();
 
   if (typeof body !== 'object') {
-    throw new Error('The project parameter must be an object');
+    throw new BadRequestError('The project parameter must be an object');
   }
 
   const user = await knexInstance('user')
@@ -43,24 +49,10 @@ const postProject = async (body, userSub) => {
   try {
     await knexInstance('project').insert(dataToInsert);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Project added successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({ message: 'Project added successfully!' });
   } catch (error) {
     console.error('Error in postProject:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 

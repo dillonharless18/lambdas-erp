@@ -1,5 +1,11 @@
 import VehicleType from './DTO/VehicleType.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  BadRequestError,
+  InternalServerError,
+  DatabaseError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,8 +15,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -18,7 +24,7 @@ const postVehicleType = async (body, userSub) => {
   await initializeDb();
 
   if (typeof body !== 'object') {
-    throw new Error('The vehicleType parameter must be an object');
+    throw new BadRequestError('The vehicleType parameter must be an object');
   }
 
   try {
@@ -38,24 +44,12 @@ const postVehicleType = async (body, userSub) => {
     };
     await knexInstance('vehicle_type').insert(dataToInsert);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Vehicle Type added successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Vehicle Type added successfully!',
+    });
   } catch (error) {
     console.error('Error in postVehicleType:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 

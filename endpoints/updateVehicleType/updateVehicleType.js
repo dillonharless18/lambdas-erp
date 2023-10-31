@@ -1,5 +1,11 @@
 import VehicleType from './DTO/VehicleType.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
+import {
+  BadRequestError,
+  InternalServerError,
+  DatabaseError,
+} from '/opt/nodejs/errors.js';
+import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
 
@@ -9,8 +15,8 @@ const initializeDb = async () => {
       knexInstance = await initializeKnex();
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('Error initializing database:', error.stack);
+    throw new DatabaseError('Failed to initialize the database.');
   }
 };
 
@@ -18,7 +24,7 @@ const updateVehicleType = async (vehicleTypeId, body, userSub) => {
   await initializeDb();
 
   if (typeof body !== 'object') {
-    throw new Error('The vehicleType parameter must be an object');
+    throw new BadRequestError('The vehicleType parameter must be an object');
   }
 
   try {
@@ -31,7 +37,7 @@ const updateVehicleType = async (vehicleTypeId, body, userSub) => {
     let updatedVehicleType = {
       last_updated_by: user[0],
       last_updated_at: knexInstance.raw('NOW()'),
-      ...vehicleType
+      ...vehicleType,
     };
 
     updatedVehicleType = Object.fromEntries(
@@ -44,24 +50,12 @@ const updateVehicleType = async (vehicleTypeId, body, userSub) => {
       .where('vehicle_type_id', vehicleTypeId)
       .update(updatedVehicleType);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Vehicle type updated successfully!',
-      }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    return createSuccessResponse({
+      message: 'Vehicle type updated successfully!',
+    });
   } catch (error) {
     console.error('Error in updateVehicleType:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Server Error, ${error}` }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
+    throw new InternalServerError();
   }
 };
 
