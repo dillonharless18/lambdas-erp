@@ -99,7 +99,7 @@ async function updateUserInCognito(userPoolId, username, phoneNumber, email, use
                     `The provide groupName is invalid: ${userRole}`
                 );
             }
-            const removeUserFromGroupCommand = AdminRemoveUserFromGroupCommand({
+            const removeUserFromGroupCommand = new AdminRemoveUserFromGroupCommand({
                 GroupName: previousUserRole,
                 UserPoolId: userPoolId,
                 Username: username
