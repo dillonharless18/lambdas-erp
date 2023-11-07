@@ -29,7 +29,7 @@ const deleteOpenTransportationRequest = async (
         )
         .update({
           is_active: false,
-          last_updated_at: knexInstance.raw('NOW()'),
+          last_updated_at: trx.raw('NOW()'),
         }).returning('purchase_order_id')
       // 2 is the id for status = Needs Receiving
       const purchase_order_id = potr[0].purchase_order_id
