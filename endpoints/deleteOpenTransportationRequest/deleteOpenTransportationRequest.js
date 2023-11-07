@@ -31,16 +31,19 @@ const deleteOpenTransportationRequest = async (
         last_updated_at: knexInstance.raw('NOW()'),
       }).returning('purchase_order_id')
     // 2 is the id for status = Needs Receiving
-    await knexInstance('purchase_order')
-      .where('purchase_order_id', potr[0].purchase_order_id)
-      .update({
-        purchase_order_status_id: 2
-      })
-    await knexInstance('purchase_order_item')
-      .where('purchase_order_id', potr[0].purchase_order_id)
-      .update({
-        purchase_order_item_status_id: 2
-      })
+    const purchase_order_id = potr[0].purchase_order_id
+    if (purchase_order_id) {
+      await knexInstance('purchase_order')
+        .where('purchase_order_id', potr[0].purchase_order_id)
+        .update({
+          purchase_order_status_id: 2
+        })
+      await knexInstance('purchase_order_item')
+        .where('purchase_order_id', potr[0].purchase_order_id)
+        .update({
+          purchase_order_item_status_id: 2
+        })
+    }
 
     return createSuccessResponse({
       message: 'Open Transportation Request deleted successfully!',
