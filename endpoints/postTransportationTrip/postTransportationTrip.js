@@ -134,6 +134,7 @@ const postTransportationTrip = async (body, userSub) => {
 
     return createSuccessResponse({
       message: 'Transportation Trip added successfully!',
+      data: addedTrip
     });
   } catch (error) {
     console.error('Error in postTransportationTrip:', error);
