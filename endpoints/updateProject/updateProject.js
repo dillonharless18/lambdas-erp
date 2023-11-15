@@ -50,13 +50,13 @@ const updatedProject = async (projectId, body, userSub) => {
       )
     ); // remove null or empty values
 
-    if (is_active === false) {
+    if (updatedProject.is_active === false) {
       const [purchaseOrderItemsCount] = await knexInstance(
         'purchase_order_request_item  as pori'
       )
         .count('pori.purchase_order_request_item_id')
         .join('vendor as v', 'v.vendor_id', '=', 'pori.vendor_id')
-        .where('pori.project_id', 1)
+        .where('pori.project_id', projectId)
         .andWhere('pori.is_active', true)
         .andWhere('v.is_net_vendor', true);
 
@@ -71,7 +71,7 @@ const updatedProject = async (projectId, body, userSub) => {
           'oipodi.ocr_imported_purchase_order_draft_id'
         )
         .join('vendor as v', 'v.vendor_id', '=', 'oipod.vendor_id')
-        .where('oipodi.project_id', 1)
+        .where('oipodi.project_id', projectId)
         .andWhere('v.is_net_vendor', true)
         .andWhere('oipodi.is_active', true);
 
@@ -86,7 +86,7 @@ const updatedProject = async (projectId, body, userSub) => {
           'poi.purchase_order_id'
         )
         .join('vendor as v', 'v.vendor_id', '=', 'po.vendor_id')
-        .where('poi.project_id', 1)
+        .where('poi.project_id', projectId)
         .andWhere('poi.is_active', true)
         .andWhere('v.is_net_vendor', true)
         .andWhere('po.purchase_order_status_id', '!=', 4); // not equal received
