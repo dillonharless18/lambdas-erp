@@ -59,6 +59,7 @@ const postItemRequests = async (items, userSub) => {
     last_updated_at: knexInstance.raw('NOW()'),
     project_id: item.project_id,
     vendor_id: vendor.vendor_id, // set Default vendor
+    in_hand_date: item.in_hand_date,
     urgent_order_status_id: item.urgent_order_status_id,
     purchase_order_request_item_status_id:
       purchaseOrderRequestItemStatus.purchase_order_request_item_status_id, // set status Requested

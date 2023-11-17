@@ -8,6 +8,7 @@ class ItemRequest {
     this.item_name = item.item_name;
     this.suggested_vendor = item.suggested_vendor;
     this.urgent_order_status_id = item.urgent_order_status_id;
+    this.in_hand_date = item.in_hand_date;
   }
 }
 
