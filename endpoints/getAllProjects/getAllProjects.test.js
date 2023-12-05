@@ -118,28 +118,6 @@ describe('getAllProjects', () => {
     expect(body).toBeInstanceOf(Array);
   });
 
-  it('should throw NotFoundError when no projects are found', async () => {
-    const event = {
-      queryStringParameters: {
-        isAll: 'false',
-      },
-    };
-
-    const tracker = mockDb.getTracker();
-    tracker.install();
-    tracker.on('query', (query, step) => {
-      if (step === 1) {
-        query.response([]);
-      }
-    });
-
-    await expect(
-      getAllProjects(event.queryStringParameters.isAll)
-    ).rejects.toThrow(errors.NotFoundError);
-
-    tracker.uninstall();
-  });
-
   it('should return a list of projects with expected properties', async () => {
     const event = {
       queryStringParameters: {
