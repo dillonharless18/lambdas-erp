@@ -5,16 +5,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@aws-sdk/client-secrets-manager": "^3.332.0",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
     "knex": "^2.4.2",
+    "mock-knex": "^0.4.12",
+    "nock": "^13.3.8",
     "pg": "^8.10.0",
     "serverless": "^3.30.1",
-    "serverless-offline": "^12.0.4"
+    "serverless-offline": "^12.0.4",
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.3"
   }
 }
