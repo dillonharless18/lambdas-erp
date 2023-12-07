@@ -49,7 +49,7 @@ const postItemRequests = async (items, userSub) => {
     created_by: user[0],
     last_updated_by: user[0],
     item_name: item.item_name,
-    price: '0',
+    price: item.price ? item.price : '0',
     quantity: item.quantity,
     unit_of_measure: item.unit_of_measure,
     suggested_vendor: item.suggested_vendor,
@@ -58,7 +58,7 @@ const postItemRequests = async (items, userSub) => {
     created_at: knexInstance.raw('NOW()'),
     last_updated_at: knexInstance.raw('NOW()'),
     project_id: item.project_id,
-    vendor_id: vendor.vendor_id, // set Default vendor
+    vendor_id: item.vendor_id ? item.vendor_id : vendor.vendor_id, // check if item.vendor_id is not null/empty, if null/empty then assign default vendor
     in_hand_date: item.in_hand_date,
     urgent_order_status_id: item.urgent_order_status_id,
     purchase_order_request_item_status_id:
