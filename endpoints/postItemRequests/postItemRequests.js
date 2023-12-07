@@ -17,11 +17,45 @@ const initializeDb = async () => {
   }
 };
 
-const postItemRequests = async (items, userSub) => {
+const purchaseOrderItemStatusAgainstVendor = async (vendorId) => {
+  try {
+    const isNetVendor = await knexInstance('vendor')
+      .select('is_net_vendor')
+      .where('vendor_id', vendorId)
+      .andWhere('is_active', true)
+      .first();
+
+    if (isNetVendor.is_net_vendor) {
+      return 3; // Needs Procurement
+    }
+
+    return 2; // Purchase
+  } catch (error) {
+    console.error('Error fetching net vendor status:', error.stack);
+    throw error;
+  }
+};
+
+const postItemRequests = async (items, userSub, isRequestItem) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
     throw new BadRequestError('The items parameter must be an array');
+  }
+
+  let purchaseOrderRequestItemStatus;
+  if (isRequestItem) {
+    purchaseOrderRequestItemStatus = await knexInstance(
+      'purchase_order_request_item_status'
+    )
+      .select('purchase_order_request_item_status_id')
+      .where('purchase_order_request_item_status_name', 'Requested')
+      .andWhere('is_active', true)
+      .first();
+  } else {
+    purchaseOrderRequestItemStatus = await purchaseOrderItemStatusAgainstVendor(
+      item.vendor_id
+    );
   }
 
   const user = await knexInstance('user')
@@ -31,14 +65,6 @@ const postItemRequests = async (items, userSub) => {
   const vendor = await knexInstance('vendor')
     .select('vendor_id')
     .where('vendor_name', 'Default')
-    .andWhere('is_active', true)
-    .first();
-
-  const purchaseOrderRequestItemStatus = await knexInstance(
-    'purchase_order_request_item_status'
-  )
-    .select('purchase_order_request_item_status_id')
-    .where('purchase_order_request_item_status_name', 'Requested')
     .andWhere('is_active', true)
     .first();
 
@@ -62,7 +88,7 @@ const postItemRequests = async (items, userSub) => {
     in_hand_date: item.in_hand_date,
     urgent_order_status_id: item.urgent_order_status_id,
     purchase_order_request_item_status_id:
-      purchaseOrderRequestItemStatus.purchase_order_request_item_status_id, // set status Requested
+      purchaseOrderRequestItemStatus.purchase_order_request_item_status_id,
   }));
 
   try {

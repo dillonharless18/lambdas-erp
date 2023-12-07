@@ -5,8 +5,9 @@ const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).requestItems;
     const userSub = event.requestContext.authorizer.sub;
+    const isRequestItem = queryParams?.isRequestItem
 
-    return await postItemRequests(body, userSub);
+    return await postItemRequests(body, userSub, isRequestItem);
   } catch (error) {
     console.error('Error in handler:', error.stack);
     return createErrorResponse(error);
