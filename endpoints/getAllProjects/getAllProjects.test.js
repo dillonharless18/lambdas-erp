@@ -1,4 +1,3 @@
-// Import mock-knex
 const mockDb = require('mock-knex');
 
 jest.mock(
@@ -18,49 +17,14 @@ jest.mock(
 
 jest.mock(
   '/opt/nodejs/errors.js',
-  () => ({
-    __esModule: true,
-    NotFoundError: class NotFoundError extends Error {
-      constructor(message) {
-        super(message);
-        this.name = 'NotFoundError';
-        this.statusCode = 404;
-      }
-    },
-    DatabaseError: class DatabaseError extends Error {
-      constructor(message) {
-        super(message);
-        this.name = 'DatabaseError';
-        this.statusCode = 500;
-      }
-    },
-  }),
-  { virtual: true }
+  () => require('../../__mocks__/errosMock.js'),
+  {
+    virtual: true,
+  }
 );
-
-const errors = jest.requireMock('/opt/nodejs/errors.js');
-
 jest.mock(
   '/opt/nodejs/apiResponseUtil.js',
-  () => ({
-    __esModule: true,
-    createSuccessResponse: jest.fn((data) => ({
-      statusCode: 200,
-      body: JSON.stringify(data),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    })),
-    createErrorResponse: jest.fn((error) => ({
-      statusCode: error.statusCode || 500,
-      body: JSON.stringify({ error: error.message }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    })),
-  }),
+  () => require('../../__mocks__/apiResponseUtilMock.js'),
   { virtual: true }
 );
 
@@ -68,7 +32,6 @@ describe('getAllProjects', () => {
   let getAllProjects;
 
   beforeEach(() => {
-    // Clear all mocks before each test
     jest.clearAllMocks();
 
     getAllProjects = require('./getAllProjects').default;
