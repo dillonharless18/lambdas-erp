@@ -29,14 +29,14 @@ const purchaseOrderItemStatusAgainstVendor = async (vendorId) => {
       return 3; // Needs Procurement
     }
 
-    return 2; // Purchase
+    return 2; // Purchased
   } catch (error) {
     console.error('Error fetching net vendor status:', error.stack);
     throw error;
   }
 };
 
-const postItemRequests = async (items, userSub, isRequestItem) => {
+const postItemRequests = async (items, userSub, bypassRequestWorkspace) => {
   await initializeDb();
 
   if (!Array.isArray(items)) {
@@ -44,7 +44,11 @@ const postItemRequests = async (items, userSub, isRequestItem) => {
   }
 
   let purchaseOrderRequestItemStatus;
-  if (isRequestItem) {
+  if (bypassRequestWorkspace) {
+    purchaseOrderRequestItemStatus = await purchaseOrderItemStatusAgainstVendor(
+      item.vendor_id
+    );
+  } else {
     purchaseOrderRequestItemStatus = await knexInstance(
       'purchase_order_request_item_status'
     )
@@ -52,10 +56,6 @@ const postItemRequests = async (items, userSub, isRequestItem) => {
       .where('purchase_order_request_item_status_name', 'Requested')
       .andWhere('is_active', true)
       .first();
-  } else {
-    purchaseOrderRequestItemStatus = await purchaseOrderItemStatusAgainstVendor(
-      item.vendor_id
-    );
   }
 
   const user = await knexInstance('user')
