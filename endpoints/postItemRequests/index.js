@@ -5,8 +5,9 @@ const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).requestItems;
     const userSub = event.requestContext.authorizer.sub;
+    const bypassRequestWorkspace = queryParams?.bypassRequestWorkspace
 
-    return await postItemRequests(body, userSub);
+    return await postItemRequests(body, userSub, bypassRequestWorkspace);
   } catch (error) {
     console.error('Error in handler:', error.stack);
     return createErrorResponse(error);
