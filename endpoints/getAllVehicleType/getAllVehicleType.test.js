@@ -65,8 +65,18 @@ describe('getAllVehicleTypes', () => {
 
     const body = JSON.parse(result.body);
     expect(body).toBeInstanceOf(Array);
+  });
 
-    const vehicleType = body[0];
+  it('should ensure hte Jsob body has the correct column types', async () => {
+    const result = await getAllVehicleTypes();
+
+    expect(result.statusCode).toBe(200);
+
+    const vehicleTypes = JSON.parse(result.body);
+    expect(vehicleTypes).toBeInstanceOf(Array);
+    expect(vehicleTypes).toHaveLength(1);
+
+    const vehicleType = vehicleTypes[0];
     expect(vehicleType).toMatchObject({
       vehicle_type_id: expect.any(Number),
       vehicle_type_name: expect.any(String),
