@@ -45,8 +45,10 @@ const postItemRequests = async (items, userSub, bypassRequestWorkspace) => {
 
   let purchaseOrderRequestItemStatus;
   if (bypassRequestWorkspace) {
+
+    const purchaseOrderRequestItem = items.map((item) => new ItemRequest(item))
     purchaseOrderRequestItemStatus = await purchaseOrderItemStatusAgainstVendor(
-      item.vendor_id
+      items[0].vendor
     );
   } else {
     purchaseOrderRequestItemStatus = await knexInstance(
