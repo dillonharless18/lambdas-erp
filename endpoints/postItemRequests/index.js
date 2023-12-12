@@ -5,6 +5,7 @@ const handler = async (event) => {
   try {
     const body = JSON.parse(event.body).requestItems;
     const userSub = event.requestContext.authorizer.sub;
+    const queryParams = event.queryStringParameters;
     const bypassRequestWorkspace = queryParams?.bypassRequestWorkspace
 
     return await postItemRequests(body, userSub, bypassRequestWorkspace);
