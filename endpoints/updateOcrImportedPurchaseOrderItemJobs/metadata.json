@@ -1,0 +1,13 @@
+{
+    "apiPath": "ocr-imported-purchase-order-item/{ocr_imported_purchase_order_draft_id}/job/{job_id}",
+    "httpMethod": "PATCH",
+    "name": "updateOcrImportedPurchaseOrderItemJobs",
+    "allowedGroups": [
+      "admin",
+      "basic_user",
+      "logistics",
+      "project_manager",
+      "driver"
+    ]
+  }
+  
