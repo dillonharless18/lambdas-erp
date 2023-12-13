@@ -1,6 +1,10 @@
 import ItemRequest from './DTO/ItemRequests.js';
 import initializeKnex from '/opt/nodejs/db/index.js';
-import { DatabaseError, BadRequestError } from '/opt/nodejs/errors.js';
+import {
+  DatabaseError,
+  BadRequestError,
+  InternalServerError,
+} from '/opt/nodejs/errors.js';
 import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -43,21 +47,18 @@ const postItemRequests = async (items, userSub, bypassRequestWorkspace) => {
     throw new BadRequestError('The items parameter must be an array');
   }
 
-  let purchaseOrderRequestItemStatus;
+  let purchaseOrderRequestItemStatus = [];
   if (bypassRequestWorkspace) {
-
-    const purchaseOrderRequestItem = items.map((item) => new ItemRequest(item))
     purchaseOrderRequestItemStatus = await purchaseOrderItemStatusAgainstVendor(
       items[0].vendor
     );
   } else {
-    purchaseOrderRequestItemStatus = await knexInstance(
+    [purchaseOrderRequestItemStatus] = await knexInstance(
       'purchase_order_request_item_status'
     )
-      .select('purchase_order_request_item_status_id')
+      .pluck('purchase_order_request_item_status_id')
       .where('purchase_order_request_item_status_name', 'Requested')
-      .andWhere('is_active', true)
-      .first();
+      .andWhere('is_active', true);
   }
 
   const user = await knexInstance('user')
@@ -86,11 +87,10 @@ const postItemRequests = async (items, userSub, bypassRequestWorkspace) => {
     created_at: knexInstance.raw('NOW()'),
     last_updated_at: knexInstance.raw('NOW()'),
     project_id: item.project_id,
-    vendor_id: item.vendor_id ? item.vendor_id : vendor.vendor_id, // check if item.vendor_id is not null/empty, if null/empty then assign default vendor
+    vendor_id: item.vendor ? item.vendor : vendor.vendor_id, // check if item.vendor_id is not null/empty, if null/empty then assign default vendor
     in_hand_date: item.in_hand_date,
     urgent_order_status_id: item.urgent_order_status_id,
-    purchase_order_request_item_status_id:
-      purchaseOrderRequestItemStatus.purchase_order_request_item_status_id,
+    purchase_order_request_item_status_id: purchaseOrderRequestItemStatus,
   }));
 
   try {
@@ -101,7 +101,7 @@ const postItemRequests = async (items, userSub, bypassRequestWorkspace) => {
     });
   } catch (error) {
     console.error('Error in postPurchaseOrderRequestItems:', error);
-    throw error;
+    throw new InternalServerError();
   }
 };
 
