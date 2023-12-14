@@ -68,7 +68,7 @@ const updateOcrImportedPurchaseOrderItemJobs = async (
 
     return createSuccessResponse({
       message:
-        'Ocr Imported Purcahse Order Draft Item Job Updated Successfully',
+        'Ocr Imported Purchase Order Draft Item(s) Job Updated Successfully',
       data: updatedOcrImportedPODraftItemJobs,
     });
   } catch (error) {
