@@ -123,7 +123,7 @@ const getDriverTransportationTrips = async (cognitoSub) => {
               'contact_name', request.contact_name,
               'contact_number', request.contact_number,
               'recipients', request.recipients,
-              's3_uri', request.s3_uri
+              's3_uri', request.s3_uri,
               'created_by', json_build_object('user_id', user_created_request.user_id, 'requester', (user_created_request.first_name || ' ' || user_created_request.last_name)),
               'urgent_order_status',json_build_object('urgent_order_status_id', urgent_order_request.urgent_order_status_id, 'urgent_order_status_name', urgent_order_request.urgent_order_status_name),
               'project', json_build_object('project_id', project.project_id, 'project_name', project.project_name),
