@@ -1,5 +1,5 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
-import { createSuccessResponse } from "/opt/nodejs/api/apiResponseUtil.js";
+import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
 import {
     DatabaseError,
     BadRequestError,
