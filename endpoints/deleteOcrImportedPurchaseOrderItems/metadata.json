@@ -1,13 +1,12 @@
 {
     "apiPath": "ocr-imported-purchase-order-items",
-    "httpMethod": "DELETE",
+    "httpMethod": "POST",
     "name": "deleteOcrImportedPurchaseOrderItems",
     "allowedGroups": [
-      "admin",
-      "basic_user",
-      "logistics",
-      "project_manager",
-      "driver"
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
     ]
-  }
-  
+}
