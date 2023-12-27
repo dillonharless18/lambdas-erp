@@ -15,9 +15,20 @@ const initializeDb = async () => {
   }
 };
 
-const getPurchaseOrderRequestItems = async (status, userSub) => {
+const getPurchaseOrderRequestItems = async (
+  status,
+  userSub,
+  itemName,
+  urgentOrderStatus,
+  vendor,
+  pageNumber
+) => {
   await initializeDb();
   try {
+    const PAGE_SIZE = 10;
+
+    if (pageNumber < 1) pageNumber = 1;
+    const offset = (pageNumber - 1) * PAGE_SIZE;
     const query = knexInstance('purchase_order_request_item')
       .join(
         'user as createdBy',
@@ -102,11 +113,26 @@ const getPurchaseOrderRequestItems = async (status, userSub) => {
       query.where('purchase_order_request_item.created_by', '=', user[0]);
     }
 
-    const getAllPurchaseOrderRequestItems = await query.where(
-      'purchase_order_request_item.is_active',
-      '=',
-      true
-    );
+    if (itemName) {
+      query.whereILike(
+        'purchase_order_request_item.item_name',
+        `%${itemName}%`
+      );
+    }
+    if (urgentOrderStatus) {
+      query.whereILike(
+        'urgent_order_status.urgent_order_status_name',
+        `%${urgentOrderStatus}%`
+      );
+    }
+    if (vendor) {
+      query.whereILike('vendor.vendor_name', `%${vendor}%`);
+    }
+
+    const getAllPurchaseOrderRequestItems = await query
+      .where('purchase_order_request_item.is_active', '=', true)
+      .offset(offset)
+      .limit(PAGE_SIZE);
 
     return createSuccessResponse(getAllPurchaseOrderRequestItems);
   } catch (error) {
