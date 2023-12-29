@@ -31,8 +31,8 @@ const getPurchaseOrderRequestItems = async (
         const offset = (pageNumber - 1) * pageSize;
         const query = knexInstance("purchase_order_request_item")
             .join(
-                "user as createdBy",
-                "createdBy.user_id",
+                "user as createdby",
+                "createdby.user_id",
                 "=",
                 "purchase_order_request_item.created_by"
             )
@@ -88,7 +88,7 @@ const getPurchaseOrderRequestItems = async (
                 "purchase_order_request_item.purchase_order_request_item_status_id",
                 "purchase_order_request_item.urgent_order_status_id",
                 knexInstance.raw(
-                    '("createdBy".first_name || \' \' || "createdBy".last_name) AS requester'
+                    '("createdby".first_name || \' \' || "createdby".last_name) AS requester'
                 ),
                 "project.project_name",
                 "urgent_order_status.urgent_order_status_name as urgent_status",
@@ -115,39 +115,12 @@ const getPurchaseOrderRequestItems = async (
         }
 
         if (searchText) {
-            query
-                .whereILike(
-                    "purchase_order_request_item.item_name",
-                    `%${searchText}%`
-                )
-                .orWhereILike(
-                    "urgent_order_status.urgent_order_status_name",
-                    `%${searchText}%`
-                )
-                .orWhereILike(
-                    "purchase_order_request_item.quantity",
-                    `%${searchText}%`
-                )
-                .orWhereILike(
-                    "purchase_order_request_item.description",
-                    `%${searchText}%`
-                )
-                .orWhereILike(
-                    "purchase_order_request_item.unit_of_measure",
-                    `%${searchText}%`
-                )
-                .orWhereILike(
-                    "purchase_order_request_item.suggested_vendor",
-                    `%${searchText}%`
-                )
-                .orWhereILike("createdBy.first_name", `%${searchText}%`)
-                .orWhereILike("createdBy.last_name", `%${searchText}%`)
-                .orWhereRaw(
-                    "CAST(purchase_order_request_item.created_at AS TEXT) ILIKE ?",
-                    [`%${searchText}%`]
-                )
-                .orWhereILike("project.project_name", `%${searchText}%`)
-                .orWhereILike("vendor.vendor_name", `%${searchText}%`);
+            query.whereILike(
+                knexInstance.raw(
+                    `concat(purchase_order_request_item.item_name, ' ', urgent_order_status.urgent_order_status_name, ' ', vendor.vendor_name, ' ', purchase_order_request_item.description, ' ', purchase_order_request_item.unit_of_measure, ' ', purchase_order_request_item.suggested_vendor, ' ', createdby.first_name, ' ', createdby.last_name, ' ', project.project_name)`
+                ),
+                `%${searchText}%`
+            );
         }
 
         const countQuery = query
