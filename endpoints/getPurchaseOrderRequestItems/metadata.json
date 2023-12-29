@@ -1,19 +1,18 @@
 {
-  "apiPath": "purchase-order-request-items",
-  "httpMethod": "GET",
-  "name": "getPurchaseOrderRequestItems",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ],
-  "requestParameters": {
-    "status": true,
-    "itemName": false,
-    "urgentOrderStatus": false,
-    "vendor": false,
-    "pageNumber": true
-  }
+    "apiPath": "purchase-order-request-items",
+    "httpMethod": "GET",
+    "name": "getPurchaseOrderRequestItems",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "status": true,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
