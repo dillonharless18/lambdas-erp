@@ -1,0 +1,16 @@
+{
+    "apiPath": "customers",
+    "httpMethod": "GET",
+    "name": "getAllCustomers",
+    "allowedGroups": [
+      "admin",
+      "basic_user",
+      "logistics",
+      "project_manager",
+      "driver"
+    ],
+    "requestParameters": {
+      "isAll": true
+    }
+  }
+  

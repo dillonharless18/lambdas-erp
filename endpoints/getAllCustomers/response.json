@@ -1,0 +1,23 @@
+[
+  {
+    "customer_id": 1,
+    "uuid": "9102bd51-8374-425b-bbba-784ea9960048",
+    "customer_name": "Default",
+    "address_1": "Default Address",
+    "address_2": "Default Address 2",
+    "state": "Default State",
+    "city": "Default City",
+    "postal_code": "0000",
+    "country": "Default Country",
+    "notes": "This is default customer for the old jobs",
+    "phone": "0000000",
+    "email": "default@onexerp.com",
+    "created_at": "2024-01-01T14:38:52.288Z",
+    "updated_at": "2024-01-02T10:02:26.791Z",
+    "created_by": "1b3ef41c-23af-4eee-bbd7-5610b38e37f2",
+    "last_updated_by": "1b3ef41c-23af-4eee-bbd7-5610b38e37f2",
+    "is_active": true,
+    "createdby": "Default Default",
+    "updatedby": "Default Default"
+  }
+]
