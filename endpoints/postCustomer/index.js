@@ -12,3 +12,5 @@ const handler = async (event) => {
     return createErrorResponse(error);
   }
 };
+
+export { handler };
