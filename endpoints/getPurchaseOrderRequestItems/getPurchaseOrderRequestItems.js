@@ -127,8 +127,9 @@ const getPurchaseOrderRequestItems = async (
             .clone()
             .clearSelect()
             .clearOrder()
-            .count({ count: "*" });
-        const totalCount = (await countQuery)[0].count;
+            .count({ count: "*" })
+            .first();
+        const totalCount = (await countQuery).count;
 
         const getAllPurchaseOrderRequestItems = await query
             .clone()

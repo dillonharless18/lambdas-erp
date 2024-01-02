@@ -1,12 +1,17 @@
 {
-  "apiPath": "ocr-imported-purchase-orders",
-  "httpMethod": "GET",
-  "name": "getOcrImportedPurchaseOrders",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ]
+    "apiPath": "ocr-imported-purchase-orders",
+    "httpMethod": "GET",
+    "name": "getOcrImportedPurchaseOrders",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
