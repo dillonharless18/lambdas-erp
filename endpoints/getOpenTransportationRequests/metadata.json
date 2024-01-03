@@ -1,12 +1,17 @@
 {
-  "apiPath": "open-transportation-requests",
-  "httpMethod": "GET",
-  "name": "getOpenTransportationRequests",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ]
+    "apiPath": "open-transportation-requests",
+    "httpMethod": "GET",
+    "name": "getOpenTransportationRequests",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
