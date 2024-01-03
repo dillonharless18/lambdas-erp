@@ -1,0 +1,13 @@
+{
+    "apiPath": "customers/{customerUUID}",
+    "httpMethod": "PATCH",
+    "name": "updateCustomer",
+    "allowedGroups": [
+      "admin",
+      "basic_user",
+      "logistics",
+      "project_manager",
+      "driver"
+    ]
+  }
+  
