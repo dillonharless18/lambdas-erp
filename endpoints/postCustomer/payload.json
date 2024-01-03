@@ -1,0 +1,14 @@
+{
+  "customerData": {
+    "customer_name": "Nike",
+    "address_1": "Chicago",
+    "address_2": "Street 4",
+    "state": "XYZ",
+    "city": "ABC",
+    "postal_code": "009988",
+    "country": "USA",
+    "notes": "Will be updated later",
+    "phone": "00110011",
+    "email": "nike@cloudfruit.com"
+  }
+}

@@ -12,3 +12,5 @@ class Customer {
     this.email = data.email;
   }
 }
+
+export default Customer;

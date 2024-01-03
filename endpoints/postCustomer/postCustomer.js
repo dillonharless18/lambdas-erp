@@ -39,7 +39,7 @@ const postCustomer = async (customerData, userSub) => {
     let dataToInsert = {
       last_updated_by: loggedInUser[0],
       created_by: loggedInUser[0],
-      last_updated_at: knexInstance.raw('NOW()'),
+      updated_at: knexInstance.raw('NOW()'),
       created_at: knexInstance.raw('NOW()'),
       ...customer,
     };
@@ -51,3 +51,5 @@ const postCustomer = async (customerData, userSub) => {
     throw new InternalServerError();
   }
 };
+
+export default postCustomer;
