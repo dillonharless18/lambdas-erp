@@ -1,15 +1,18 @@
 {
-  "apiPath": "purchase-order",
-  "httpMethod": "GET",
-  "name": "getPurchaseOrders",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ],
-  "requestParameters": {
-    "status": true
-  }
+    "apiPath": "purchase-order",
+    "httpMethod": "GET",
+    "name": "getPurchaseOrders",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "status": true,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
