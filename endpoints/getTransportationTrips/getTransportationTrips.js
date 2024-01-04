@@ -15,9 +15,17 @@ const initializeDb = async () => {
     }
 };
 
-const getTransportationTrips = async (transportationTripStatus, isAll) => {
+const getTransportationTrips = async (
+    transportationTripStatus,
+    isAll,
+    searchText,
+    pageNumber,
+    pageSize
+) => {
     await initializeDb();
     try {
+        if (pageNumber < 1) pageNumber = 1;
+        const offset = (pageNumber - 1) * pageSize;
         let query = knexInstance("transportation_trip")
             .select([
                 "transportation_trip.*",
@@ -135,10 +143,29 @@ const getTransportationTrips = async (transportationTripStatus, isAll) => {
                 transportaionTripStatusID.transportation_trip_status_id
             );
         }
+        if (searchText) {
+            query.whereILike(
+                knexInstance.raw(
+                    `concat(transportation_trip.trip_name, ' ', transportation_trip_status.transportation_trip_status_name, ' ', requester.first_name, ' ', requester.last_name, ' ', driver.first_name, ' ', driver.last_name, ' ', vehicle_type.vehicle_type_name)`
+                ),
+                `%${searchText}%`
+            );
+        }
 
-        const transportationTrips = await query;
+        const countQuery = query
+            .clone()
+            .select(knexInstance.raw("COUNT(*) OVER() as count"))
+            .limit(1)
+            .first();
 
-        return createSuccessResponse(transportationTrips);
+        const totalCount = (await countQuery).count;
+
+        const transportationTrips = await query
+            .clone()
+            .offset(offset)
+            .limit(pageSize);
+
+        return createSuccessResponse({ data: transportationTrips, totalCount });
     } catch (error) {
         console.error("Error fetching Transportation Trips", error);
         throw new InternalServerError();

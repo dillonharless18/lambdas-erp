@@ -1,16 +1,19 @@
 {
-  "apiPath": "transportation-trips",
-  "httpMethod": "GET",
-  "name": "getTransportationTrips",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ],
-  "requestParameters": {
-    "status": false,
-    "isAll": true
-  }
+    "apiPath": "transportation-trips",
+    "httpMethod": "GET",
+    "name": "getTransportationTrips",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "status": false,
+        "isAll": true,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
