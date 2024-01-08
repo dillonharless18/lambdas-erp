@@ -1,15 +1,18 @@
 {
-  "apiPath": "users",
-  "httpMethod": "GET",
-  "name": "getAllUsers",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ],
-  "requestParameters": {
-    "role": false
-  }
+    "apiPath": "users",
+    "httpMethod": "GET",
+    "name": "getAllUsers",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "role": false,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
