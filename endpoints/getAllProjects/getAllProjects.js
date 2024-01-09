@@ -1,5 +1,9 @@
 import initializeKnex from '/opt/nodejs/db/index.js';
-import { DatabaseError, NotFoundError } from '/opt/nodejs/errors.js';
+import {
+  DatabaseError,
+  NotFoundError,
+  InternalServerError,
+} from '/opt/nodejs/errors.js';
 import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
 
 let knexInstance;
@@ -18,7 +22,6 @@ const initializeDb = async () => {
 const getAllProjects = async (isAll) => {
   await initializeDb();
   try {
-    // const projects = await knexInstance.select('*').from('project');
     let query = knexInstance
       .select(
         'p.*',
@@ -38,14 +41,11 @@ const getAllProjects = async (isAll) => {
       query = query.where('p.is_active', true);
     }
     const projects = await query;
-    if (!projects || projects.length === 0) {
-      throw new NotFoundError('No projects found.');
-    }
 
     return createSuccessResponse(projects);
   } catch (error) {
-    console.error('Error fetching projects:', error.stack); // Logging error stack
-    throw error; // propagate the error to the handler
+    console.error('Error fetching projects:', error.stack);
+    throw new InternalServerError();
   }
 };
 
