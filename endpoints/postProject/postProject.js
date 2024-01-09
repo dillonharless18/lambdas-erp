@@ -40,6 +40,7 @@ const postProject = async (body, userSub) => {
     project_code: project.project_code,
     material_budget: project.material_budget,
     labor_budget: project.labor_budget,
+    customer_id: project.customer_id,
     created_by: user[0],
     last_updated_by: user[0],
     created_at: knexInstance.raw('NOW()'),

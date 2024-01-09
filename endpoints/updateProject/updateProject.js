@@ -47,7 +47,7 @@ const updatedProject = async (projectId, body, userSub) => {
     Object.entries(updatedProject).filter(
       ([_, val]) => val !== null && val !== undefined && val !== ''
     )
-  ); // remove null or empty values
+  ); 
 
   if (updatedProject.is_active === false) {
     const [purchaseOrderItemsCount] = await knexInstance(
