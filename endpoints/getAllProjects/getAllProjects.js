@@ -1,52 +1,97 @@
-import initializeKnex from '/opt/nodejs/db/index.js';
-import {
-  DatabaseError,
-  NotFoundError,
-  InternalServerError,
-} from '/opt/nodejs/errors.js';
-import { createSuccessResponse } from '/opt/nodejs/apiResponseUtil.js';
+import initializeKnex from "/opt/nodejs/db/index.js";
+import { DatabaseError, InternalServerError } from "/opt/nodejs/errors.js";
+import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
 
 let knexInstance;
 
 const initializeDb = async () => {
-  if (!knexInstance) {
-    try {
-      knexInstance = await initializeKnex();
-    } catch (error) {
-      console.error('Error initializing database:', error.stack);
-      throw new DatabaseError('Failed to initialize the database.');
+    if (!knexInstance) {
+        try {
+            knexInstance = await initializeKnex();
+        } catch (error) {
+            console.error("Error initializing database:", error.stack);
+            throw new DatabaseError("Failed to initialize the database.");
+        }
     }
-  }
 };
 
-const getAllProjects = async (isAll) => {
-  await initializeDb();
-  try {
-    let query = knexInstance
-      .select(
-        'p.*',
-        knexInstance.raw(
-          '("createdBy".first_name || \' \' || "createdBy".last_name) AS CreatedBy'
-        ),
-        knexInstance.raw(
-          '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS UpdatedBy'
-        )
-      )
-      .from('project as p')
-      .orderBy('p.created_at', 'asc')
-      .join('user as createdBy', 'createdBy.user_id', '=', 'p.created_by')
-      .join('user as updatedBy', 'updatedBy.user_id', '=', 'p.last_updated_by');
+const getAllProjects = async (
+    isAll,
+    searchText,
+    pageNumber,
+    pageSize,
+    status
+) => {
+    await initializeDb();
+    try {
+        if (pageNumber < 1) pageNumber = 1;
+        const offset = (pageNumber - 1) * pageSize;
+        let query = knexInstance
+            .select(
+                "p.*",
+                knexInstance.raw(
+                    '("createdby".first_name || \' \' || "createdby".last_name) AS Createdby'
+                ),
+                knexInstance.raw(
+                    '("updatedby".first_name || \' \' || "updatedby".last_name) AS Updatedby'
+                )
+            )
+            .from("project as p")
+            .orderBy("p.created_at", "asc")
+            .join("user as createdby", "createdby.user_id", "=", "p.created_by")
+            .join(
+                "user as updatedby",
+                "updatedby.user_id",
+                "=",
+                "p.last_updated_by"
+            );
 
-    if (!isAll) {
-      query = query.where('p.is_active', true);
+        if (searchText) {
+            query.whereILike(
+                knexInstance.raw(
+                    `concat(p.project_name, ' ', p.project_cde, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name)`
+                ),
+                `%${searchText}%`
+            );
+        }
+        let responseData = [];
+        if (!isAll) {
+            // it means it is not called from admin/job workspace
+            query.where("p.is_active", true);
+            responseData = await query;
+        } else {
+            const activeJobsCountQuery = query
+                .clone()
+                .where("p.is_active", true)
+                .select(knexInstance.raw("COUNT(*) OVER() as count"))
+                .limit(1)
+                .first();
+
+            const inactiveJobsCountQuery = query
+                .clone()
+                .where("p.is_active", false)
+                .select(knexInstance.raw("COUNT(*) OVER() as count"))
+                .limit(1)
+                .first();
+
+            const activeJobs = (await activeJobsCountQuery).count;
+            const inactiveJobs = (await inactiveJobsCountQuery).count;
+
+            query.andWhere("p.is_active", status === "true" ? true : false);
+            const data = await query.clone().offset(offset).limit(pageSize);
+
+            responseData = {
+                data,
+                activeJobs,
+                inactiveJobs,
+            };
+        }
+
+        return createSuccessResponse(responseData);
+    } catch (error) {
+        console.error("Error fetching projects:", error.stack);
+        throw new InternalServerError();
     }
-    const projects = await query;
-
-    return createSuccessResponse(projects);
-  } catch (error) {
-    console.error('Error fetching projects:', error.stack);
-    throw new InternalServerError();
-  }
 };
 
 export default getAllProjects;
