@@ -1,7 +1,7 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
 import { DatabaseError } from "/opt/nodejs/errors.js";
 import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
-import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
+// import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
 
 let knexInstance;
 
@@ -19,7 +19,9 @@ const initializeDb = async () => {
 const getAllVendors = async (netVendors, searchText, pageNumber, pageSize) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        // const offset = getPageOffsetFromPageNo(pageNumber);
+        if (pageNumber < 1) pageNumber = 1;
+        const offset = (pageNumber - 1) * pageSize;
         let query = knexInstance
             .select(
                 "v.*",
