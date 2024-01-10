@@ -98,8 +98,8 @@ describe("getAllProjects", () => {
         const body = JSON.parse(result.body);
         expect(body).toMatchObject({
             data: expect.any(Array),
-            activeJobs: expect.any(String),
-            inactiveJobs: expect.any(String),
+            activeJobs: expect.any(Number),
+            inactiveJobs: expect.any(Number),
         });
     });
 
@@ -140,8 +140,8 @@ describe("getAllProjects", () => {
         const projects = JSON.parse(result.body);
         expect(projects).toMatchObject({
             data: expect.any(Array),
-            activeJobs: expect.any(String),
-            inactiveJobs: expect.any(String),
+            activeJobs: expect.any(Number),
+            inactiveJobs: expect.any(Number),
         });
         const project = projects.data[0];
 
