@@ -1,15 +1,18 @@
 {
-  "apiPath": "vehicle-type",
-  "httpMethod": "GET",
-  "name": "getAllVehicleType",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ],
-  "requestParameters": {
-    "isAll": true
-  }
+    "apiPath": "vehicle-type",
+    "httpMethod": "GET",
+    "name": "getAllVehicleType",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "isAll": true,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
