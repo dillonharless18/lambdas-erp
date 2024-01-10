@@ -82,7 +82,7 @@ describe("getAllProjects", () => {
         };
 
         const result = await getAllProjects(
-            false,
+            isAll,
             searchText,
             pageNumber,
             pageSize,
@@ -122,7 +122,7 @@ describe("getAllProjects", () => {
         };
 
         const result = await getAllProjects(
-            false,
+            isAll,
             searchText,
             pageNumber,
             pageSize,
