@@ -96,31 +96,40 @@ describe("getAllProjects", () => {
         });
 
         const body = JSON.parse(result.body);
-        if (Array.isArray(body)) {
-            expect(body).toBeInstanceOf(Array);
-        } else if (
-            typeof body === "object" &&
-            body !== null &&
-            "data" in body &&
-            "totalCount" in body
-        ) {
-            expect(body).toEqual(
-                expect.objectContaining({
-                    data: expect.any(Array),
-                    totalCount: expect.any(String),
-                })
-            );
-        }
+        expect(body).toEqual(
+            expect.objectContaining({
+                data: expect.any(Array),
+                totalCount: expect.any(String),
+            })
+        );
     });
 
     it("should return a list of projects with expected properties", async () => {
-        const event = {
+        const {
+            queryStringParameters: {
+                isAll,
+                searchText,
+                pageNumber,
+                pageSize,
+                status,
+            },
+        } = {
             queryStringParameters: {
                 isAll: "true",
+                searchText: "",
+                pageNumber: 1,
+                pageSize: 10,
+                status: "true",
             },
         };
 
-        const result = await getAllProjects(event.queryStringParameters.isAll);
+        const result = await getAllProjects(
+            isAll,
+            searchText,
+            pageNumber,
+            pageSize,
+            status
+        );
 
         expect(result.statusCode).toBe(200);
 
@@ -130,25 +139,13 @@ describe("getAllProjects", () => {
         });
 
         const projects = JSON.parse(result.body);
-        let project = [];
-        if (Array.isArray(projects)) {
-            expect(projects).toBeInstanceOf(Array);
-            project = projects[0];
-        } else if (
-            typeof projects === "object" &&
-            projects !== null &&
-            "data" in projects &&
-            "totalCount" in projects
-        ) {
-            expect(projects).toEqual(
-                expect.objectContaining({
-                    data: expect.any(Array),
-                    totalCount: expect.any(String),
-                })
-            );
-
-            project = projects.data[0];
-        }
+        expect(projects).toEqual(
+            expect.objectContaining({
+                data: expect.any(Array),
+                totalCount: expect.any(String),
+            })
+        );
+        project = projects.data[0];
 
         expect(project).toMatchObject({
             project_id: expect.any(Number),
