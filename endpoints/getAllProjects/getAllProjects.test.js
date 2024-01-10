@@ -96,12 +96,10 @@ describe("getAllProjects", () => {
         });
 
         const body = JSON.parse(result.body);
-        expect(body).toEqual(
-            expect.objectContaining({
-                data: expect.any(Array),
-                totalCount: expect.any(String),
-            })
-        );
+        expect(body).toMatchObject({
+            data: expect.any(Array),
+            totalCount: expect.any(String),
+        });
     });
 
     it("should return a list of projects with expected properties", async () => {
@@ -139,13 +137,11 @@ describe("getAllProjects", () => {
         });
 
         const projects = JSON.parse(result.body);
-        expect(projects).toEqual(
-            expect.objectContaining({
-                data: expect.any(Array),
-                totalCount: expect.any(String),
-            })
-        );
-        project = projects.data[0];
+        expect(projects).toMatchObject({
+            data: expect.any(Array),
+            totalCount: expect.any(String),
+        });
+        const project = projects.data[0];
 
         expect(project).toMatchObject({
             project_id: expect.any(Number),
