@@ -1,12 +1,18 @@
 {
-  "apiPath": "credit-cards",
-  "httpMethod": "GET",
-  "name": "getAllCreditCards",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ]
+    "apiPath": "credit-cards",
+    "httpMethod": "GET",
+    "name": "getAllCreditCards",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "isAll": true,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
