@@ -30,12 +30,15 @@ const getAllProjects = async (isAll) => {
         ),
         knexInstance.raw(
           '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS UpdatedBy'
-        )
+        ),
+        'c.customer_name as customerName',
+        'c.uuid as customerUUID'
       )
       .from('project as p')
       .orderBy('p.created_at', 'asc')
       .join('user as createdBy', 'createdBy.user_id', '=', 'p.created_by')
-      .join('user as updatedBy', 'updatedBy.user_id', '=', 'p.last_updated_by');
+      .join('user as updatedBy', 'updatedBy.user_id', '=', 'p.last_updated_by')
+      .join('customer as c', 'c.customer_id', '=','p.customer_id');
 
     if (!isAll) {
       query = query.where('p.is_active', true);
