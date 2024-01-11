@@ -100,7 +100,8 @@ describe("getAllProjects", () => {
         });
 
         const body = JSON.parse(result.body);
-        expect(body).toMatchObject({
+        const response = body.data;
+        expect(response).toMatchObject({
             data: expect.any(Array),
             activeJobs: expect.any(Number),
             inactiveJobs: expect.any(Number),
@@ -142,12 +143,13 @@ describe("getAllProjects", () => {
         });
 
         const projects = JSON.parse(result.body);
-        expect(projects).toMatchObject({
+        const response = projects.data;
+        expect(response).toMatchObject({
             data: expect.any(Array),
             activeJobs: expect.any(Number),
             inactiveJobs: expect.any(Number),
         });
-        const project = projects.data[0];
+        const project = response.data[0];
 
         expect(project).toMatchObject({
             project_id: expect.any(Number),
