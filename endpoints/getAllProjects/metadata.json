@@ -1,15 +1,19 @@
 {
-  "apiPath": "projects",
-  "httpMethod": "GET",
-  "name": "getAllProjects",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ],
-  "requestParameters": {
-    "isAll": true
-  }
+    "apiPath": "projects",
+    "httpMethod": "GET",
+    "name": "getAllProjects",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "isAll": true,
+        "status": false,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }
