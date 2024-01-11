@@ -3,14 +3,16 @@
     "httpMethod": "GET",
     "name": "getAllCustomers",
     "allowedGroups": [
-      "admin",
-      "basic_user",
-      "logistics",
-      "project_manager",
-      "driver"
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
     ],
     "requestParameters": {
-      "isAll": true
+        "isAll": true,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
     }
-  }
-  
+}
