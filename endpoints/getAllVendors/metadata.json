@@ -1,12 +1,18 @@
 {
-  "apiPath": "getAllVendors",
-  "httpMethod": "GET",
-  "name": "getAllVendors",
-  "allowedGroups": [
-    "admin",
-    "basic_user",
-    "logistics",
-    "project_manager",
-    "driver"
-  ]
+    "apiPath": "getAllVendors",
+    "httpMethod": "GET",
+    "name": "getAllVendors",
+    "allowedGroups": [
+        "admin",
+        "basic_user",
+        "logistics",
+        "project_manager",
+        "driver"
+    ],
+    "requestParameters": {
+        "netVendors": false,
+        "searchText": false,
+        "pageNumber": true,
+        "pageSize": true
+    }
 }

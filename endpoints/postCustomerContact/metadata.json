@@ -1,0 +1,12 @@
+{
+  "apiPath": "customers/contact/customer_id",
+  "httpMethod": "POST",
+  "name": "postCustomerContact",
+  "allowedGroups": [
+    "admin",
+    "basic_user",
+    "logistics",
+    "project_manager",
+    "driver"
+  ]
+}
