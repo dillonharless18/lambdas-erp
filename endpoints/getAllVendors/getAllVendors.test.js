@@ -89,7 +89,8 @@ describe("getAllVendors", () => {
         expect(result.statusCode).toBe(200);
 
         const body = JSON.parse(result.body);
-        expect(body).toMatchObject({
+        const response = body.data;
+        expect(response).toMatchObject({
             data: expect.any(Array),
             totalCount: expect.any(Number),
         });
@@ -100,14 +101,14 @@ describe("getAllVendors", () => {
 
         expect(result.statusCode).toBe(200);
         const vendors = JSON.parse(result.body);
-
-        expect(vendors).toMatchObject({
+        const response = vendors.data;
+        expect(response).toMatchObject({
             data: expect.any(Array),
             totalCount: expect.any(Number),
         });
-        expect(vendors.data).toHaveLength(1);
+        expect(response.data).toHaveLength(1);
 
-        const vendor = vendors.data[0];
+        const vendor = response.data[0];
         expect(vendor).toMatchObject({
             vendor_id: expect.any(Number),
             vendor_name: expect.any(String),
