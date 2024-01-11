@@ -39,22 +39,26 @@ describe("getAllProjects", () => {
         const tracker = mockDb.getTracker();
         tracker.install();
         tracker.on("query", (query) => {
-            query.response([
-                {
-                    project_id: 1,
-                    project_name: "Job 1",
-                    is_active: true,
-                    created_by: "1b3ef41c-23af-4eee-bbd7-5610b38e37f2",
-                    last_updated_by: "4566a3j7-92a8-40f8-8f00-f8fc355bbk7g",
-                    created_at: "2023-05-17T03:27:13.141Z",
-                    last_updated_at: "2023-08-16T17:56:42.522Z",
-                    project_code: "P1",
-                    material_budget: "24.00",
-                    labor_budget: "12.00",
-                    createdby: "Default Default",
-                    updatedby: "Shakir Ullah",
-                },
-            ]);
+            query.response({
+                data: [
+                    {
+                        project_id: 1,
+                        project_name: "Job 1",
+                        is_active: true,
+                        created_by: "1b3ef41c-23af-4eee-bbd7-5610b38e37f2",
+                        last_updated_by: "4566a3j7-92a8-40f8-8f00-f8fc355bbk7g",
+                        created_at: "2023-05-17T03:27:13.141Z",
+                        last_updated_at: "2023-08-16T17:56:42.522Z",
+                        project_code: "P1",
+                        material_budget: "24.00",
+                        labor_budget: "12.00",
+                        createdby: "Default Default",
+                        updatedby: "Shakir Ullah",
+                    },
+                ],
+                activeJobs: 1,
+                inactiveJobs: 0,
+            });
         });
     });
 
