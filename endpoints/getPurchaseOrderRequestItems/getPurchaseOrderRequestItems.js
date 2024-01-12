@@ -28,7 +28,7 @@ const getPurchaseOrderRequestItems = async (
 ) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         const query = knexInstance("purchase_order_request_item")
             .join(
                 "user as createdby",

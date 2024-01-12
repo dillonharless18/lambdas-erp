@@ -19,7 +19,7 @@ const initializeDb = async () => {
 const getAllVendors = async (netVendors, searchText, pageNumber, pageSize) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         let query = knexInstance
             .select(
                 "v.*",

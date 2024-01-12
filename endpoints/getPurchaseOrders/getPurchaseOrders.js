@@ -153,7 +153,7 @@ const getPurchaseOrders = async (status, searchText, pageNumber, pageSize) => {
                 valueSuffix: "project_name",
             },
         ];
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
 
         let query = knexInstance("purchase_order as po")
             .leftJoin(

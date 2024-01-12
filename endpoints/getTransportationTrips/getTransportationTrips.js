@@ -25,7 +25,7 @@ const getTransportationTrips = async (
 ) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         let query = knexInstance("transportation_trip")
             .select([
                 "transportation_trip.*",

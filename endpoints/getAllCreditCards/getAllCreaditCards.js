@@ -19,7 +19,7 @@ const initializeDb = async () => {
 const getAllCreditCards = async (isAll, searchText, pageNumber, pageSize) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         const query = knexInstance
             .select(
                 "cc.*",

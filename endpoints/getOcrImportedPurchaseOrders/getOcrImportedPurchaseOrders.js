@@ -24,7 +24,7 @@ const getOcrImportedPurhaseOrders = async (
 ) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         const query = knexInstance("ocr_imported_purchase_order_draft as po")
             .leftJoin(
                 "ocr_imported_purchase_order_draft_item as item",

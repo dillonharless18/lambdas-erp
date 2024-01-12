@@ -25,7 +25,7 @@ const getAllProjects = async (
 ) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         let query = knexInstance
             .select(
                 "p.*",

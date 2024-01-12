@@ -23,7 +23,7 @@ const getOpenTransportationRequests = async (
 ) => {
     await initializeDb();
     try {
-        const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         const query = knexInstance(
             "purchase_order_transportation_request as potr"
         )
