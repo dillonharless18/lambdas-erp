@@ -15,7 +15,7 @@ const initializeDb = async () => {
     }
 };
 
-const getAllCustomers = async (isAll) => {
+const getAllCustomers = async (isAll, searchText, pageNumber, pageSize) => {
     await initializeDb();
     try {
         if (pageNumber < 1) pageNumber = 1;
@@ -24,22 +24,29 @@ const getAllCustomers = async (isAll) => {
             .select(
                 "c.*",
                 knexInstance.raw(
-                    '("createdBy".first_name || \' \' || "createdBy".last_name) AS CreatedBy'
+                    '("createdby".first_name || \' \' || "createdby".last_name) AS Createdby'
                 ),
                 knexInstance.raw(
-                    '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS UpdatedBy'
+                    '("updatedby".first_name || \' \' || "updatedby".last_name) AS Updatedby'
                 )
             )
             .from("customer as c")
             .orderBy("c.created_at", "asc")
-            .join("user as createdBy", "createdBy.user_id", "=", "c.created_by")
+            .join("user as createdby", "createdby.user_id", "=", "c.created_by")
             .join(
-                "user as updatedBy",
-                "updatedBy.user_id",
+                "user as updatedby",
+                "updatedby.user_id",
                 "=",
                 "c.last_updated_by"
             );
-
+        if (searchText) {
+            query.whereILike(
+                knexInstance.raw(
+                    `concat(c.customer_name, ' ', c.email, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name, ' ', c.city)`
+                ),
+                `%${searchText}%`
+            );
+        }
         let responseData = [];
         if (!isAll) {
             query.where("c.is_active", true);
