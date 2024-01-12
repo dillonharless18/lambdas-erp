@@ -1,6 +1,7 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
 import { DatabaseError, NotFoundError } from "/opt/nodejs/errors.js";
 import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
+import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
 
 let knexInstance;
 
@@ -18,8 +19,7 @@ const initializeDb = async () => {
 const getAllCustomers = async (isAll, searchText, pageNumber, pageSize) => {
     await initializeDb();
     try {
-        if (pageNumber < 1) pageNumber = 1;
-        const offset = (pageNumber - 1) * pageSize;
+        const offset = getPageOffsetFromPageNo(pageNumber);
         let query = knexInstance
             .select(
                 "c.*",

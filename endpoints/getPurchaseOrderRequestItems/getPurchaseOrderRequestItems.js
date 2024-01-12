@@ -1,6 +1,7 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
-import { DatabaseError, NotFoundError } from "/opt/nodejs/errors.js";
+import { DatabaseError } from "/opt/nodejs/errors.js";
 import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
+import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
 
 let knexInstance;
 
@@ -27,8 +28,7 @@ const getPurchaseOrderRequestItems = async (
 ) => {
     await initializeDb();
     try {
-        if (pageNumber < 1) pageNumber = 1;
-        const offset = (pageNumber - 1) * pageSize;
+        const offset = getPageOffsetFromPageNo(pageNumber);
         const query = knexInstance("purchase_order_request_item")
             .join(
                 "user as createdby",
