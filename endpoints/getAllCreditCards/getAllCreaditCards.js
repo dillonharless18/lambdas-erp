@@ -48,7 +48,7 @@ const getAllCreditCards = async (isAll, searchText, pageNumber, pageSize) => {
         if (searchText) {
             query.whereILike(
                 knexInstance.raw(
-                    `concat(cc.credit_card_name, ' ', c.credit_card_last_four_digits, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name)`
+                    `concat(cc.credit_card_name, ' ', cc.credit_card_last_four_digits, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name)`
                 ),
                 `%${searchText}%`
             );
