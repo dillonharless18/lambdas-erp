@@ -1,5 +1,5 @@
 {
-  "apiPath": "customers/contact/customer_id",
+  "apiPath": "customers/contact",
   "httpMethod": "POST",
   "name": "postCustomerContact",
   "allowedGroups": [
