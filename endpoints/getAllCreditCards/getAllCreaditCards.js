@@ -55,7 +55,7 @@ const getAllCreditCards = async (isAll, searchText, pageNumber, pageSize) => {
         }
         let responseData = [];
         if (!isAll) {
-            query.where("p.is_active", true);
+            query.where("cc.is_active", true);
             responseData = await query;
         } else {
             const countQuery = query
