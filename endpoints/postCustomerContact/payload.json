@@ -9,7 +9,8 @@
       "city": "ABC",
       "postal_code": "009988",
       "country": "USA",
-      "notes": "Will be updated later"
+      "notes": "Will be updated later",
+      "customer_id": 1
     }
   }
   

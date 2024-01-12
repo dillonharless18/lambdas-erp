@@ -20,7 +20,7 @@ const initializeDb = async () => {
   }
 };
 
-const postCustomerContact = async (customerContact, customerId, userSub) => {
+const postCustomerContact = async (customerContact, userSub) => {
   await initializeDb();
 
   if (typeof customerContact != 'object' || customerContact === null) {
@@ -39,7 +39,6 @@ const postCustomerContact = async (customerContact, customerId, userSub) => {
     let dataToInsert = {
       last_updated_by: loggedInUser[0],
       created_by: loggedInUser[0],
-      customer_id: customerId,
       ...customerContact,
     };
 

@@ -10,6 +10,7 @@ class CustomerContact {
     this.postal_code = data.postal_code;
     this.country = data.country;
     this.notes = data.notes;
+    this.customer_id = data.customer_id;
   }
 }
 
