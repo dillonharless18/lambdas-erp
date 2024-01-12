@@ -24,26 +24,35 @@ const getAllCreditCards = async (isAll, searchText, pageNumber, pageSize) => {
             .select(
                 "cc.*",
                 knexInstance.raw(
-                    '("createdBy".first_name || \' \' || "createdBy".last_name) AS CreatedBy'
+                    '("createdby".first_name || \' \' || "createdby".last_name) AS Createdby'
                 ),
                 knexInstance.raw(
-                    '("updatedBy".first_name || \' \' || "updatedBy".last_name) AS UpdatedBy'
+                    '("updatedby".first_name || \' \' || "updatedby".last_name) AS Updatedby'
                 )
             )
             .from("credit_card as cc")
             .join(
-                "user as createdBy",
-                "createdBy.user_id",
+                "user as createdby",
+                "createdby.user_id",
                 "=",
                 "cc.created_by"
             )
             .join(
-                "user as updatedBy",
-                "updatedBy.user_id",
+                "user as updatedby",
+                "updatedby.user_id",
                 "=",
                 "cc.last_updated_by"
             )
             .orderBy("cc.created_at", "asc");
+
+        if (searchText) {
+            query.whereILike(
+                knexInstance.raw(
+                    `concat(cc.credit_card_name, ' ', c.credit_card_last_four_digits, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name)`
+                ),
+                `%${searchText}%`
+            );
+        }
         let responseData = [];
         if (!isAll) {
             query.where("p.is_active", true);
