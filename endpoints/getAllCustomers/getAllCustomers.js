@@ -32,7 +32,8 @@ const getAllCustomers = async (isAll, searchText, pageNumber, pageSize) => {
                 ),
                 knexInstance.raw(
                     '("updatedby".first_name || \' \' || "updatedby".last_name) AS Updatedby'
-                )
+                ),
+                knexInstance.raw("json_agg(cc.*) as customerContacts")
             )
             .from("customer as c")
             .orderBy("c.created_at", "asc")
@@ -42,6 +43,19 @@ const getAllCustomers = async (isAll, searchText, pageNumber, pageSize) => {
                 "updatedby.user_id",
                 "=",
                 "c.last_updated_by"
+            )
+            .leftJoin(
+                "customer_contact as cc",
+                "c.customer_id",
+                "=",
+                "cc.customer_id"
+            )
+            .groupBy(
+                "c.customer_id",
+                "createdby.first_name",
+                "updatedby.first_name",
+                "createdby.last_name",
+                "updatedby.last_name"
             );
         if (searchText) {
             query.whereILike(
