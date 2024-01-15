@@ -27,6 +27,11 @@ jest.mock(
     () => require("../../__mocks__/apiResponseUtilMock.js"),
     { virtual: true }
 );
+jest.mock(
+    "/opt/nodejs/backendUtil.js",
+    () => require("../../__mocks__/backendUtilMock.js"),
+    { virtual: true }
+);
 
 describe("getAllProjects", () => {
     let getAllProjects;
