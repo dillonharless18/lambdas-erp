@@ -1,7 +1,7 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
 import { InternalServerError, DatabaseError } from "/opt/nodejs/errors.js";
 import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
-// import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
+import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
 
 let knexInstance;
 
@@ -19,9 +19,7 @@ const initializeDb = async () => {
 const getAllUsers = async (userRole, searchText, pageNumber, pageSize) => {
     await initializeDb();
     try {
-        if (pageNumber < 1) pageNumber = 1;
-        const offset = (pageNumber - 1) * pageSize;
-        // const offset = getPageOffsetFromPageNo(pageNumber);
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         let query = knexInstance
             .select(
                 "u.*",

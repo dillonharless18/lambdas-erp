@@ -1,6 +1,7 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
 import { DatabaseError } from "/opt/nodejs/errors.js";
 import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
+import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
 
 let knexInstance;
 
@@ -23,8 +24,7 @@ const getOcrImportedPurhaseOrders = async (
 ) => {
     await initializeDb();
     try {
-        if (pageNumber < 1) pageNumber = 1;
-        const offset = (pageNumber - 1) * pageSize;
+        const offset = getPageOffsetFromPageNo(pageNumber, pageSize);
         const query = knexInstance("ocr_imported_purchase_order_draft as po")
             .leftJoin(
                 "ocr_imported_purchase_order_draft_item as item",
