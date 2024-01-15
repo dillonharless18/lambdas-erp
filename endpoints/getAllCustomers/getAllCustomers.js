@@ -1,5 +1,9 @@
 import initializeKnex from "/opt/nodejs/db/index.js";
-import { DatabaseError, NotFoundError } from "/opt/nodejs/errors.js";
+import {
+    DatabaseError,
+    NotFoundError,
+    InternalServerError,
+} from "/opt/nodejs/errors.js";
 import { createSuccessResponse } from "/opt/nodejs/apiResponseUtil.js";
 import { getPageOffsetFromPageNo } from "/opt/nodejs/backendUtil.js";
 
@@ -63,9 +67,6 @@ const getAllCustomers = async (isAll, searchText, pageNumber, pageSize) => {
 
             const totalCount = (await countQuery).count;
             const data = await query.clone().offset(offset).limit(pageSize);
-            if (!responseData || responseData.length === 0) {
-                throw new NotFoundError("No customers found.");
-            }
             responseData = { data, totalCount };
         }
 
