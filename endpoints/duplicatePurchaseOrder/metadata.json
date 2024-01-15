@@ -1,0 +1,6 @@
+{
+    "apiPath": "duplicate-purchase-order",
+    "httpMethod": "POST",
+    "name": "postPurchaseOrder",
+    "allowedGroups": ["admin", "logistics", "project_manager"]
+}
