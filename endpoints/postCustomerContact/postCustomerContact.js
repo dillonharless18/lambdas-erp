@@ -35,11 +35,11 @@ const postCustomerContact = async (customerContact, userSub) => {
       .where('cognito_sub', userSub)
       .pluck('user_id');
 
-    const customerContact = new CustomerContact(customerContact);
+    const customerContactData = new CustomerContact(customerContact);
     let dataToInsert = {
       last_updated_by: loggedInUser[0],
       created_by: loggedInUser[0],
-      ...customerContact,
+      ...customerContactData,
     };
 
     await knexInstance('customer_contact').insert(dataToInsert);
