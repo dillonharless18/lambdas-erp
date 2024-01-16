@@ -4,7 +4,8 @@ import { createErrorResponse } from '/opt/nodejs/apiResponseUtil.js';
 const handler = async (event) => {
   try {
     const cognitoSub = event.requestContext.authorizer.sub;
-    return await getDriverTransportationTrips(cognitoSub);
+    const isAll = queryParams?.isAll;
+    return await getDriverTransportationTrips(cognitoSub,isAll);
   } catch (error) {
     console.error('Error in handler:', error);
     return createErrorResponse(error);

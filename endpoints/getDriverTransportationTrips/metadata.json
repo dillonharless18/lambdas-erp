@@ -8,5 +8,8 @@
     "logistics",
     "project_manager",
     "driver"
-  ]
+  ],
+  "requestParameters": {
+    "isAll": true
+}
 }
