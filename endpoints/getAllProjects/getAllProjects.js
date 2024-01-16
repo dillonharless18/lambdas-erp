@@ -34,7 +34,9 @@ const getAllProjects = async (
                 ),
                 knexInstance.raw(
                     '("updatedby".first_name || \' \' || "updatedby".last_name) AS Updatedby'
-                )
+                ),
+                "c.customer_name as customerName",
+                "c.uuid as customerUUID"
             )
             .from("project as p")
             .orderBy("p.created_at", "asc")
@@ -44,12 +46,13 @@ const getAllProjects = async (
                 "updatedby.user_id",
                 "=",
                 "p.last_updated_by"
-            );
+            )
+            .join("customer as c", "c.customer_id", "=", "p.customer_id");
 
         if (searchText) {
             query.whereILike(
                 knexInstance.raw(
-                    `concat(p.project_name, ' ', p.project_cde, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name)`
+                    `concat(p.project_name, ' ', p.project_cde, ' ', createdby.first_name, ' ', createdby.last_name, ' ', updatedby.first_name, ' ', updatedby.last_name, ' ', c.customer_name)`
                 ),
                 `%${searchText}%`
             );
