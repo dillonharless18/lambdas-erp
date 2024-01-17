@@ -1,0 +1,13 @@
+{
+    "apiPath": "customers/contact/{customerContactUUID}",
+    "httpMethod": "DELETE",
+    "name": "deleteCustomerContact",
+    "allowedGroups": [
+      "admin",
+      "basic_user",
+      "logistics",
+      "project_manager",
+      "driver"
+    ]
+  }
+  
