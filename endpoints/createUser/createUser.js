@@ -27,7 +27,7 @@ async function createUserAndAddToGroup(
     const params = {
         UserPoolId: process.env.USER_POOL_ID,
         Username: userName,
-        TemporaryPassword: "oneXerp123!",
+        TemporaryPassword: "erp123!",
         UserAttributes: [
             {
                 Name: "email",

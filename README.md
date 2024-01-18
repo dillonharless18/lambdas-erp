@@ -1,6 +1,6 @@
-# oneXerp-lambda-functions
+# erp-lambda-functions
 
-This repository contains the Lambda functions for the oneXerp application. Each Lambda function is responsible for a specific API endpoint or background task. The functions are automatically discovered and integrated into the oneXerp API by the `oneXerp-infrastructure` repository.
+This repository contains the Lambda functions for the erp application. Each Lambda function is responsible for a specific API endpoint or background task. The functions are automatically discovered and integrated into the erp API by the `erp-infrastructure` repository.
 
 ## Tracked Branches
 
@@ -11,7 +11,7 @@ The development and main branches are tracked by pipelines. Anything you merge t
 Each Lambda function should have its own directory inside the `endpoints` folder of this repository. The directory must contain:
 
 - `index.js` The entry point of the Lambda function
-- `metadata.json`: A JSON file containing metadata that describes the function's purpose and how it should be integrated into the oneXerp API
+- `metadata.json`: A JSON file containing metadata that describes the function's purpose and how it should be integrated into the erp API
 
 Example of the repository structure after adding some lambdas:
 
@@ -65,12 +65,12 @@ Here is an examples of a `metadata.json` file:
 
 To add a new API endpoint, follow these steps:
 
-1. Create a new directory inside the `endpoints/` folder in the oneXerp-Lambdas repository.
+1. Create a new directory inside the `endpoints/` folder in the erp-Lambdas repository.
 2. Inside the new directory, create a `metadata.json` file with the following properties:
    - `apiPath`: The API path for the function (e.g., `purchase-orders/{purchaseOrderId}/line-items/{lineItemId}/comments`)
    - `httpMethod`: The HTTP method for the function (e.g., `GET`)
    - `name`: The name of the function (e.g., `getPoLineItemComments`)
-   - `allowedGroups`: The oneXerp roles that will be allowed to access the API Endpoint. Options are: [basic_user, driver, logistics, project_manager, admin]
+   - `allowedGroups`: The erp roles that will be allowed to access the API Endpoint. Options are: [basic_user, driver, logistics, project_manager, admin]
    - `requestParameters`: The queryStringParameters that an endpoints should support. An object with keys representing queryStringParams and `boolean` values representing if they are required to execute the endpoint.
 3. Create the Lambda function's code file (e.g., `index.js`) inside the new directory
    _NOTE_: Dependencies are handled by Lambda Layers in the infrastructure repository. Please keep all large dependencies in `devDependencies` in `package.json` to avoid large bundles. See the Infrastructure Repository for the list of Lambda Layers available.

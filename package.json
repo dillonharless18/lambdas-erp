@@ -1,8 +1,8 @@
 {
-  "name": "onexerp-lambdas",
+  "name": "erp-lambdas",
   "version": "1.0.0",
   "type": "module",
-  "description": "This repository contains the Lambda functions for the oneXerp application. Each Lambda function is responsible for a specific API endpoint or background task. The functions are automatically discovered and integrated into the oneXerp API by the `oneXerp-infrastructure` repository.",
+  "description": "This repository contains the Lambda functions for the erp application. Each Lambda function is responsible for a specific API endpoint or background task. The functions are automatically discovered and integrated into the erp API by the `erp-infrastructure` repository.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
